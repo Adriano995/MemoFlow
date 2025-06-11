@@ -3,20 +3,18 @@ package sviluppo.adriano.MemoFlow.entity;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import org.springframework.data.annotation.Id;
+import jakarta.persistence.*;
+import jakarta.persistence.Id;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.ManyToOne;
 import sviluppo.adriano.MemoFlow.enums.TipoNota;
 
 @Entity
+@Table(name = "note")
 public class Nota {
-    
+
     @Id
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String titolo;
 
@@ -37,7 +35,7 @@ public class Nota {
 
     public Nota(){};
 
-    public Nota(UUID id, String titolo, TipoNota tipoNota, String contenutoTesto, String contenutoSVG, LocalDateTime dataCreazione, LocalDateTime ultimaModifica){
+    public Nota(Long id, String titolo, TipoNota tipoNota, String contenutoTesto, String contenutoSVG, LocalDateTime dataCreazione, LocalDateTime ultimaModifica){
         this.id = id;
         this.titolo = titolo;
         this.tipoNota = tipoNota;
@@ -47,11 +45,11 @@ public class Nota {
         this.ultimaModifica = ultimaModifica;
     }
 
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

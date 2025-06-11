@@ -3,12 +3,10 @@ package sviluppo.adriano.MemoFlow.entity;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "password_reset_token")
 public class PasswordResetToken {
     
     @Id

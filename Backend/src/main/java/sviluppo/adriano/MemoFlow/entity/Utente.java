@@ -1,17 +1,20 @@
 package sviluppo.adriano.MemoFlow.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "users")
 public class Utente{
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String nome;
-
     private String cognome;
+
+    @OneToOne(mappedBy = "utente", cascade = CascadeType.ALL)
+    private Credenziali credenziali;
 
     public Utente(){}
 
@@ -45,5 +48,11 @@ public class Utente{
         this.cognome = cognome;
     }
 
-    
+    public Credenziali getCredenziali() {
+        return credenziali;
+    }
+
+    public void setCredenziali(Credenziali credenziali) {
+        this.credenziali = credenziali;
+    }
 }
