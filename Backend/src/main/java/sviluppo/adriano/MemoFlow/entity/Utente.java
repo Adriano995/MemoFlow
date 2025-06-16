@@ -1,5 +1,6 @@
 package sviluppo.adriano.MemoFlow.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -14,6 +15,7 @@ public class Utente{
     private String cognome;
 
     @OneToOne(mappedBy = "utente", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Credenziali credenziali;
 
     public Utente(){}

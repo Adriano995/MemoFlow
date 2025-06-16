@@ -1,5 +1,6 @@
 package sviluppo.adriano.MemoFlow.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -12,6 +13,7 @@ public class Credenziali {
 
     @OneToOne
     @JoinColumn(name = "utente_id", referencedColumnName = "id", unique = true)
+    @JsonBackReference
     private Utente utente;
 
     @Column(nullable = false, unique = true)
