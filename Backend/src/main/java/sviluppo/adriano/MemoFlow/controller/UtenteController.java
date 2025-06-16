@@ -12,6 +12,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import sviluppo.adriano.MemoFlow.dto.UtenteDTO;
 import sviluppo.adriano.MemoFlow.entity.Utente;
 import sviluppo.adriano.MemoFlow.service.UtenteService;
 
@@ -30,8 +31,8 @@ public class UtenteController {
     }
 
     @GetMapping("/utenti")
-    public ResponseEntity<List<Utente>> cercaTutti() {
-        List<Utente> utenti = utenteService.cercaTutti();
+    public ResponseEntity<List<UtenteDTO>> cercaTutti() {
+        List<UtenteDTO> utenti = utenteService.cercaTutti();
         if (utenti.isEmpty()) {
             return ResponseEntity.noContent().build(); // HTTP 204 No Content
         }
@@ -40,12 +41,13 @@ public class UtenteController {
 
 
     /*@GetMapping("/current")
-    public ResponseEntity<Utente> getCurrentUser() {
+    public ResponseEntity<UtenteDTO> getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
-        Utente user = utenteService.findByEmail(email);
+        UtenteDTO user = utenteService.findByEmail(email);
         return ResponseEntity.ok(user);
     }*/
+
 
     @Operation(summary = "Crea un nuovo utente")
     @ApiResponses(value = {
@@ -53,11 +55,11 @@ public class UtenteController {
     })
     @Transactional
     @PostMapping("/crea")
-    public ResponseEntity<?> creaUtente(@RequestBody Utente utenteInput) {
+    public ResponseEntity<?> creaUtente(@RequestBody UtenteDTO utenteInput) {
 //        utenteService.creaUtente(null); // Ignora input per ora
 //
         try{
-            Utente nuovoUtente = utenteService.creaUtente(utenteInput);
+            UtenteDTO nuovoUtente = utenteService.creaUtente(utenteInput);
             return  ResponseEntity.ok(nuovoUtente);
         }
         catch(IllegalArgumentException e){
@@ -74,7 +76,7 @@ public class UtenteController {
     @PutMapping("/aggiorna/{id}")
     public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody Map<String, Object> updates) {
         try {
-            Utente updatedUser = utenteService.aggiornaUtente(id, updates);
+            UtenteDTO updatedUser = utenteService.aggiornaUtente(id, updates);
             return ResponseEntity.ok(updatedUser);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Utente non trovato");

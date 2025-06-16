@@ -42,6 +42,8 @@ public class SecurityConfig {
 
                         .requestMatchers("/utente/eliminaUtente/{id}").permitAll()
 
+                        .requestMatchers("/credenziali/crea").permitAll()
+
                         .requestMatchers("/auth/**").permitAll()
                         .anyRequest().authenticated()
                 );
