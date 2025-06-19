@@ -2,34 +2,35 @@ package sviluppo.adriano.MemoFlow.mapper;
 
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
+import sviluppo.adriano.MemoFlow.dto.CreaDTO.CredenzialiCreateDTO;
 import sviluppo.adriano.MemoFlow.dto.CredenzialiDTO;
 import sviluppo.adriano.MemoFlow.entity.Credenziali;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-06-16T15:23:50+0200",
+    date = "2025-06-19T11:02:10+0200",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 21.0.7 (Oracle Corporation)"
 )
 @Component
 public class CredenzialiMapperImpl implements CredenzialiMapper {
 
     @Override
-    public CredenzialiDTO toDto(Credenziali credenziali) {
-        if ( credenziali == null ) {
+    public CredenzialiDTO toDto(Credenziali entity) {
+        if ( entity == null ) {
             return null;
         }
 
         CredenzialiDTO credenzialiDTO = new CredenzialiDTO();
 
-        credenzialiDTO.setId( credenziali.getId() );
-        credenzialiDTO.setEmail( credenziali.getEmail() );
-        credenzialiDTO.setPassword( credenziali.getPassword() );
+        credenzialiDTO.setId( entity.getId() );
+        credenzialiDTO.setEmail( entity.getEmail() );
+        credenzialiDTO.setPassword( entity.getPassword() );
 
         return credenzialiDTO;
     }
 
     @Override
-    public Credenziali toEntity(CredenzialiDTO dto) {
+    public Credenziali toEntity(CredenzialiCreateDTO dto) {
         if ( dto == null ) {
             return null;
         }

@@ -1,5 +1,6 @@
 package sviluppo.adriano.MemoFlow.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import sviluppo.adriano.MemoFlow.entity.Credenziali;
 
 public class CredenzialiDTO {
@@ -7,6 +8,8 @@ public class CredenzialiDTO {
     private Long id;
     private String email;
     private String password;
+
+    @JsonIgnore
     private Long utenteId;
 
     public CredenzialiDTO() {}
@@ -49,6 +52,7 @@ public class CredenzialiDTO {
         this.password = password;
     }
 
+    @JsonIgnore
     public Long getUtenteId() {
         return utenteId;
     }

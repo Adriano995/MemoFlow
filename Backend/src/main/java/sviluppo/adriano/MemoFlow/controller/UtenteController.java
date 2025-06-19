@@ -9,11 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import sviluppo.adriano.MemoFlow.dto.UtenteDTO;
-import sviluppo.adriano.MemoFlow.entity.Utente;
+import sviluppo.adriano.MemoFlow.dto.CreaDTO.UtenteCreateDTO;
 import sviluppo.adriano.MemoFlow.service.UtenteService;
 
 import java.util.List;
@@ -30,7 +28,12 @@ public class UtenteController {
         this.utenteService = utenteService;
     }
 
-    @GetMapping("/utenti")
+    @Operation(summary = "Recupera la lista di tutti gli utenti")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista utenti recuperata con successo"),
+            @ApiResponse(responseCode = "204", description = "Nessun utente trovato")
+    })
+    @GetMapping("/listaUtenti")
     public ResponseEntity<List<UtenteDTO>> cercaTutti() {
         List<UtenteDTO> utenti = utenteService.cercaTutti();
         if (utenti.isEmpty()) {
@@ -52,28 +55,24 @@ public class UtenteController {
     @Operation(summary = "Crea un nuovo utente")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Utente creato con successo"),
+            @ApiResponse(responseCode = "400", description = "Dati non validi")
     })
     @Transactional
-    @PostMapping("/crea")
-    public ResponseEntity<?> creaUtente(@RequestBody UtenteDTO utenteInput) {
-//        utenteService.creaUtente(null); // Ignora input per ora
-//
-        try{
-            UtenteDTO nuovoUtente = utenteService.creaUtente(utenteInput);
-            return  ResponseEntity.ok(nuovoUtente);
-        }
-        catch(IllegalArgumentException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    @PostMapping("/creaUtente")
+    public ResponseEntity<UtenteDTO> creaUtente(@RequestBody UtenteCreateDTO dto) {
+        UtenteDTO creato = utenteService.creaUtente(dto);
+        return ResponseEntity.ok(creato);
     }
+
 
     @Operation(summary = "Aggiorna un utente con i dati forniti")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Utente aggiornato con successo"),
             @ApiResponse(responseCode = "404", description = "Utente non trovato"),
-            @ApiResponse(responseCode = "400", description = "Dati non validi")
+            @ApiResponse(responseCode = "400", description = "Dati non validi"),
+            @ApiResponse(responseCode = "403", description = "Accesso negato")
     })
-    @PutMapping("/aggiorna/{id}")
+    @PutMapping("/aggiornaUtente/{id}")
     public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody Map<String, Object> updates) {
         try {
             UtenteDTO updatedUser = utenteService.aggiornaUtente(id, updates);
@@ -87,6 +86,11 @@ public class UtenteController {
         }
     }
 
+    @Operation(summary = "Elimina un utente tramite ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Utente eliminato con successo"),
+            @ApiResponse(responseCode = "404", description = "Utente non trovato")
+    })
     @DeleteMapping("/eliminaUtente/{id}")
     public ResponseEntity<String> eliminaUtente(@PathVariable Long id) {
         {

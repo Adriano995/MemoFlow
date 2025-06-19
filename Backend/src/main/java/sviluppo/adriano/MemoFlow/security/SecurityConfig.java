@@ -42,9 +42,12 @@ public class SecurityConfig {
 
                         .requestMatchers("/utente/eliminaUtente/{id}").permitAll()
 
-                        .requestMatchers("/credenziali/crea").permitAll()
-
                         .requestMatchers("/auth/**").permitAll()
+
+                        .requestMatchers("/credenziali/cambiaPassword/**").permitAll()
+
+                        .requestMatchers("/credenziali/cambiaEmail/**").permitAll()
+
                         .anyRequest().authenticated()
                 );
 

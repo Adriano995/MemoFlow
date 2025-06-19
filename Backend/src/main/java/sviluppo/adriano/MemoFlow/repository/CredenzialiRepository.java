@@ -9,4 +9,6 @@ public interface CredenzialiRepository extends JpaRepository<Credenziali, Long> 
 
     Optional<Credenziali> findByEmail(String email);
 
+    Optional<Credenziali> findByUtenteId(Long utenteId);
+
 }

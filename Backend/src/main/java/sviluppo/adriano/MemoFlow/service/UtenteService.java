@@ -4,9 +4,12 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sviluppo.adriano.MemoFlow.dto.CreaDTO.CredenzialiCreateDTO;
+import sviluppo.adriano.MemoFlow.dto.CredenzialiDTO;
 import sviluppo.adriano.MemoFlow.dto.UtenteDTO;
 import sviluppo.adriano.MemoFlow.entity.Credenziali;
 import sviluppo.adriano.MemoFlow.entity.Utente;
+import sviluppo.adriano.MemoFlow.dto.CreaDTO.UtenteCreateDTO;
 import sviluppo.adriano.MemoFlow.repository.CredenzialiRepository;
 import sviluppo.adriano.MemoFlow.repository.UtenteRepository;
 import sviluppo.adriano.MemoFlow.mapper.UtenteMapper;
@@ -40,22 +43,35 @@ public class UtenteService {
                 .toList();
     }
 
-    public UtenteDTO creaUtente(UtenteDTO utenteDto) {
-        if (utenteDto.getCredenzialiId() == null) {
-            throw new IllegalArgumentException("Manca l'ID delle credenziali");
+    public UtenteDTO creaUtente(UtenteCreateDTO utenteDto) {
+
+        // Prendi le credenziali dal DTO di creazione
+        CredenzialiCreateDTO credDto = utenteDto.getCredenziali();
+
+        if (credDto == null || credDto.getEmail() == null || credDto.getPassword() == null) {
+            throw new IllegalArgumentException("Credenziali mancanti");
         }
 
-        Credenziali cred = credenzialiRepository.findById(utenteDto.getCredenzialiId())
-                .orElseThrow(() -> new IllegalArgumentException("Credenziali non trovate"));
+        if (credenzialiRepository.findByEmail(credDto.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("Email già esistente");
+        }
 
+        // Mappa il DTO di creazione (UtenteCreateDTO) all'entità Utente
         Utente utente = utenteMapper.toEntity(utenteDto);
 
-        utente.setCredenziali(cred);
-        cred.setUtente(utente);
+        // Associa bidirezionalmente le credenziali
+        Credenziali credenziali = utente.getCredenziali();
+        credenziali.setUtente(utente);
 
+        // Salva l'utente (cascade salva anche le credenziali)
         Utente salvato = utenteRepository.save(utente);
+
+        // Mappa l'entità salvata a DTO di lettura (UtenteDTO)
         return utenteMapper.toDto(salvato);
     }
+
+
+
 
 
     public UtenteDTO findByEmail(String email) {
