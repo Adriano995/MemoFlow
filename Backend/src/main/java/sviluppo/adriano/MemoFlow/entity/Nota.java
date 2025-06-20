@@ -1,7 +1,6 @@
 package sviluppo.adriano.MemoFlow.entity;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 import jakarta.persistence.*;
 import jakarta.persistence.Id;

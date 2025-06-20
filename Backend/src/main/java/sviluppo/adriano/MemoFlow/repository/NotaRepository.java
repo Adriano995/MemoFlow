@@ -7,5 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface NotaRepository extends JpaRepository<Nota, Long> {
+
     List<Nota> findByUtenteId(Long utenteId);
+
 }
