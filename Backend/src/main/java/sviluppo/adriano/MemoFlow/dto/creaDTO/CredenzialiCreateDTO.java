@@ -1,4 +1,4 @@
-package sviluppo.adriano.MemoFlow.dto.CreaDTO;
+package sviluppo.adriano.MemoFlow.dto.creaDTO;
 
 public class CredenzialiCreateDTO {
 

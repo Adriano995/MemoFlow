@@ -1,10 +1,10 @@
-package sviluppo.adriano.MemoFlow.dto.CreaDTO;
+package sviluppo.adriano.MemoFlow.dto.creaDTO;
 
 public class UtenteCreateDTO {
 
     private String nome;
     private String cognome;
-    private CredenzialiCreateDTO credenziali; // ✅ nested DTO
+    private CredenzialiCreateDTO credenziali;
 
     public UtenteCreateDTO() {}
 

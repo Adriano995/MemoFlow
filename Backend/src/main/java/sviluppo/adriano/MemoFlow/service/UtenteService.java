@@ -4,11 +4,11 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sviluppo.adriano.MemoFlow.dto.CreaDTO.CredenzialiCreateDTO;
+import sviluppo.adriano.MemoFlow.dto.creaDTO.CredenzialiCreateDTO;
 import sviluppo.adriano.MemoFlow.dto.UtenteDTO;
 import sviluppo.adriano.MemoFlow.entity.Credenziali;
 import sviluppo.adriano.MemoFlow.entity.Utente;
-import sviluppo.adriano.MemoFlow.dto.CreaDTO.UtenteCreateDTO;
+import sviluppo.adriano.MemoFlow.dto.creaDTO.UtenteCreateDTO;
 import sviluppo.adriano.MemoFlow.repository.CredenzialiRepository;
 import sviluppo.adriano.MemoFlow.repository.UtenteRepository;
 import sviluppo.adriano.MemoFlow.mapper.UtenteMapper;
@@ -68,10 +68,6 @@ public class UtenteService {
         // Mappa l'entità salvata a DTO di lettura (UtenteDTO)
         return utenteMapper.toDto(salvato);
     }
-
-
-
-
 
     public UtenteDTO findByEmail(String email) {
         Credenziali cred = credenzialiRepository.findByEmail(email)

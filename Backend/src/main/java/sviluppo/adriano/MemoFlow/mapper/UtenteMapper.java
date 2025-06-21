@@ -3,7 +3,7 @@ package sviluppo.adriano.MemoFlow.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import sviluppo.adriano.MemoFlow.dto.CreaDTO.UtenteCreateDTO;
+import sviluppo.adriano.MemoFlow.dto.creaDTO.UtenteCreateDTO;
 import sviluppo.adriano.MemoFlow.dto.UtenteDTO;
 import sviluppo.adriano.MemoFlow.entity.Utente;
 

@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
 import sviluppo.adriano.MemoFlow.dto.UtenteDTO;
-import sviluppo.adriano.MemoFlow.dto.CreaDTO.UtenteCreateDTO;
+import sviluppo.adriano.MemoFlow.dto.creaDTO.UtenteCreateDTO;
 import sviluppo.adriano.MemoFlow.service.UtenteService;
 
 import java.util.List;
@@ -55,14 +55,15 @@ public class UtenteController {
 
     @Operation(summary = "Crea un nuovo utente")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Utente creato con successo"),
+            @ApiResponse(responseCode = "201", description = "Utente creato con successo"),
             @ApiResponse(responseCode = "400", description = "Dati non validi")
     })
     @Transactional
     @PostMapping("/creaUtente")
     public ResponseEntity<UtenteDTO> creaUtente(@RequestBody UtenteCreateDTO dto) {
         UtenteDTO creato = utenteService.creaUtente(dto);
-        return ResponseEntity.ok(creato);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(creato);
     }
 
 

@@ -7,7 +7,7 @@ public class UtenteDTO {
     private Long id;
     private String nome;
     private String cognome;
-    private CredenzialiDTO credenziali; // ✅ DTO per lettura
+    private CredenzialiDTO credenziali;
 
     public UtenteDTO() {}
 
@@ -23,21 +23,39 @@ public class UtenteDTO {
         this.nome = utente.getNome();
         this.cognome = utente.getCognome();
         if (utente.getCredenziali() != null) {
-            this.credenziali = new CredenzialiDTO(utente.getCredenziali()); // ✅
-            // ✅
-
+            this.credenziali = new CredenzialiDTO(utente.getCredenziali());
         }
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getNome() { return nome; }
-    public void setNome(String nome) { this.nome = nome; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getCognome() { return cognome; }
-    public void setCognome(String cognome) { this.cognome = cognome; }
+    public String getNome() {
+        return nome;
+    }
 
-    public CredenzialiDTO getCredenziali() { return credenziali; } // ✅ tipo giusto
-    public void setCredenziali(CredenzialiDTO credenziali) { this.credenziali = credenziali; }
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getCognome() {
+        return cognome;
+    }
+
+    public void setCognome(String cognome) {
+        this.cognome = cognome;
+    }
+
+    public CredenzialiDTO getCredenziali() {
+        return credenziali;
+    }
+
+    public void setCredenziali(CredenzialiDTO credenziali) {
+        this.credenziali = credenziali;
+    }
 }

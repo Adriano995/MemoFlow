@@ -5,7 +5,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import sviluppo.adriano.MemoFlow.dto.CredenzialiDTO;
 import sviluppo.adriano.MemoFlow.entity.Credenziali;
-import sviluppo.adriano.MemoFlow.dto.CreaDTO.CredenzialiCreateDTO;
+import sviluppo.adriano.MemoFlow.dto.creaDTO.CredenzialiCreateDTO;
 
 @Mapper(componentModel = "spring")
 public interface CredenzialiMapper {

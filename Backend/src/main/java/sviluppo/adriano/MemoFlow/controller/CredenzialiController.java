@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sviluppo.adriano.MemoFlow.dto.CredenzialiDTO;
-import sviluppo.adriano.MemoFlow.dto.credenzialiDTO.CambiaEmailDTO;
-import sviluppo.adriano.MemoFlow.dto.credenzialiDTO.CambiaPasswordDTO;
+import sviluppo.adriano.MemoFlow.dto.modificaDTO.modificaCredenzialiDTO.CambiaEmailDTO;
+import sviluppo.adriano.MemoFlow.dto.modificaDTO.modificaCredenzialiDTO.CambiaPasswordDTO;
 import sviluppo.adriano.MemoFlow.response.MessageResponse;
 import sviluppo.adriano.MemoFlow.service.CredenzialiService;
 

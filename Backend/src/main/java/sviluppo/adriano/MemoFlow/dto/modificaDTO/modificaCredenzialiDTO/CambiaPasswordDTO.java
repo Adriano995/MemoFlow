@@ -1,4 +1,4 @@
-package sviluppo.adriano.MemoFlow.dto.credenzialiDTO;
+package sviluppo.adriano.MemoFlow.dto.modificaDTO.modificaCredenzialiDTO;
 
 public class CambiaPasswordDTO {
     private Long utenteId;

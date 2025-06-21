@@ -3,8 +3,8 @@ package sviluppo.adriano.MemoFlow.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sviluppo.adriano.MemoFlow.dto.CredenzialiDTO;
-import sviluppo.adriano.MemoFlow.dto.credenzialiDTO.CambiaEmailDTO;
-import sviluppo.adriano.MemoFlow.dto.credenzialiDTO.CambiaPasswordDTO;
+import sviluppo.adriano.MemoFlow.dto.modificaDTO.modificaCredenzialiDTO.CambiaEmailDTO;
+import sviluppo.adriano.MemoFlow.dto.modificaDTO.modificaCredenzialiDTO.CambiaPasswordDTO;
 import sviluppo.adriano.MemoFlow.entity.Credenziali;
 import sviluppo.adriano.MemoFlow.repository.CredenzialiRepository;
 
