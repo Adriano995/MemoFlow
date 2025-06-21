@@ -19,7 +19,8 @@ public class CredenzialiController {
     @Autowired
     private CredenzialiService credenzialiService;
 
-    @Operation(summary = "Cambia la password dell'utente loggato")
+    @Operation(summary = "Cambia la password dell'utente loggato",
+            description = "Verifica la vecchia password e aggiorna con la nuova.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Password aggiornata con successo"),
             @ApiResponse(responseCode = "400", description = "Password vecchia errata o dati non validi")
@@ -34,10 +35,11 @@ public class CredenzialiController {
         }
     }
 
-    @Operation(summary = "Cambia l'email dell'utente loggato")
+    @Operation(summary = "Cambia l'email dell'utente loggato",
+            description = "Verifica la vecchia email, controlla che la nuova non sia in uso e aggiorna.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Email aggiornata con successo"),
-            @ApiResponse(responseCode = "400", description = "Email vecchia errata o dati non validi")
+            @ApiResponse(responseCode = "400", description = "Email vecchia errata, nuova già in uso o dati non validi")
     })
     @PostMapping("/cambiaEmail")
     public ResponseEntity<?> cambiaEmail(@RequestBody CambiaEmailDTO dto) {

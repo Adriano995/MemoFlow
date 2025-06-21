@@ -7,6 +7,8 @@ public class CredenzialiDTO {
 
     private Long id;
     private String email;
+
+    //@JsonIgnore   -> Serve a nascondere la password nel json di risposta
     private String password;
 
     @JsonIgnore

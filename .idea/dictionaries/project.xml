@@ -9,10 +9,13 @@
       <w>aggiornato</w>
       <w>aggiungi</w>
       <w>all'entità</w>
+      <w>all'id</w>
       <w>altro</w>
+      <w>anagrafici</w>
       <w>anche</w>
       <w>associa</w>
       <w>associare</w>
+      <w>associata</w>
       <w>associato</w>
       <w>associazioni</w>
       <w>attuale</w>
@@ -28,12 +31,14 @@
       <w>cognome</w>
       <w>collegamenti</w>
       <w>collegamento</w>
+      <w>completa</w>
       <w>contenuto</w>
       <w>controlla</w>
       <w>controllo</w>
       <w>converte</w>
       <w>corretta</w>
       <w>corrisponda</w>
+      <w>corrispondente</w>
       <w>costruttore</w>
       <w>crea</w>
       <w>creata</w>
@@ -41,8 +46,10 @@
       <w>creazione</w>
       <w>credenziali</w>
       <w>creo</w>
+      <w>dall'id</w>
       <w>dell'utente</w>
       <w>dell’utente</w>
+      <w>deve</w>
       <w>direttamente</w>
       <w>disegno</w>
       <w>diversi</w>
@@ -67,6 +74,7 @@
       <w>idealmente</w>
       <w>ignora</w>
       <w>implementare</w>
+      <w>irreversibile</w>
       <w>l'aggiornamento</w>
       <w>l'email</w>
       <w>l'entità</w>
@@ -85,6 +93,7 @@
       <w>migliorare</w>
       <w>modifica</w>
       <w>modificare</w>
+      <w>nascondere</w>
       <w>negato</w>
       <w>nessun</w>
       <w>nessuna</w>
@@ -92,10 +101,12 @@
       <w>nuova</w>
       <w>nuovo</w>
       <w>obbligatorie</w>
+      <w>operazione</w>
       <w>postgre</w>
       <w>prendere</w>
       <w>prendi</w>
       <w>presente</w>
+      <w>previsti</w>
       <w>proprietario</w>
       <w>prova</w>
       <w>pulita</w>
@@ -107,11 +118,15 @@
       <w>recuperare</w>
       <w>recuperata</w>
       <w>recupero</w>
+      <w>registra</w>
+      <w>registrati</w>
+      <w>restituisce</w>
       <w>richiesta</w>
       <w>risposta</w>
       <w>ruolo</w>
       <w>salva</w>
       <w>salvata</w>
+      <w>salvate</w>
       <w>salvato</w>
       <w>sessione</w>
       <w>settare</w>
@@ -122,6 +137,7 @@
       <w>sopra</w>
       <w>sostituire</w>
       <w>sostituisci</w>
+      <w>specificata</w>
       <w>specificato</w>
       <w>stringhe</w>
       <w>successo</w>

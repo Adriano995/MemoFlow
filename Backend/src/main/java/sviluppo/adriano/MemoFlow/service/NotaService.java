@@ -66,9 +66,6 @@ public class NotaService {
         return notaMapper.toDto(salvata);
     }
 
-
-
-
     public NotaDTO aggiornaNota(Long id, CambiaNotaDTO modifica) {
         Nota nota = notaRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Nota con ID " + id + " non trovata"));

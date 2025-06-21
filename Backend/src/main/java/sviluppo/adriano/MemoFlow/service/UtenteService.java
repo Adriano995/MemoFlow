@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sviluppo.adriano.MemoFlow.dto.creaDTO.CredenzialiCreateDTO;
 import sviluppo.adriano.MemoFlow.dto.UtenteDTO;
+import sviluppo.adriano.MemoFlow.dto.modificaDTO.UtenteCambiaDatiDTO;
 import sviluppo.adriano.MemoFlow.entity.Credenziali;
 import sviluppo.adriano.MemoFlow.entity.Utente;
 import sviluppo.adriano.MemoFlow.dto.creaDTO.UtenteCreateDTO;
@@ -76,65 +77,19 @@ public class UtenteService {
         return utenteMapper.toDto(cred.getUtente());
     }
 
-    public UtenteDTO aggiornaUtente(Long id, Map<String, Object> updates) {
+    public UtenteDTO aggiornaUtente(Long id, UtenteCambiaDatiDTO dto) {
         Utente utente = utenteRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Utente con ID " + id + " non trovato"));
 
-        Credenziali credenziali = utente.getCredenziali();
+        // Aggiorna solo i dati anagrafici previsti dal DTO
+        utente.setNome(dto.getNome());
+        utente.setCognome(dto.getCognome());
 
-        // Verifica email duplicata
-        if (updates.containsKey("email")) {
-            String newEmail = (String) updates.get("email");
-            credenzialiRepository.findByEmail(newEmail).ifPresent(existingCredenziali -> {
-                Long idUtenteAssociato = existingCredenziali.getUtente().getId();
-                if (!idUtenteAssociato.equals(id)) {
-                    throw new IllegalArgumentException("Email già in uso da un altro utente");
-                }
-            });
-        }
-
-        // Verifica e aggiorna password (in chiaro per ora)
-        if (updates.containsKey("password")) {
-            String currentPassword = (String) updates.get("currentPassword");
-            String newPassword = (String) updates.get("password");
-
-            if (currentPassword == null || currentPassword.trim().isEmpty()) {
-                throw new IllegalArgumentException("La password attuale è richiesta per modificare la password");
-            }
-
-            if (newPassword == null || newPassword.trim().isEmpty()) {
-                throw new IllegalArgumentException("La nuova password non può essere vuota");
-            }
-
-            if (!currentPassword.equals(credenziali.getPassword())) {
-                throw new IllegalArgumentException("Password attuale non corretta");
-            }
-
-            credenziali.setPassword(newPassword);
-        }
-
-        // Aggiorna i campi dell’utente
-        updates.forEach((key, value) -> {
-            switch (key) {
-                case "nome" -> utente.setNome((String) value);
-                case "cognome" -> utente.setCognome((String) value);
-                case "currentPassword", "password", "email" -> {
-                    // già gestiti
-                }
-                default -> throw new IllegalArgumentException("Campo non valido: " + key);
-            }
-        });
-
-        // Aggiorna email se presente
-        if (updates.containsKey("email")) {
-            credenziali.setEmail((String) updates.get("email"));
-        }
-
-        credenzialiRepository.save(credenziali);
         Utente utenteAggiornato = utenteRepository.save(utente);
 
         return utenteMapper.toDto(utenteAggiornato);
     }
+
 
     public void eliminaUser(Long id) {
         if (!utenteRepository.existsById(id)) {

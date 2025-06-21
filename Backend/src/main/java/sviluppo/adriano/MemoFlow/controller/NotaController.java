@@ -8,15 +8,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
-import sviluppo.adriano.MemoFlow.dto.UtenteDTO;
 import sviluppo.adriano.MemoFlow.dto.creaDTO.NotaCreateDTO;
 import sviluppo.adriano.MemoFlow.dto.modificaDTO.CambiaNotaDTO;
 import sviluppo.adriano.MemoFlow.dto.notaDTO.NotaDTO;
-import sviluppo.adriano.MemoFlow.entity.Nota;
 import sviluppo.adriano.MemoFlow.service.NotaService;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/nota")
@@ -28,12 +25,14 @@ public class NotaController {
         this.notaService = notaService;
     }
 
-    @Operation(summary = "Recupera la lista di tutte le note")
+    @Operation(
+            summary = "Recupera la lista di tutte le note",
+            description = "Restituisce una lista di tutte le note salvate nel sistema. Se non ci sono note, restituisce 204 No Content."
+    )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Lista note recuperata con successo"),
-            @ApiResponse(responseCode = "204", description = "Nessuna nota trovato")
+            @ApiResponse(responseCode = "204", description = "Nessuna nota trovata")
     })
-    @GetMapping("/listaNote")
     public ResponseEntity<List<NotaDTO>> cercaTutte(){
         List<NotaDTO> note = notaService.cercaTutte();
 
@@ -43,10 +42,13 @@ public class NotaController {
         return ResponseEntity.ok(note);
     }
 
-    @Operation(summary = "Crea una nuova nota")
+    @Operation(
+            summary = "Crea una nuova nota",
+            description = "Crea una nuova nota associata a un utente esistente, specificato da utenteId."
+    )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Nota creata con successo"),
-            @ApiResponse(responseCode = "400", description = "Dati non validi")
+            @ApiResponse(responseCode = "400", description = "Dati non validi o utente non trovato")
     })
     @PostMapping("/creaNota")
     public ResponseEntity<NotaDTO> creaNota(@RequestBody NotaCreateDTO nuovaNota) {
@@ -54,12 +56,15 @@ public class NotaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(nota);
     }
 
-    @Operation(summary = "Aggiorna una nota con i dati forniti")
+    @Operation(
+            summary = "Aggiorna una nota con i dati forniti",
+            description = "Aggiorna i campi titolo, contenutoTesto e tipoNota della nota specificata dall'ID."
+    )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Nota aggiornata con successo"),
-            @ApiResponse(responseCode = "404", description = "Nota non trovata"),
             @ApiResponse(responseCode = "400", description = "Dati non validi"),
-            @ApiResponse(responseCode = "403", description = "Accesso negato")
+            @ApiResponse(responseCode = "403", description = "Accesso negato"),
+            @ApiResponse(responseCode = "404", description = "Nota non trovata")
     })
     @PutMapping("/aggiornaNota/{id}")
     public ResponseEntity<?> aggiornaNota(@PathVariable Long id, @RequestBody CambiaNotaDTO modificaDto) {
@@ -75,22 +80,21 @@ public class NotaController {
         }
     }
 
-
-    @Operation(summary = "Elimina una nota tramite ID")
+    @Operation(
+            summary = "Elimina una nota tramite ID",
+            description = "Elimina la nota corrispondente all'ID specificato."
+    )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Nota eliminata con successo"),
             @ApiResponse(responseCode = "404", description = "Nota non trovata")
     })
     @DeleteMapping("/eliminaNota/{id}")
     public ResponseEntity<String> eliminaNota(@PathVariable Long id) {
-        {
-            try {
-                notaService.eliminaNota(id);
-                return ResponseEntity.noContent().build();
-            } catch (EntityNotFoundException e) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-            }
+        try {
+            notaService.eliminaNota(id);
+            return ResponseEntity.noContent().build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
-
     }
 }
