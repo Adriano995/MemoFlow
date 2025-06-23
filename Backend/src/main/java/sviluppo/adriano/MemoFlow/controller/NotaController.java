@@ -10,7 +10,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
 import sviluppo.adriano.MemoFlow.dto.creaDTO.NotaCreateDTO;
 import sviluppo.adriano.MemoFlow.dto.modificaDTO.CambiaNotaDTO;
-import sviluppo.adriano.MemoFlow.dto.notaDTO.NotaDTO;
+import sviluppo.adriano.MemoFlow.dto.NotaDTO;
 import sviluppo.adriano.MemoFlow.service.NotaService;
 
 import java.util.List;

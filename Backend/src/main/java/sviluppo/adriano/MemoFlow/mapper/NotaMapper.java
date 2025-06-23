@@ -4,7 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import sviluppo.adriano.MemoFlow.dto.creaDTO.NotaCreateDTO;
-import sviluppo.adriano.MemoFlow.dto.notaDTO.NotaDTO;
+import sviluppo.adriano.MemoFlow.dto.NotaDTO;
 import sviluppo.adriano.MemoFlow.entity.Nota;
 
 @Mapper(componentModel = "spring")
