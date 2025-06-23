@@ -4,20 +4,17 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sviluppo.adriano.MemoFlow.dto.UtenteDTO;
 import sviluppo.adriano.MemoFlow.dto.creaDTO.NotaCreateDTO;
 import sviluppo.adriano.MemoFlow.dto.modificaDTO.CambiaNotaDTO;
-import sviluppo.adriano.MemoFlow.dto.notaDTO.NotaDTO;
+import sviluppo.adriano.MemoFlow.dto.NotaDTO;
 import sviluppo.adriano.MemoFlow.entity.Nota;
 import sviluppo.adriano.MemoFlow.entity.Utente;
-import sviluppo.adriano.MemoFlow.enums.TipoNota;
 import sviluppo.adriano.MemoFlow.mapper.NotaMapper;
 import sviluppo.adriano.MemoFlow.repository.NotaRepository;
 import sviluppo.adriano.MemoFlow.repository.UtenteRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Transactional

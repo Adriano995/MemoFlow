@@ -3,16 +3,16 @@ package sviluppo.adriano.MemoFlow.mapper;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 import sviluppo.adriano.MemoFlow.dto.CredenzialiDTO;
+import sviluppo.adriano.MemoFlow.dto.NotaDTO;
 import sviluppo.adriano.MemoFlow.dto.UtenteDTO;
 import sviluppo.adriano.MemoFlow.dto.creaDTO.NotaCreateDTO;
-import sviluppo.adriano.MemoFlow.dto.notaDTO.NotaDTO;
 import sviluppo.adriano.MemoFlow.entity.Credenziali;
 import sviluppo.adriano.MemoFlow.entity.Nota;
 import sviluppo.adriano.MemoFlow.entity.Utente;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-06-21T12:11:10+0200",
+    date = "2025-06-22T12:17:29+0200",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 21.0.7 (Oracle Corporation)"
 )
 @Component

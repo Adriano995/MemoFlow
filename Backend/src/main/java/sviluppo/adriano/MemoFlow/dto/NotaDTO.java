@@ -1,6 +1,5 @@
-package sviluppo.adriano.MemoFlow.dto.notaDTO;
+package sviluppo.adriano.MemoFlow.dto;
 
-import sviluppo.adriano.MemoFlow.dto.UtenteDTO;
 import sviluppo.adriano.MemoFlow.enums.TipoNota;
 
 import java.time.LocalDateTime;
