@@ -13,6 +13,7 @@ import sviluppo.adriano.MemoFlow.dto.modificaDTO.CambiaNotaDTO;
 import sviluppo.adriano.MemoFlow.dto.NotaDTO;
 import sviluppo.adriano.MemoFlow.service.NotaService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -40,6 +41,24 @@ public class NotaController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(note);
+    }
+
+    @Operation(
+            summary = "Recupera la nota per una data specifica",
+            description = "Restituisce la nota creata in una data specifica (YYYY-MM-DD)."
+    )
+    @GetMapping("/perData")
+    public ResponseEntity<List<NotaDTO>> cercaTuttePerData(@RequestParam("data") String data) {
+        try {
+            LocalDateTime giorno = LocalDateTime.parse(data + "T00:00:00");
+            List<NotaDTO> note = notaService.cercaTuttePerData(giorno);
+            if (note.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(note);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @Operation(

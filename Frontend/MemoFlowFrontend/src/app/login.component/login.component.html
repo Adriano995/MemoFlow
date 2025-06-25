@@ -1,13 +1,13 @@
 <div class="login-container">
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form" novalidate>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
     <h2>Login</h2>
 
-    <label for="email">Email:</label>
-    <input id="email" formControlName="email" type="email" placeholder="Inserisci la tua email" required />
+    <label>Email:</label>
+    <input formControlName="email" type="email" />
 
-    <label for="password">Password:</label>
-    <input id="password" formControlName="password" type="password" placeholder="Inserisci la password" required />
+    <label>Password:</label>
+    <input formControlName="password" type="password" />
 
-    <button type="submit" [disabled]="loginForm.invalid">Login</button>
+    <button type="submit">Login</button>
   </form>
 </div>

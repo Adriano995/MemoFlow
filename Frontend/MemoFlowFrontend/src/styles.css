@@ -1,1 +1,97 @@
 /* You can add global styles to this file, and also import other style files */
+/* Box-sizing globale */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* Sfondo generale */
+html, body {
+  height: 100%;
+  margin: 0;
+  background-color: #000000; /* nero pieno */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #eee;
+}
+
+/* Forza sfondo e testo del calendario */
+.fc {
+  background: #fff !important;
+  color: #222 !important;
+}
+
+.fc .fc-toolbar-title,
+.fc .fc-daygrid-day-number,
+.fc .fc-event {
+  color: #222 !important;
+}
+
+/* Se vuoi il bordo del calendario visibile su sfondo scuro */
+.fc {
+  border-radius: 8px;
+  box-shadow: 0 0 8px #2226;
+}
+
+/* Forza colori leggibili per il calendario */
+.fc, .fc * {
+  color: #222 !important;
+}
+.fc {
+  background: #fff !important;
+}
+.calendario-container .fc, 
+.calendario-container .fc * {
+  color: #222 !important;
+}
+.calendario-container .fc {
+  background: #fff !important;
+}
+
+/* Override ancora più specifico per il testo del calendario */
+.fc, .fc *, .fc .fc-daygrid-day-number, .fc .fc-toolbar-title, .fc .fc-event, .fc .fc-col-header-cell-cushion, .fc .fc-daygrid-day-top {
+  color: #222 !important;
+  background: transparent !important;
+}
+
+/* Sfondo celle e header */
+.fc .fc-daygrid-day, .fc .fc-col-header-cell, .fc .fc-scrollgrid {
+  background: #fff !important;
+}
+
+/* Sfondo eventi */
+.fc .fc-event {
+  background: #e0e7ff !important;
+  color: #222 !important;
+  border: 1px solid #a5b4fc !important;
+}
+
+/* Override finale per colori leggibili nel calendario */
+.fc, .fc * {
+  color: #222 !important;
+  background: transparent !important;
+}
+
+.fc {
+  background: #fff !important;
+}
+
+.fc .fc-daygrid-day, .fc .fc-col-header-cell, .fc .fc-scrollgrid {
+  background: #fff !important;
+}
+
+.fc .fc-event {
+  background: #e0e7ff !important;
+  color: #222 !important;
+  border: 1px solid #a5b4fc !important;
+}
+.calendario-container,
+.calendario-container .cal-month-view,
+.calendario-container .cal-header,
+.calendario-container .cal-cell {
+  background: #fff !important;
+  color: #222 !important;
+}
+.calendario-container .cal-event {
+  background: #e0e7ff !important;
+  color: #222 !important;
+  border: 1px solid #a5b4fc !important;
+}

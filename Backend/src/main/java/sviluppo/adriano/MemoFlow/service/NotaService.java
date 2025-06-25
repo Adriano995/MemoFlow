@@ -42,6 +42,14 @@ public class NotaService {
                 .toList();
     }
 
+    public List<NotaDTO> cercaTuttePerData(LocalDateTime data) {
+        List<Nota> note = notaRepository.findAllByDataCreazioneBetween(
+                data.toLocalDate().atStartOfDay(),
+                data.toLocalDate().atTime(23, 59, 59)
+        );
+        return note.stream().map(notaMapper::toDto).toList();
+    }
+
     public NotaDTO creaNota(NotaCreateDTO createDto) {
         // Controllo validità ID utente
         if (createDto.getUtenteId() == null) {

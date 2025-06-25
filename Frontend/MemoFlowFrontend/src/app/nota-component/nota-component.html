@@ -1,0 +1,13 @@
+<div *ngIf="loading">Caricamento...</div>
+<div *ngIf="error">{{ error }}</div>
+<div *ngIf="nota && nota.length">
+  <h3>Note per il giorno: {{ date | date:'fullDate' }}</h3>
+  <div *ngFor="let n of nota">
+    <strong>Titolo:</strong> {{ n.titolo }}<br>
+    <strong>Contenuto:</strong> {{ n.contenutoTesto }}
+    <hr>
+  </div>
+</div>
+<div *ngIf="!loading && nota && nota.length === 0 && !error">
+  Nessuna nota per questo giorno.
+</div>

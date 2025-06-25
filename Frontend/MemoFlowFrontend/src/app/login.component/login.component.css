@@ -1,76 +1,57 @@
+/* Contenitore centrale */
 .login-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  overflow: hidden;
-  background: linear-gradient(
-    90deg,
-    red, orange, yellow, green, cyan, blue, violet, red
-  );
-  background-size: 200% 200%;
-  animation: hueShift 20s linear infinite;
-  color: #eee;
-  z-index: 0;
-  isolation: isolate;
+  padding: 20px;
 }
 
-@keyframes hueShift {
-  0% {
-    filter: hue-rotate(0deg);
-  }
-  100% {
-    filter: hue-rotate(360deg);
-  }
-}
-
-/* Form container - scuro minimal */
+/* Form */
 .login-form {
-  background-color: #121212;
-  padding: 30px 40px;
-  border-radius: 12px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+  background-color: #121212; /* nero scuro */
+  padding: 40px 50px;
+  border-radius: 14px;
+  box-shadow: 
+    0 8px 30px rgba(255, 111, 0, 0.6), /* ombra arancio calda */
+    0 0 0 1px rgba(255, 111, 0, 0.4); /* bordo arancio sottile */
   width: 100%;
   max-width: 400px;
-  border: 1px solid #222;
-  color: #eee;
   position: relative;
   z-index: 1;
 }
 
-/* Resto del CSS come prima per label, input, button... */
+/* Titolo */
 .login-form h2 {
-  margin-bottom: 25px;
-  text-align: center;
-  color: #ddd;
+  margin-bottom: 30px;
   font-weight: 700;
-  font-size: 1.8rem;
+  font-size: 2rem;
+  text-align: center;
+  color: #ff6f00; /* arancio acceso */
   letter-spacing: 1.2px;
+  text-shadow: 0 0 8px rgba(255,111,0,0.8);
 }
 
+/* Label */
 .login-form label {
   display: block;
   margin-bottom: 8px;
   font-weight: 600;
-  color: #ccc;
   font-size: 0.9rem;
+  color: #ffb366; /* arancio chiaro */
 }
 
+/* Input */
 .login-form input {
   width: 100%;
   padding: 12px 14px;
   margin-bottom: 20px;
-  border: 1.5px solid #444;
-  border-radius: 6px;
-  font-size: 1rem;
-  background-color: #1e1e1e;
+  border: 1.5px solid #333;
+  border-radius: 8px;
+  background-color: #1c1c1c; /* grigio molto scuro */
   color: #eee;
-  transition: border-color 0.3s, background-color 0.3s;
+  font-size: 1rem;
+  transition: border-color 0.3s, background-color 0.3s, box-shadow 0.3s;
 }
 
 .login-form input::placeholder {
@@ -78,34 +59,36 @@
 }
 
 .login-form input:focus {
-  border-color: #00ff88;
+  border-color: #ff6f00;
   background-color: #121212;
   outline: none;
-  box-shadow: 0 0 8px #00ff88;
+  box-shadow: 0 0 10px #ff6f00;
 }
 
+/* Bottone */
 .login-form button {
   width: 100%;
   padding: 14px;
-  background-color: #00ff88;
+  background-color: #ff6f00;
   color: #121212;
   font-weight: 700;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
   font-size: 1.1rem;
   letter-spacing: 1.1px;
   transition: background-color 0.3s, box-shadow 0.3s;
-  box-shadow: 0 6px 15px rgba(0, 255, 136, 0.5);
+  box-shadow: 0 6px 20px rgba(255, 111, 0, 0.6);
 }
 
 .login-form button:hover {
-  background-color: #00cc6a;
-  box-shadow: 0 8px 20px rgba(0, 204, 106, 0.7);
+  background-color: #e65c00;
+  box-shadow: 0 8px 25px rgba(230, 92, 0, 0.8);
 }
 
+/* Messaggi errore (se vuoi aggiungerli) */
 .error-message {
-  color: #ff5555;
+  color: #ff3b3b;
   font-size: 0.85rem;
   margin-top: -15px;
   margin-bottom: 15px;
