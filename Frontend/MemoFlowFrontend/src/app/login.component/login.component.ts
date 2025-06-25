@@ -28,7 +28,7 @@ export class LoginComponent {
       const success = await this.authService.login(email, password);
 
       if (success) {
-        console.log('Login riuscito!');
+        console.log('Login riuscito dai cazzo');
         // redirect dopo login
       } else {
         console.log('Login fallito');
