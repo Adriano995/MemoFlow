@@ -12,7 +12,7 @@ import sviluppo.adriano.MemoFlow.entity.Utente;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-06-22T12:17:29+0200",
+    date = "2025-06-25T11:11:36+0200",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 21.0.7 (Oracle Corporation)"
 )
 @Component
