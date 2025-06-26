@@ -15,6 +15,7 @@ import sviluppo.adriano.MemoFlow.repository.UtenteRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -42,12 +43,15 @@ public class NotaService {
                 .toList();
     }
 
-    public List<NotaDTO> cercaTuttePerData(LocalDateTime data) {
-        List<Nota> note = notaRepository.findAllByDataCreazioneBetween(
-                data.toLocalDate().atStartOfDay(),
-                data.toLocalDate().atTime(23, 59, 59)
-        );
-        return note.stream().map(notaMapper::toDto).toList();
+    public List<NotaDTO> cercaTuttePerDataEUtente(LocalDateTime data, Long utenteId) {
+        LocalDateTime startOfDay = data.toLocalDate().atStartOfDay();
+        LocalDateTime endOfDay = data.toLocalDate().atTime(23, 59, 59, 999_999_999);
+
+        // Aggiungi il metodo al repository (vedi sotto per NotaRepository)
+        List<Nota> note = notaRepository.findAllByDataCreazioneBetweenAndUtenteId(startOfDay, endOfDay, utenteId); //
+        return note.stream()
+                .map(notaMapper::toDto) //
+                .collect(Collectors.toList());
     }
 
     public NotaDTO creaNota(NotaCreateDTO createDto) {

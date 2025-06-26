@@ -19,9 +19,13 @@
       <w>associata</w>
       <w>associato</w>
       <w>associazioni</w>
+      <w>assumendo</w>
       <w>attivo</w>
       <w>attuale</w>
       <w>autentica</w>
+      <w>autenticato</w>
+      <w>autorizzato</w>
+      <w>autorizzazione</w>
       <w>bidirezionale</w>
       <w>bidirezionali</w>
       <w>bidirezionalmente</w>
@@ -30,10 +34,14 @@
       <w>cambiare</w>
       <w>campi</w>
       <w>cerca</w>
+      <w>cercare</w>
+      <w>chiamiamo</w>
+      <w>chiarezza</w>
       <w>chiaro</w>
       <w>cognome</w>
       <w>collegamenti</w>
       <w>collegamento</w>
+      <w>combina</w>
       <w>completa</w>
       <w>configurazione</w>
       <w>contenuto</w>
@@ -52,6 +60,9 @@
       <w>credenziali</w>
       <w>creo</w>
       <w>dall'id</w>
+      <w>dall'utente</w>
+      <w>ddthh</w>
+      <w>dell'errore</w>
       <w>dell'utente</w>
       <w>dell’utente</w>
       <w>deve</w>
@@ -69,21 +80,28 @@
       <w>entità</w>
       <w>entrambi</w>
       <w>errate</w>
+      <w>errore</w>
       <w>esempio</w>
+      <w>esista</w>
       <w>esiste</w>
       <w>esistente</w>
       <w>esplicito</w>
       <w>essere</w>
+      <w>filtrare</w>
       <w>filtro</w>
       <w>finalmente</w>
+      <w>fondamentale</w>
+      <w>formato</w>
       <w>forniti</w>
       <w>gestione</w>
       <w>gestiti</w>
       <w>gestito</w>
+      <w>granulare</w>
       <w>gruppo</w>
       <w>idealmente</w>
       <w>ignora</w>
       <w>implementare</w>
+      <w>implementi</w>
       <w>impostazioni</w>
       <w>irreversibile</w>
       <w>l'aggiornamento</w>
@@ -94,6 +112,7 @@
       <w>lettura</w>
       <w>lista</w>
       <w>loggato</w>
+      <w>logica</w>
       <w>mancante</w>
       <w>mancanti</w>
       <w>mappa</w>
@@ -126,6 +145,7 @@
       <w>prova</w>
       <w>pulita</w>
       <w>quella</w>
+      <w>questa</w>
       <w>questo</w>
       <w>reale</w>
       <w>reciproci</w>
@@ -136,6 +156,7 @@
       <w>registra</w>
       <w>registrati</w>
       <w>restituisce</w>
+      <w>ricerca</w>
       <w>richiesta</w>
       <w>risposta</w>
       <w>ruolo</w>
@@ -143,16 +164,21 @@
       <w>salvata</w>
       <w>salvate</w>
       <w>salvato</w>
+      <w>senza</w>
       <w>sessione</w>
       <w>settare</w>
       <w>sicurezza</w>
       <w>simulare</w>
+      <w>singolo</w>
       <w>sistema</w>
       <w>sono</w>
       <w>sopra</w>
       <w>sostituire</w>
       <w>sostituisci</w>
+      <w>sostituiscilo</w>
+      <w>specifica</w>
       <w>specificata</w>
+      <w>specificati</w>
       <w>specificato</w>
       <w>stringhe</w>
       <w>successo</w>
@@ -179,6 +205,7 @@
       <w>vanno</w>
       <w>vecchia</w>
       <w>verifica</w>
+      <w>verificare</w>
       <w>vuoi</w>
       <w>vuota</w>
     </words>

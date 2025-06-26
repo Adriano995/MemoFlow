@@ -1,3 +1,4 @@
+// login.component.ts - Nessuna modifica necessaria per ora.
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -17,7 +18,7 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router  // <-- aggiunto
+    private router: Router
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -32,7 +33,7 @@ export class LoginComponent {
 
       const success = await this.authService.login(email, password);
       if (success) {
-        console.log('Login riuscito dai cazzo');
+        console.log('Login riuscito!');
         this.router.navigate(['/dashboard']); // <-- redirect qui
       } else {
         console.log('Login fallito');
@@ -40,5 +41,4 @@ export class LoginComponent {
       }
     }
   }
-
 }

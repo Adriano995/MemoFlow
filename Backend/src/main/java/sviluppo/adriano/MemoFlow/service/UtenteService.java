@@ -15,7 +15,7 @@ import sviluppo.adriano.MemoFlow.repository.UtenteRepository;
 import sviluppo.adriano.MemoFlow.mapper.UtenteMapper;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -41,6 +41,13 @@ public class UtenteService {
         return utenti.stream()
                 .map(utenteMapper::toDto)
                 .toList();
+    }
+
+    public UtenteDTO cercaSingolo(Long id){
+        Utente utente = utenteRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Utente con ID " + id + " non trovato"));
+
+        return utenteMapper.toDto(utente);
     }
 
     public UtenteDTO creaUtente(UtenteCreateDTO utenteDto) {

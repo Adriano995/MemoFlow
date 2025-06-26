@@ -9,7 +9,6 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
 import sviluppo.adriano.MemoFlow.dto.UtenteDTO;
 import sviluppo.adriano.MemoFlow.dto.creaDTO.UtenteCreateDTO;
@@ -17,7 +16,6 @@ import sviluppo.adriano.MemoFlow.dto.modificaDTO.UtenteCambiaDatiDTO;
 import sviluppo.adriano.MemoFlow.service.UtenteService;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/utente")
@@ -48,6 +46,18 @@ public class UtenteController {
         return ResponseEntity.ok(utenti);
     }
 
+    @GetMapping("/cercaSingolo/{id}")
+    public ResponseEntity<UtenteDTO> cercaSingolo(Long id){
+
+        UtenteDTO utente = utenteService.cercaSingolo(id);
+
+        if (utente.equals(null)){
+            return  ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(utente);
+
+    }
 
     /*@GetMapping("/current")
     public ResponseEntity<UtenteDTO> getCurrentUser() {

@@ -4,94 +4,170 @@
   box-sizing: border-box;
 }
 
-/* Sfondo generale */
+/* Variabili CSS Globali basate sul tema di login.component.css */
+:root {
+  --primary-bg-dark: #121212; /* Sfondo principale scuro come il login form */
+  --secondary-bg-dark: #1c1c1c; /* Sfondo per elementi interni come input/nota-item */
+  --accent-orange: #ff6f00; /* Arancione acceso principale come i bottoni e titoli */
+  --light-orange: #ffb366; /* Arancio chiaro per label e testo importante */
+  --text-light: #eee; /* Testo chiaro generale */
+  --text-lighter: #ddd; /* Testo leggermente più scuro per i paragrafi */
+  --text-placeholder: #666; /* Colore placeholder */
+  --border-dark: #333; /* Bordo scuro per input e celle calendario */
+  --shadow-orange-light: rgba(255, 111, 0, 0.4); /* Ombra arancio leggera */
+  --shadow-orange-medium: rgba(255, 111, 0, 0.6); /* Ombra arancio media */
+  --shadow-orange-strong: rgba(255, 111, 0, 0.8); /* Ombra arancio forte */
+}
+
+/* Sfondo generale del body */
 html, body {
   height: 100%;
   margin: 0;
-  background-color: #000000; /* nero pieno */
+  background-color: var(--primary-bg-dark); /* nero scuro */
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #eee;
+  color: var(--text-light); /* Testo chiaro di default */
 }
 
-/* Forza sfondo e testo del calendario */
+/* Forza colori per FullCalendar per integrarsi con il tema scuro */
 .fc {
-  background: #fff !important;
-  color: #222 !important;
+  background: var(--primary-bg-dark) !important; /* Sfondo scuro principale */
+  color: var(--text-light) !important; /* Testo chiaro per tutti gli elementi */
+  border-radius: 14px; /* Angoli arrotondati come il login */
+  box-shadow: 0 8px 30px var(--shadow-orange-medium),
+              0 0 0 1px var(--shadow-orange-light); /* Ombra e bordo arancio */
+  overflow: hidden; /* Nasconde gli spigoli bianchi se persistono */
+}
+
+/* Tutti gli elementi interni del calendario devono essere scuri/arancio */
+.fc-theme-standard .fc-scrollgrid,
+.fc-theme-standard td,
+.fc-theme-standard th {
+    border-color: var(--border-dark) !important; /* Bordi delle celle scuri */
+    background-color: var(--secondary-bg-dark) !important; /* Sfondo delle celle scuro */
 }
 
 .fc .fc-toolbar-title,
-.fc .fc-daygrid-day-number,
-.fc .fc-event {
-  color: #222 !important;
+.fc .fc-daygrid-day-number, /* Numeri dei giorni */
+.fc .fc-event,
+.fc .fc-col-header-cell-cushion, /* Nomi dei giorni della settimana */
+.fc .fc-daygrid-day-top {
+  color: var(--light-orange) !important; /* Colore arancio chiaro per testo visibile */
+  background: transparent !important;
 }
 
-/* Se vuoi il bordo del calendario visibile su sfondo scuro */
-.fc {
+/* Sfondo celle e header del calendario */
+.fc .fc-daygrid-day,
+.fc .fc-col-header-cell,
+.fc .fc-scrollgrid {
+  background: var(--secondary-bg-dark) !important; /* Grigio molto scuro */
+  color: var(--text-light) !important; /* Assicurati che il testo sia chiaro */
+  border: 1px solid var(--border-dark) !important; /* Bordo scuro */
+}
+
+/* Stile per gli eventi del calendario */
+.fc .fc-event {
+  background: #3a1f00 !important; /* Arancione molto scuro per gli eventi */
+  color: var(--light-orange) !important; /* Testo arancio chiaro per gli eventi */
+  border: 1px solid var(--accent-orange) !important; /* Bordo arancione acceso */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Per i bordi delle celle della griglia dei giorni */
+.fc-daygrid-day {
+  border-color: var(--border-dark) !important;
+}
+
+/* Override ancora più specifici per il calendario per eliminare il bianco */
+.fc-view-harness,
+.fc-view-harness-active {
+  background: var(--primary-bg-dark) !important;
+}
+
+.fc-popover { /* Per popover/tooltip del calendario se presenti */
+  background: var(--secondary-bg-dark) !important;
+  border: 1px solid var(--accent-orange) !important;
+  color: var(--text-light) !important;
+}
+
+
+/* Stili Globali per Form */
+.form-container-base {
+  padding: 25px 30px;
+  background-color: var(--primary-bg-dark); /* Sfondo nero scuro */
+  border-radius: 14px;
+  box-shadow: 0 8px 30px var(--shadow-orange-light),
+              0 0 0 1px var(--shadow-orange-light);
+  color: var(--text-light);
+  border: 1px solid var(--accent-orange);
+}
+
+.form-title-base {
+  color: var(--accent-orange);
+  margin-bottom: 20px;
+  font-size: 1.6em;
+  text-align: center;
+  border-top: none; /* Rimuove qualsiasi bordo superiore */
+  border-bottom: 1px solid var(--accent-orange); /* Linea continua arancio */
+  padding-bottom: 10px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-shadow: 0 0 5px rgba(255,111,0,0.6);
+}
+
+.form-label-base {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--light-orange);
+}
+
+.form-input-base {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 20px;
+  border: 1.5px solid var(--border-dark);
   border-radius: 8px;
-  box-shadow: 0 0 8px #2226;
+  background-color: var(--secondary-bg-dark); /* Grigio molto scuro */
+  color: var(--text-light);
+  font-size: 1rem;
+  transition: border-color 0.3s, background-color 0.3s, box-shadow 0.3s;
 }
 
-/* Forza colori leggibili per il calendario */
-.fc, .fc * {
-  color: #222 !important;
-}
-.fc {
-  background: #fff !important;
-}
-.calendario-container .fc, 
-.calendario-container .fc * {
-  color: #222 !important;
-}
-.calendario-container .fc {
-  background: #fff !important;
+.form-input-base::placeholder {
+  color: var(--text-placeholder);
 }
 
-/* Override ancora più specifico per il testo del calendario */
-.fc, .fc *, .fc .fc-daygrid-day-number, .fc .fc-toolbar-title, .fc .fc-event, .fc .fc-col-header-cell-cushion, .fc .fc-daygrid-day-top {
-  color: #222 !important;
-  background: transparent !important;
+.form-input-base:focus {
+  border-color: var(--accent-orange);
+  background-color: var(--primary-bg-dark);
+  outline: none;
+  box-shadow: 0 0 10px var(--accent-orange);
 }
 
-/* Sfondo celle e header */
-.fc .fc-daygrid-day, .fc .fc-col-header-cell, .fc .fc-scrollgrid {
-  background: #fff !important;
+.form-button-submit-base {
+  width: 100%;
+  padding: 14px;
+  background-color: var(--accent-orange);
+  color: var(--primary-bg-dark); /* Testo scuro sul bottone arancione */
+  font-weight: 700;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  letter-spacing: 1.1px;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  box-shadow: 0 6px 20px var(--shadow-orange-medium);
 }
 
-/* Sfondo eventi */
-.fc .fc-event {
-  background: #e0e7ff !important;
-  color: #222 !important;
-  border: 1px solid #a5b4fc !important;
+.form-button-submit-base:hover {
+  background-color: #e65c00; /* Arancione leggermente più scuro */
+  box-shadow: 0 8px 25px var(--shadow-orange-strong);
 }
 
-/* Override finale per colori leggibili nel calendario */
-.fc, .fc * {
-  color: #222 !important;
-  background: transparent !important;
-}
-
-.fc {
-  background: #fff !important;
-}
-
-.fc .fc-daygrid-day, .fc .fc-col-header-cell, .fc .fc-scrollgrid {
-  background: #fff !important;
-}
-
-.fc .fc-event {
-  background: #e0e7ff !important;
-  color: #222 !important;
-  border: 1px solid #a5b4fc !important;
-}
-.calendario-container,
-.calendario-container .cal-month-view,
-.calendario-container .cal-header,
-.calendario-container .cal-cell {
-  background: #fff !important;
-  color: #222 !important;
-}
-.calendario-container .cal-event {
-  background: #e0e7ff !important;
-  color: #222 !important;
-  border: 1px solid #a5b4fc !important;
+.form-button-submit-base:disabled {
+  background-color: #444;
+  color: #999;
+  cursor: not-allowed;
+  box-shadow: none;
 }
