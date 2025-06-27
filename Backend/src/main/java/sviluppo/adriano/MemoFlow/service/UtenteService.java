@@ -21,15 +21,11 @@ import java.util.Optional;
 @Transactional
 public class UtenteService {
 
-    @Autowired
     private UtenteRepository utenteRepository;
-
-    @Autowired
     private CredenzialiRepository credenzialiRepository;
-
-    @Autowired
     private UtenteMapper utenteMapper;
 
+    @Autowired
     public UtenteService(UtenteRepository utenteRepository, CredenzialiRepository credenzialiRepository, UtenteMapper utenteMapper) {
         this.utenteRepository = utenteRepository;
         this.credenzialiRepository = credenzialiRepository;

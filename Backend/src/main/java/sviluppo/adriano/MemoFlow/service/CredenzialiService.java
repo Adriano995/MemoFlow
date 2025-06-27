@@ -11,8 +11,12 @@ import sviluppo.adriano.MemoFlow.repository.CredenzialiRepository;
 @Service
 public class CredenzialiService {
 
-    @Autowired
     private CredenzialiRepository credenzialiRepository;
+
+    @Autowired
+    public CredenzialiService(CredenzialiRepository credenzialiRepository){
+        this.credenzialiRepository = credenzialiRepository;
+    }
 
     // Cambia password, verifica vecchia password
     public CredenzialiDTO cambiaPassword(CambiaPasswordDTO dto) {

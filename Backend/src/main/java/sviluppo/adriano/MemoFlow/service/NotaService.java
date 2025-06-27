@@ -21,15 +21,11 @@ import java.util.stream.Collectors;
 @Transactional
 public class NotaService {
 
-    @Autowired
     private NotaRepository notaRepository;
-
-    @Autowired
     private UtenteRepository utenteRepository;
-
-    @Autowired
     private NotaMapper notaMapper;
 
+    @Autowired
     public NotaService(NotaRepository notaRepository, UtenteRepository utenteRepository, NotaMapper notaMapper){
         this.notaRepository = notaRepository;
         this.utenteRepository = utenteRepository;
@@ -60,6 +56,11 @@ public class NotaService {
             throw new IllegalArgumentException("Utente mancante o ID non specificato");
         }
 
+        // Controllo validità data
+        if (createDto.getDataNota() == null) {
+            throw new IllegalArgumentException("Data della nota non specificata");
+        }
+
         // Recupero utente da DB
         Utente utente = utenteRepository.findById(createDto.getUtenteId())
                 .orElseThrow(() -> new EntityNotFoundException("Utente non trovato"));
@@ -67,8 +68,9 @@ public class NotaService {
         // Creo entity da DTO
         Nota nota = notaMapper.toEntity(createDto);
         nota.setUtente(utente);
-        nota.setDataCreazione(LocalDateTime.now());
-        nota.setUltimaModifica(LocalDateTime.now());
+
+        nota.setDataCreazione(createDto.getDataNota().atStartOfDay());
+        nota.setUltimaModifica(createDto.getDataNota().atStartOfDay());
 
         Nota salvata = notaRepository.save(nota);
 
