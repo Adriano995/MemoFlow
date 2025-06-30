@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { LoginComponent } from './login.component/login.component';
 import { DashboardCalendarioComponent } from './dashboard-calendario/dashboard-calendario.component';
+import { RegisterComponent } from './register-component/register.component';
 import { CommonModule } from '@angular/common';
 
 @Component({

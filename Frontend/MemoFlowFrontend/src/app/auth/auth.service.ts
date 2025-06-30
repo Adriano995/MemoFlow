@@ -2,17 +2,50 @@ import { Injectable } from '@angular/core';
 import { AxiosService } from '../core/axios.service';
 import { TokenService } from './token.service'; // Il tuo servizio per il token (che non useremo per l'auth qui)
 
+interface CredenzialiCreateDTO {
+  email: string;
+  password: string;
+}
+
+interface UtenteCreateDTO {
+  // Se l'utente ha solo credenziali e nessun altro campo obbligatorio alla registrazione
+  credenziali: CredenzialiCreateDTO;
+  // Altri campi utente che potresti voler inviare (es. nome, cognome)
+  nome?: string;
+  cognome?: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  // Chiave per salvare l'ID utente nel localStorage
-  private readonly userIdKey = 'user_id'; 
   
+    async register(nome: string, cognome: string, email: string, password: string): Promise<boolean> {
+        try {
+            const registrationData: UtenteCreateDTO = {
+                nome: nome,        // Aggiunto
+                cognome: cognome,  // Aggiunto
+                credenziali: {
+                    email: email,
+                    password: password
+                }
+            };
+            const response = await this.axiosService.post<any>('/utente/creaUtente', registrationData);
+            console.log('Registrazione riuscita!', response);
+            return true;
+        } catch (error) {
+            console.error('Errore durante la registrazione:', error);
+            return false;
+        }
+    }
+
+  // Chiave per salvare l'ID utente nel localStorage
+  private readonly userIdKey = 'user_id';
+
   constructor(
     private axiosService: AxiosService,
     private tokenService: TokenService // Lo manteniamo anche se il token è dummy
-  ) {}
+  ) { }
 
   async login(email: string, password: string): Promise<boolean> {
     try {
@@ -28,13 +61,12 @@ export class AuthService {
         console.log('Login riuscito. ID utente salvato:', response.user.id);
       } else {
         console.warn('Login riuscito, ma ID utente non trovato nella risposta.');
-        // Potresti voler gestire questo come un errore se l'ID è mandatorio
       }
 
       // Il token rimane "dummy-token" dal backend, lo puoi salvare o ignorare per ora
       const token = response.token;
       this.tokenService.saveToken(token); // Salva il dummy token se lo vuoi mantenere
-      
+
       return true; // Login riuscito
     } catch (error) {
       console.error('Errore login:', error);

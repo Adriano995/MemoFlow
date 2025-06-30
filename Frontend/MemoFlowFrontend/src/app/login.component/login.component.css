@@ -1,11 +1,11 @@
 /* Contenitore centrale */
-.login-container {
+/*.login-container {
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 20px;
-}
+}*/
 
 /* Form */
 .login-form {
@@ -94,4 +94,41 @@
   margin-bottom: 15px;
   font-weight: 600;
   text-align: center;
+}
+
+.form-wrapper {
+  position: absolute; /* Rendi l'elemento posizionato assolutamente */
+  top: 50%;           /* Sposta il bordo superiore al 50% dell'altezza della viewport */
+  left: 50%;          /* Sposta il bordo sinistro al 50% della larghezza della viewport */
+  transform: translate(-50%, -50%); /* Trasla indietro l'elemento del 50% della sua propria larghezza e altezza */
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+  /* Assicurati che non ci siano margini o padding che lo spingano */
+}
+
+/* Puoi rimuovere gli stili esistenti per .login-form e rimpiazzarli con .form-container-base se vuoi,
+   ma per ora li ho lasciati per non creare confusione */
+
+/* Questi stili andrebbero applicati al P TAG, come già nell'esempio di register.component.css */
+.form-wrapper p { /* Questo stile ora si applica al paragrafo all'interno del wrapper */
+  text-align: center;
+  margin-top: 25px; /* Spazio sopra il paragrafo */
+  font-size: 0.95rem;
+  color: var(--text-light);
+}
+
+.form-wrapper p a {
+  color: var(--accent-orange);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.form-wrapper p a:hover {
+  color: #ff8c00;
+  text-decoration: underline;
 }
