@@ -4,16 +4,16 @@
       <h2 class="form-title-base">Registrazione</h2>
 
       <label class="form-label-base">Nome:</label>
-      <input formControlName="nome" type="text" class="form-input-base" />
-      
+      <input formControlName="nome" type="text" class="form-input-base" placeholder="Il tuo nome" />
+
       <label class="form-label-base">Cognome:</label>
-      <input formControlName="cognome" type="text" class="form-input-base" />
+      <input formControlName="cognome" type="text" class="form-input-base" placeholder="Il tuo cognome" />
       
       <label class="form-label-base">Email:</label>
-      <input formControlName="email" type="email" class="form-input-base" />
+      <input formControlName="email" type="email" class="form-input-base" placeholder="La tua email" />
 
       <label class="form-label-base">Password:</label>
-      <input formControlName="password" type="password" class="form-input-base" />
+      <input formControlName="password" type="password" class="form-input-base" placeholder="La tua password" />
 
       <button type="submit" [disabled]="!registerForm.valid" class="form-button-submit-base">Registrati</button>
     </form>

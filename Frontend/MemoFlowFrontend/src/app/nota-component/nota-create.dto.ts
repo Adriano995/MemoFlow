@@ -7,4 +7,5 @@ export interface NotaCreateDTO {
   contenutoSVG?: string;
   tipoNota: TipoNota;
   utenteId: number; // Questo è l'ID dell'utente a cui associare la nota
+  dataNota: string;
 }

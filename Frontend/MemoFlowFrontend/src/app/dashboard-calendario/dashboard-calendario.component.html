@@ -5,29 +5,29 @@
     (dayClicked)="dayClicked($event)">
   </mwl-calendar-month-view>
 
-  <app-nota-component 
-    *ngIf="selectedDate" 
-    [date]="selectedDate" 
+  <app-nota-component
+    *ngIf="selectedDate"
+    [date]="selectedDate"
     [userId]="currentUserId"> </app-nota-component>
 
-<div *ngIf="selectedDate" class="create-note-form"> <hr>
-  <h4>Crea Nuova Nota per {{ selectedDate | date:'fullDate' }}</h4>
-  <form (ngSubmit)="onCreateNota()">
-    <div>
-      <label for="newTitolo">Titolo:</label>
-      <input id="newTitolo" type="text" [(ngModel)]="newNotaTitolo" name="newNotaTitolo" required>
-    </div>
-    <div>
-      <label for="newContenuto">Contenuto:</label>
-      <textarea id="newContenuto" [(ngModel)]="newNotaContenuto" name="newNotaContenuto"></textarea>
-    </div>
-    <div>
-      <label for="newTipoNota">Tipo Nota:</label>
-      <select id="newTipoNota" [(ngModel)]="newNotaTipo" name="newNotaTipo">
-        <option *ngFor="let tipo of tipiNota" [value]="tipo">{{ tipo }}</option>
-      </select>
-    </div>
-    <button type="submit" [disabled]="!newNotaTitolo || !newNotaContenuto">Crea Nota</button>
-  </form>
-</div>
+  <div *ngIf="selectedDate" class="create-note-form"> <hr>
+    <h4>Crea Nuova Nota per {{ selectedDate | date:'fullDate' }}</h4>
+    <form (ngSubmit)="onCreateNota()">
+      <div>
+        <label for="newTitolo">Titolo:</label>
+        <input id="newTitolo" type="text" [(ngModel)]="newNotaTitolo" name="newNotaTitolo" required>
+      </div>
+      <div>
+        <label for="newContenuto">Contenuto:</label>
+        <textarea id="newContenuto" [(ngModel)]="newNotaContenuto" name="newNotaContenuto"></textarea>
+      </div>
+      <div>
+        <label for="newTipoNota">Tipo Nota:</label>
+        <select id="newTipoNota" [(ngModel)]="newNotaTipo" name="newNotaTipo">
+          <option *ngFor="let tipo of tipiNota" [value]="tipo">{{ tipo }}</option>
+        </select>
+      </div>
+      <button type="submit" [disabled]="!newNotaTitolo || !newNotaTipo || !selectedDate || currentUserId === null">Crea Nota</button>
+    </form>
+  </div>
 </div>
