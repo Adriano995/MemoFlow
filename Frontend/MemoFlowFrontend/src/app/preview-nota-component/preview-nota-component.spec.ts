@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NotaComponent } from './nota-component';
+import { PreviewNotaComponent } from './preview-nota-component';
 
 describe('NotaComponent', () => {
-  let component: NotaComponent;
-  let fixture: ComponentFixture<NotaComponent>;
+  let component: PreviewNotaComponent;
+  let fixture: ComponentFixture<PreviewNotaComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NotaComponent]
+      imports: [PreviewNotaComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(NotaComponent);
+    fixture = TestBed.createComponent(PreviewNotaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

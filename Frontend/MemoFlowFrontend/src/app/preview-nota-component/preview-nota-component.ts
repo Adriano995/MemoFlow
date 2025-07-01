@@ -1,16 +1,16 @@
 import { Component, Input, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core'; // Importa ChangeDetectorRef
 import { CommonModule } from '@angular/common';
-import { NotaService } from './nota.service';
-import { Nota } from './note.model'; // Assicurati che questo path sia corretto
+import { PreviewNotaService } from './preview-nota.service';
+import { Nota } from './preview-note.model'; // Assicurati che questo path sia corretto
 
 @Component({
   selector: 'app-nota-component',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './nota-component.html',
-  styleUrls: ['./nota-component.css']
+  templateUrl: './preview-nota-component.html',
+  styleUrls: ['./preview-nota-component.css']
 })
-export class NotaComponent implements OnChanges {
+export class PreviewNotaComponent implements OnChanges {
   @Input() date: Date | null = null;
   @Input() userId: number | null = null; // NUOVO: L'ID utente come Input
 
@@ -18,7 +18,7 @@ export class NotaComponent implements OnChanges {
   loading = false;
   error: string | null = null;
 
-  constructor(private notaService: NotaService, private cdr: ChangeDetectorRef) {} // Iniettare ChangeDetectorRef
+  constructor(private previewNotaService: PreviewNotaService, private cdr: ChangeDetectorRef) {} // Iniettare ChangeDetectorRef
 
   ngOnChanges(changes: SimpleChanges) {
     console.log('ngOnChanges triggered in NotaComponent', changes); // Debugging
@@ -54,7 +54,7 @@ export class NotaComponent implements OnChanges {
     try {
       const dateStr = this.date.toISOString().slice(0, 10); // "YYYY-MM-DD"
       console.log('Chiamo il backend per note di data:', dateStr, 'e utente ID:', this.userId);
-      const result = await this.notaService.getNoteByDateAndUser(dateStr, this.userId); // Passa l'ID utente
+      const result = await this.previewNotaService.getNoteByDateAndUser(dateStr, this.userId); // Passa l'ID utente
       this.nota = result || [];
       console.log('Note recuperate:', this.nota);
     } catch (err: any) {

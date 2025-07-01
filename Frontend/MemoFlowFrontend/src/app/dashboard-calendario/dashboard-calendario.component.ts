@@ -1,13 +1,11 @@
-// src/app/dashboard-calendario/dashboard-calendario.component.ts
-
 import { Component, OnInit } from '@angular/core';
 import { CalendarEvent, CalendarModule, CalendarUtils } from 'angular-calendar';
 import { CommonModule } from '@angular/common';
-import { NotaComponent } from "../nota-component/nota-component";
+import { PreviewNotaComponent } from "../preview-nota-component/preview-nota-component";
 import { AuthService } from '../auth/auth.service';
-import { NotaService } from '../nota-component/nota.service';
-import { NotaCreateDTO } from '../nota-component/nota-create.dto';
-import { TipoNota } from '../nota-component/tipo-nota.enum';
+import { PreviewNotaService } from '../preview-nota-component/preview-nota.service';
+import { NotaCreateDTO } from '../preview-nota-component/preview-nota-create.dto';
+import { TipoNota } from '../preview-nota-component/tipo-nota.enum';
 import { FormsModule } from '@angular/forms';
 
 // Importa MonthViewDay per un tipaggio più preciso, anche se non strettamente necessario per la fix
@@ -17,7 +15,7 @@ import { CalendarMonthViewDay } from 'angular-calendar'; // <<< AGGIUNGI QUESTO 
 @Component({
   selector: 'app-dashboard-calendario',
   standalone: true,
-  imports: [CommonModule, CalendarModule, NotaComponent, FormsModule],
+  imports: [CommonModule, CalendarModule, PreviewNotaComponent, FormsModule],
   providers: [CalendarUtils],
   templateUrl: './dashboard-calendario.component.html',
   styleUrls: ['./dashboard-calendario.component.css']
@@ -36,7 +34,7 @@ export class DashboardCalendarioComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private notaService: NotaService
+    private previewNotaService: PreviewNotaService
   ) {}
 
   ngOnInit(): void {
@@ -72,7 +70,7 @@ export class DashboardCalendarioComponent implements OnInit {
     };
 
     try {
-      const createdNota = await this.notaService.createNota(notaToCreate);
+      const createdNota = await this.previewNotaService.createNota(notaToCreate);
       console.log('Nota creata con successo:', createdNota);
 
       const tempDate = this.selectedDate;

@@ -1,17 +1,3 @@
-/* src/app/register/register.component.css */
-
-/* Puoi usare le classi globali direttamente nell'HTML */
-/* Non è necessario replicare tutti gli stili del form qui */
-/* Tuttavia, il contenitore è specifico per la centratura del form */
-/* .register-container {
-/*  height: 100vh; /* Rende il contenitore alto quanto la viewport */
-/*  display: flex; /* Usa Flexbox per centrare il contenuto */
-/*  justify-content: center; /* Centra orizzontalmente il form */
-/*  align-items: center; /* Centra verticalmente il form */
-/*  padding: 20px; /* Aggiunge un po' di spazio attorno */
-/*  box-sizing: border-box; /* Assicura che padding non aggiunga larghezza/altezza */
-/*} */
-
 /* Stile per il paragrafo del link di navigazione */
 .register-container p {
   text-align: center; /* Centra il testo del paragrafo */

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { AxiosService } from '../core/axios.service';
-import { Nota } from './note.model'; // Assicurati di avere un modello/interfaccia Nota (vedi punto 5)
-import { NotaCreateDTO } from './nota-create.dto'; // Modello per la creazione (vedi punto 5)
+import { Nota } from './preview-note.model'; // Assicurati di avere un modello/interfaccia Nota (vedi punto 5)
+import { NotaCreateDTO } from './preview-nota-create.dto'; // Modello per la creazione (vedi punto 5)
 
 @Injectable({ providedIn: 'root' })
-export class NotaService {
+export class PreviewNotaService {
   constructor(private axios: AxiosService) {}
 
   // Modifica per accettare l'ID utente
