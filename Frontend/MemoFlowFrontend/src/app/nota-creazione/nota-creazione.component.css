@@ -1,0 +1,141 @@
+/* Contenitore centrale (simil .login-container) */
+.form-container-base {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box; /* Assicura che il padding non causi overflow */
+}
+
+/* Form (simil .login-form) */
+.nota-form {
+  background-color: #121212; /* nero scuro */
+  padding: 40px 50px;
+  border-radius: 14px;
+  box-shadow:
+    0 8px 30px rgba(255, 111, 0, 0.6), /* ombra arancio calda */
+    0 0 0 1px rgba(255, 111, 0, 0.4); /* bordo arancio sottile */
+  width: 100%;
+  max-width: 500px; /* Aumentato leggermente per i campi nota */
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box; /* Assicura che padding e border siano inclusi nella width/height */
+}
+
+/* Titolo */
+.nota-form h2 {
+  margin-bottom: 30px;
+  font-weight: 700;
+  font-size: 2rem;
+  text-align: center;
+  color: #ff6f00; /* arancio acceso */
+  letter-spacing: 1.2px;
+  text-shadow: 0 0 8px rgba(255,111,0,0.8);
+}
+
+/* Gruppo Form (per label e input) */
+.form-group {
+  margin-bottom: 20px;
+}
+
+/* Label */
+.nota-form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #ffb366; /* arancio chiaro */
+}
+
+/* Input, Select, Textarea */
+.form-input {
+  width: 100%;
+  padding: 12px 14px;
+  /* margin-bottom: 20px; - Rimosso da qui, gestito da form-group */
+  border: 1.5px solid #333;
+  border-radius: 8px;
+  background-color: #1c1c1c; /* grigio molto scuro */
+  color: #eee;
+  font-size: 1rem;
+  transition: border-color 0.3s, background-color 0.3s, box-shadow 0.3s;
+  box-sizing: border-box; /* Importante per width: 100% con padding */
+}
+
+.form-input::placeholder {
+  color: #666;
+}
+
+.form-input:focus {
+  border-color: #ff6f00;
+  background-color: #121212;
+  outline: none;
+  box-shadow: 0 0 10px #ff6f00;
+}
+
+/* Azioni Form (bottoni) */
+.form-actions {
+  display: flex;
+  gap: 15px; /* Spazio tra i bottoni */
+  margin-top: 30px;
+}
+
+/* Bottone generico */
+.form-button {
+  flex: 1; /* Distribuisce lo spazio equamente */
+  padding: 14px;
+  font-weight: 700;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  letter-spacing: 1.1px;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+/* Bottone primario (Crea Nota) */
+.primary-button {
+  background-color: #ff6f00;
+  color: #121212;
+  box-shadow: 0 6px 20px rgba(255, 111, 0, 0.6);
+}
+
+.primary-button:hover {
+  background-color: #e65c00;
+  box-shadow: 0 8px 25px rgba(230, 92, 0, 0.8);
+}
+
+/* Bottone secondario (Annulla) */
+.secondary-button {
+  background-color: #333; /* Un grigio scuro per il bottone annulla */
+  color: #eee;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.secondary-button:hover {
+  background-color: #555;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+}
+
+
+/* Messaggi di errore e successo */
+.error-message, .success-message {
+  font-size: 0.95rem;
+  margin-bottom: 20px;
+  font-weight: 600;
+  text-align: center;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.error-message {
+  color: #ff3b3b; /* Rosso */
+  background-color: rgba(255, 59, 59, 0.1);
+  border: 1px solid #ff3b3b;
+}
+
+.success-message {
+  color: #4CAF50; /* Verde */
+  background-color: rgba(76, 175, 80, 0.1);
+  border: 1px solid #4CAF50;
+}

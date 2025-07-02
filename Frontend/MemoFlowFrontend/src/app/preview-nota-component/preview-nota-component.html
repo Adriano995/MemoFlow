@@ -1,37 +1,27 @@
 <p style="color: red;">DEBUG: Questo testo dovrebbe essere sempre visibile!</p>
 
-<div *ngIf="loading" class="loading">Caricamento note...</div>
-<div *ngIf="error" class="error">{{ error }}</div>
-
-<div *ngIf="!loading && !error">
-  <div *ngIf="nota && nota.length > 0">
-    <h3>Note per il giorno: {{ date | date:'fullDate' }}</h3>
-    <button class="action-button create-button" (click)="onCreateNewNota()">
-      Crea Nuova Nota
-    </button>
-    <div *ngFor="let n of nota" class="nota-item">
-      <h4>{{ n.titolo }}</h4>
-      <p><strong>Tipo:</strong> {{ n.tipoNota }}</p>
-      <p class="nota-preview">{{ getPreviewText(n.contenutoTesto) }}</p>
-
-      <div class="nota-actions">
-        <button class="action-button view-button" (click)="onViewOrEditNota(n.id)">
-          Vedi Dettagli / Modifica
-        </button>
-        <button class="action-button delete-button" (click)="onDeleteNota(n.id)">
-          Elimina
-        </button>
-      </div>
-      <hr>
+<div *ngIf="loading" class="loading-message">Caricamento note...</div> <div *ngIf="error" class="error-message">{{ error }}</div> <div class="notes-container"> <div *ngIf="!loading && !error">
+    <div *ngIf="nota && nota.length > 0">
+      <h3>Note per il giorno: {{ date | date:'fullDate' }}</h3>
+      <button class="action-button primary-button" (click)="onCreateNewNota()"> Crea Nuova Nota
+      </button>
+      <div *ngFor="let n of nota" class="note-item"> <h4>{{ n.titolo }}</h4>
+        <p><strong>Tipo:</strong> {{ n.tipoNota }}</p>
+        <p class="note-preview">{{ getPreviewText(n.contenutoTesto) }}</p> <div class="note-actions"> <button class="action-button secondary-button" (click)="onViewOrEditNota(n.id)"> Vedi Dettagli / Modifica
+          </button>
+          <button class="action-button delete-button" (click)="onDeleteNota(n.id)">
+            Elimina
+          </button>
+        </div>
+        <hr class="note-separator"> </div>
+    </div>
+    <div *ngIf="!loading && nota && nota.length === 0 && date" class="no-notes-message">
+      Nessuna nota per questo giorno.
+      <button class="action-button primary-button" (click)="onCreateNewNota()">
+        Crea Nuova Nota
+      </button>
+    </div>
+    <div *ngIf="!date && !loading && !error" class="no-date-selected-message"> Seleziona un giorno dal calendario per visualizzare le note.
     </div>
   </div>
-  <div *ngIf="!loading && nota && nota.length === 0 && date" class="no-notes-message">
-    Nessuna nota per questo giorno.
-    <button class="action-button create-button" (click)="onCreateNewNota()">
-      Crea Nuova Nota
-    </button>
-  </div>
-  <div *ngIf="!date && !loading && !error" class="no-date-selected">
-    Seleziona un giorno dal calendario per visualizzare le note.
-    </div>
 </div>
