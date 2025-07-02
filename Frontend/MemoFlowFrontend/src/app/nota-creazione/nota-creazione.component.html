@@ -1,0 +1,35 @@
+<div class="nota-creazione-container">
+  <h2>Crea Nuova Nota</h2>
+
+  <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="titolo">Titolo:</label>
+      <input type="text" id="titolo" [(ngModel)]="newNota.titolo" name="titolo" required>
+    </div>
+
+    <div class="form-group">
+      <label for="tipoNota">Tipo Nota:</label>
+      <select id="tipoNota" [(ngModel)]="newNota.tipoNota" name="tipoNota">
+        <option *ngFor="let tipo of tipiNota" [value]="tipo">{{ tipo }}</option>
+      </select>
+    </div>
+
+    <div class="form-group" *ngIf="newNota.tipoNota === 'TESTO'">
+      <label for="contenutoTesto">Contenuto Testo:</label>
+      <textarea id="contenutoTesto" [(ngModel)]="newNota.contenutoTesto" name="contenutoTesto" rows="5"></textarea>
+    </div>
+
+    <div class="form-group" *ngIf="newNota.tipoNota === 'DISEGNO'">
+      <label for="contenutoSVG">Contenuto SVG (Stringa SVG grezza):</label>
+      <textarea id="contenutoSVG" [(ngModel)]="newNota.contenutoSVG" name="contenutoSVG" rows="5"></textarea>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="action-button primary-button">Crea Nota</button>
+      <button type="button" class="action-button" (click)="onCancel()">Annulla</button>
+    </div>
+  </form>
+</div>

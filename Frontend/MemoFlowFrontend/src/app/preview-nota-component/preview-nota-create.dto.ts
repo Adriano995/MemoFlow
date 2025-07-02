@@ -1,11 +1,9 @@
-// nota-create.dto.ts
-import { TipoNota } from './tipo-nota.enum'; // Assicurati che il percorso sia corretto
-
+import { TipoNota } from './tipo-nota.enum';
 export interface NotaCreateDTO {
   titolo: string;
   contenutoTesto?: string;
   contenutoSVG?: string;
   tipoNota: TipoNota;
-  utenteId: number; // Questo è l'ID dell'utente a cui associare la nota
+  utenteId: number; 
   dataNota: string;
 }

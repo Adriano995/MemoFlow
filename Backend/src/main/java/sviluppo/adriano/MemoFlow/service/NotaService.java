@@ -13,6 +13,7 @@ import sviluppo.adriano.MemoFlow.mapper.NotaMapper;
 import sviluppo.adriano.MemoFlow.repository.NotaRepository;
 import sviluppo.adriano.MemoFlow.repository.UtenteRepository;
 
+import java.time.LocalDate; // Importa LocalDate
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,39 +37,26 @@ public class NotaService {
         List<Nota> note = notaRepository.findAll();
         return note.stream()
                 .map(notaMapper::toDto)
-                .toList();
-    }
-
-    public List<NotaDTO> cercaTuttePerDataEUtente(LocalDateTime data, Long utenteId) {
-        LocalDateTime startOfDay = data.toLocalDate().atStartOfDay();
-        LocalDateTime endOfDay = data.toLocalDate().atTime(23, 59, 59, 999_999_999);
-
-        // Aggiungi il metodo al repository (vedi sotto per NotaRepository)
-        List<Nota> note = notaRepository.findAllByDataCreazioneBetweenAndUtenteId(startOfDay, endOfDay, utenteId); //
-        return note.stream()
-                .map(notaMapper::toDto) //
                 .collect(Collectors.toList());
     }
 
+    public NotaDTO cercaPerId(Long id) {
+        Nota nota = notaRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Nota con ID " + id + " non trovata"));
+        return notaMapper.toDto(nota);
+    }
+
     public NotaDTO creaNota(NotaCreateDTO createDto) {
-        // Controllo validità ID utente
-        if (createDto.getUtenteId() == null) {
-            throw new IllegalArgumentException("Utente mancante o ID non specificato");
-        }
-
-        // Controllo validità data
-        if (createDto.getDataNota() == null) {
-            throw new IllegalArgumentException("Data della nota non specificata");
-        }
-
-        // Recupero utente da DB
         Utente utente = utenteRepository.findById(createDto.getUtenteId())
                 .orElseThrow(() -> new EntityNotFoundException("Utente non trovato"));
 
-        // Creo entity da DTO
         Nota nota = notaMapper.toEntity(createDto);
         nota.setUtente(utente);
 
+        // Imposta la data di creazione e ultima modifica al momento corrente
+        // Se vuoi che siano la dataNota + l'ora corrente, usa LocalDateTime.now() o la logica che preferisci
+        // Se vuoi che siano esattamente l'inizio del giorno della dataNota, lascia atStartOfDay()
+        // Lasciamo atStartOfDay() come da tua implementazione precedente, per coerenza con il DB.
         nota.setDataCreazione(createDto.getDataNota().atStartOfDay());
         nota.setUltimaModifica(createDto.getDataNota().atStartOfDay());
 
@@ -81,7 +69,6 @@ public class NotaService {
         Nota nota = notaRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Nota con ID " + id + " non trovata"));
 
-        // Aggiorna i campi della nota
         if (modifica.getTitolo() != null) {
             nota.setTitolo(modifica.getTitolo());
         }
@@ -94,16 +81,34 @@ public class NotaService {
             nota.setTipoNota(modifica.getTipoNota());
         }
 
-        nota.setUltimaModifica(LocalDateTime.now());
+        nota.setUltimaModifica(LocalDateTime.now()); // Aggiorna all'ora corrente di modifica
 
         Nota salvata = notaRepository.save(nota);
         return notaMapper.toDto(salvata);
     }
 
-    public void eliminaNota(Long id){
-        if (!notaRepository.existsById(id)){
-            throw new EntityNotFoundException("Nota con ID " + id + " non trovata");
+    public void eliminaNota(Long id) {
+        if (!notaRepository.existsById(id)) {
+            throw new EntityNotFoundException("Nota con ID " + id + " non trovata per l'eliminazione.");
         }
         notaRepository.deleteById(id);
+    }
+
+    public List<NotaDTO> getNoteByDataCreazioneAndUtenteId(LocalDate data, Long utenteId) {
+        // Calcola l'inizio e la fine del giorno per la query
+        LocalDateTime startOfDay = data.atStartOfDay();
+        LocalDateTime endOfDay = data.atTime(23, 59, 59, 999_999_999); // Fine del giorno, inclusi i millisecondi
+
+        List<Nota> note = notaRepository.findAllByDataCreazioneBetweenAndUtenteId(startOfDay, endOfDay, utenteId);
+        return note.stream()
+                .map(notaMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<NotaDTO> getNoteByUtenteId(Long utenteId) {
+        List<Nota> note = notaRepository.findAllByUtenteId(utenteId);
+        return note.stream()
+                .map(notaMapper::toDto)
+                .collect(Collectors.toList());
     }
 }

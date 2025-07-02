@@ -15,4 +15,6 @@ public interface NotaRepository extends JpaRepository<Nota, Long> {
     // Nuovo metodo che combina i due per filtrare per data e utente
     List<Nota> findAllByDataCreazioneBetweenAndUtenteId(LocalDateTime start, LocalDateTime end, Long utenteId);
 
+    List<Nota> findAllByUtenteId(Long utenteId);
+
 }

@@ -1,0 +1,34 @@
+<div class="calendar-header">
+  <button (click)="previousMonth()">‹ Mese precedente</button>
+  <span class="month-year">
+    {{ viewDate | date:'MMMM yyyy' }}
+  </span>
+  <button (click)="nextMonth()">Mese successivo ›</button>
+</div>
+
+<div class="calendar-grid">
+  <div class="day-name">Lun</div>
+  <div class="day-name">Mar</div>
+  <div class="day-name">Mer</div>
+  <div class="day-name">Gio</div>
+  <div class="day-name">Ven</div>
+  <div class="day-name">Sab</div>
+  <div class="day-name">Dom</div>
+
+  <div
+    *ngFor="let day of daysInCalendar; trackBy: trackByDate"
+    (click)="dayClicked(day)"
+    [ngClass]="{
+      'calendar-day': true,
+      'today': isToday(day),
+      'selected': selectedDate && isSameDay(day, selectedDate),
+      'weekend': isWeekend(day),
+      'not-current-month': day.getMonth() !== viewDate.getMonth()
+    }"
+  >
+    {{ day.getDate() }}
+    <span *ngIf="hasNote(day)" class="nota-indicatore"></span>
+  </div>
+</div>
+
+<app-nota-component [date]="selectedDate" [userId]="currentUserId"></app-nota-component>

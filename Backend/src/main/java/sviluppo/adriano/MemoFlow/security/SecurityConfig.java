@@ -2,6 +2,7 @@ package sviluppo.adriano.MemoFlow.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -49,7 +50,12 @@ public class SecurityConfig {
 
                         .requestMatchers("/credenziali/**").permitAll()
 
-                        .requestMatchers("/nota/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/nota/listaTutte").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/nota/eliminaNota/{id}").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/nota/aggiornaNota/{id}").permitAll() // Se hai anche PUT/aggiornamento
+                        .requestMatchers(HttpMethod.POST, "/nota/creaNota").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/nota/perDataEUtente").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/nota/{id}").permitAll()
 
                         .anyRequest().authenticated()
                 );

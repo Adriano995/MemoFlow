@@ -8,8 +8,8 @@ interface CredenzialiCreateDTO {
 }
 
 interface UtenteCreateDTO {
-  nome: string; // Reso obbligatorio
-  cognome: string; // Reso obbligatorio
+  nome: string;
+  cognome: string; 
   credenziali: CredenzialiCreateDTO;
 }
 
@@ -35,22 +35,19 @@ export class AuthService {
           password: password
         }
       };
-      // La risposta del backend è un UtenteDTO, che ha direttamente l'ID
       const response = await this.axiosService.post<any>('/utente/creaUtente', registrationData);
       
-      // *** AGGIUNGI QUESTA LOGICA ***
-      if (response && typeof response.id === 'number') { // L'ID è direttamente sull'oggetto response (UtenteDTO)
+      if (response && typeof response.id === 'number') { 
         this.saveUserId(response.id); 
         console.log('Registrazione riuscita. ID utente salvato:', response.id);
       } else {
         console.warn('Registrazione riuscita, ma ID utente non trovato nella risposta.');
       }
-      // ****************************
 
       return true;
     } catch (error) {
       console.error('Errore durante la registrazione:', error);
-      this.clearUserId(); // Pulisci l'ID utente se la registrazione fallisce
+      this.clearUserId();
       return false;
     }
   }

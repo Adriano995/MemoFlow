@@ -1,0 +1,36 @@
+<div class="container">
+  <button class="back-button" (click)="goBack()">Torna al Calendario</button>
+
+  <div *ngIf="loading">Caricamento dettagli nota...</div>
+  <div *ngIf="error" class="error-message">{{ error }}</div>
+
+  <div *ngIf="nota && !loading && !error" class="nota-detail-card">
+    <h2>Dettagli Nota: {{ nota.titolo }}</h2>
+    <p><strong>Data:</strong> {{ nota.dataCreazione | date:'dd/MM/yyyy' }}</p>
+    <p><strong>Tipo:</strong> {{ nota.tipoNota }}</p>
+
+    <div class="full-content-display">
+      <h3>Contenuto Completo:</h3>
+      <p *ngIf="nota.contenutoTesto">{{ nota.contenutoTesto }}</p>
+      <p *ngIf="!nota.contenutoTesto && !nota.contenutoSVG">Nessun contenuto aggiuntivo.</p>
+    </div>
+
+    <form (ngSubmit)="onUpdateNota()" class="nota-edit-form">
+      <h3>Modifica Nota</h3>
+      <div class="form-group">
+        <label for="titolo">Titolo:</label>
+        <input id="titolo" type="text" [(ngModel)]="titoloModifica" name="titolo" required>
+      </div>
+      <div class="form-group">
+        <label for="contenutoTesto">Contenuto Testo:</label>
+        <textarea id="contenutoTesto" [(ngModel)]="contenutoTestoModifica" name="contenutoTesto" rows="8"></textarea>
+      </div>
+      <button type="submit" class="submit-button">Salva Modifiche</button>
+      <button type="button" class="delete-button" (click)="onDeleteNotaFromDetail()">Elimina Nota</button>
+    </form>
+  </div>
+</div>
+
+<div>
+  <h6>AOOOOOOOOOOOOOO</h6>
+  </div>
