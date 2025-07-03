@@ -1,4 +1,6 @@
-<div class="form-container-base"> <div class="nota-form"> <h2>Crea Nuova Nota</h2>
+<div class="form-container-base">
+  <div class="nota-form">
+    <h2>Crea Nuova Nota</h2>
 
     <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
     <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
@@ -11,18 +13,21 @@
 
       <div class="form-group">
         <label for="tipoNota">Tipo Nota:</label>
-        <select id="tipoNota" [(ngModel)]="newNota.tipoNota" name="tipoNota" class="form-input"> <option *ngFor="let tipo of tipiNota" [value]="tipo">{{ tipo }}</option>
+        <select id="tipoNota" [(ngModel)]="newNota.tipoNota" name="tipoNota" class="form-input" (change)="onTipoNotaChange()">
+          <option *ngFor="let tipo of tipiNota" [value]="tipo">{{ tipo }}</option>
         </select>
       </div>
 
       <div class="form-group" *ngIf="newNota.tipoNota === 'TESTO'">
         <label for="contenutoTesto">Contenuto Testo:</label>
-        <textarea id="contenutoTesto" [(ngModel)]="newNota.contenutoTesto" name="contenutoTesto" rows="5" class="form-input"></textarea> </div>
+        <textarea id="contenutoTesto" [(ngModel)]="newNota.contenutoTesto" name="contenutoTesto" rows="5" class="form-input"></textarea>
+      </div>
 
       <div class="form-group" *ngIf="newNota.tipoNota === 'DISEGNO'">
-        <label for="contenutoSVG">Contenuto SVG (Stringa SVG grezza):</label>
-        <textarea id="contenutoSVG" [(ngModel)]="newNota.contenutoSVG" name="contenutoSVG" rows="5" class="form-input"></textarea>
-      </div>
+        <label>Area di Disegno:</label>
+        <div #drawingCanvas class="drawing-area" style="border: 1px solid black; background-color: white; width: 100%; min-height: 300px; cursor: crosshair;"></div>
+        <button type="button" class="form-button secondary-button" (click)="clearDrawing()">Pulisci Disegno</button>
+        </div>
 
       <div class="form-actions">
         <button type="submit" class="form-button primary-button">Crea Nota</button>
