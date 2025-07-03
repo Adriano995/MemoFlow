@@ -93,12 +93,17 @@ export class PreviewNotaComponent implements OnChanges {
     return text;
   }
 
+  /**
+   * Gestisce il click sul bottone "Vedi Dettagli / Modifica".
+   * Reindirizza l'utente alla nuova pagina dedicata alla modifica della nota.
+   * @param notaId L'ID della nota da visualizzare/modificare.
+   */
   onViewOrEditNota(notaId: number | undefined): void {
     if (notaId === undefined) {
       console.error('ID nota non definito per visualizzazione/modifica.');
       return;
     }
-    this.router.navigate(['/nota-dettaglio', notaId]);
+    this.router.navigate(['/modifica-nota', notaId]);
   }
 
   /**

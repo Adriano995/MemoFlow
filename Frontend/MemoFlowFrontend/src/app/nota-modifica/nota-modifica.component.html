@@ -1,0 +1,58 @@
+<div class="form-container-base"> <div class="nota-detail-card"> <button class="back-button action-button secondary-button" (click)="goBack()">Torna alla Dashboard</button>
+
+    <h2>Dettagli e Modifica Nota</h2>
+
+    <div *ngIf="loading" class="loading-message">Caricamento dettagli nota...</div>
+    <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+    <div *ngIf="error" class="error-message">{{ error }}</div> <ng-container *ngIf="nota && !loading && !error">
+      <div class="note-display">
+        <h3>Nota Selezionata:</h3>
+        <p><strong>Titolo:</strong> {{ nota.titolo }}</p>
+        <p><strong>Tipo:</strong> {{ nota.tipoNota }}</p>
+        <p><strong>Data Creazione:</strong> {{ nota.dataCreazione | date:'dd/MM/yyyy HH:mm' }}</p>
+        <p *ngIf="nota.ultimaModifica"><strong>Ultima Modifica:</strong> {{ nota.ultimaModifica | date:'dd/MM/yyyy HH:mm' }}</p>
+
+        <div class="full-content-area">
+          <h4>Contenuto Completo:</h4>
+          <p *ngIf="nota.contenutoTesto">{{ nota.contenutoTesto }}</p>
+          <div *ngIf="nota.contenutoSVG && nota.tipoNota === 'DISEGNO'" class="svg-content" [innerHTML]="nota.contenutoSVG"></div>
+          <p *ngIf="!nota.contenutoTesto && !nota.contenutoSVG">Nessun contenuto aggiuntivo.</p>
+        </div>
+      </div>
+
+      <hr class="note-separator">
+
+      <form (ngSubmit)="onUpdateNota()" class="nota-edit-form">
+        <h3>Modifica Nota</h3>
+
+        <div class="form-group">
+          <label for="titoloModifica">Titolo:</label>
+          <input id="titoloModifica" type="text" [(ngModel)]="titoloModifica" name="titoloModifica" required class="form-input">
+        </div>
+
+        <div class="form-group">
+          <label for="tipoNotaModifica">Tipo Nota:</label>
+          <select id="tipoNotaModifica" [(ngModel)]="tipoNotaModifica" name="tipoNotaModifica" class="form-input">
+            <option *ngFor="let tipo of tipiNota" [value]="tipo">{{ tipo }}</option>
+          </select>
+        </div>
+
+        <div class="form-group" *ngIf="tipoNotaModifica === 'TESTO'">
+          <label for="contenutoTestoModifica">Contenuto Testo:</label>
+          <textarea id="contenutoTestoModifica" [(ngModel)]="contenutoTestoModifica" name="contenutoTestoModifica" rows="8" class="form-input"></textarea>
+        </div>
+
+        <div class="form-group" *ngIf="tipoNotaModifica === 'DISEGNO'">
+          <label for="contenutoSVGModifica">Contenuto SVG (Codice):</label>
+          <textarea id="contenutoSVGModifica" [(ngModel)]="contenutoSVGModifica" name="contenutoSVGModifica" rows="8" class="form-input"></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="form-button primary-button">Salva Modifiche</button>
+          <button type="button" class="form-button delete-button" (click)="onDeleteNota()">Elimina Nota</button>
+        </div>
+      </form>
+    </ng-container>
+
+  </div>
+</div>
