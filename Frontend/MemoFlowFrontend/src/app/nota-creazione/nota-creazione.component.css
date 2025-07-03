@@ -139,3 +139,35 @@
   background-color: rgba(76, 175, 80, 0.1);
   border: 1px solid #4CAF50;
 }
+
+/* Media Queries per layout responsivo */
+@media (max-width: 600px) {
+  .nota-form {
+    padding: 30px 20px; /* Riduci il padding su schermi più piccoli */
+  }
+
+  .nota-form h2 {
+    font-size: 1.6rem; /* Riduci la dimensione del titolo */
+    margin-bottom: 20px;
+  }
+
+  .form-actions {
+    flex-direction: column; /* I bottoni vanno in colonna su schermi piccoli */
+    gap: 10px; /* Riduci il gap tra i bottoni */
+  }
+
+  .form-button {
+    width: 100%; /* I bottoni occupano tutta la larghezza */
+    padding: 12px; /* Riduci leggermente il padding dei bottoni */
+    font-size: 1rem; /* Riduci la dimensione del font dei bottoni */
+  }
+
+  .form-group label {
+    font-size: 0.85rem; /* Riduci leggermente la dimensione delle label */
+  }
+
+  .form-input {
+    padding: 10px 12px; /* Riduci leggermente il padding degli input */
+    font-size: 0.95rem; /* Riduci leggermente la dimensione del font degli input */
+  }
+}

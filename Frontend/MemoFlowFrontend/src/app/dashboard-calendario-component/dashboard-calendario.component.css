@@ -163,3 +163,84 @@ app-nota-component hr {
   border-radius: 8px;
   font-weight: 500;
 }
+
+/* Media Queries per layout responsivo */
+@media (max-width: 768px) {
+  .calendario-container {
+    padding: 15px; /* Riduci il padding generale del container */
+    margin: 10px auto; /* Riduci il margine sui lati */
+    max-width: 100%; /* Permetti al container di occupare quasi tutta la larghezza */
+    border-radius: 8px; /* Riduci leggermente il border-radius */
+  }
+
+  .calendar-header {
+    flex-direction: column; /* Impila i bottoni del header in colonna */
+    gap: 10px; /* Spazio tra i bottoni e il mese/anno */
+    margin-bottom: 20px; /* Più spazio sotto l'header */
+  }
+
+  .calendar-header button {
+    width: 100%; /* Fai occupare ai bottoni l'intera larghezza disponibile */
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+
+  .month-year {
+    font-size: 1.5rem; /* Riduci la dimensione del font del mese/anno */
+  }
+
+  .calendar-grid {
+    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); /* Rendi la griglia più flessibile */
+    /* auto-fit: crea quante colonne possibile.
+       minmax(60px, 1fr): ogni colonna avrà un minimo di 60px e un massimo di 1fr (distribuzione equa) */
+    gap: 4px; /* Riduci il gap tra i giorni */
+  }
+
+  .day-name {
+    font-size: 0.85rem; /* Riduci la dimensione del font dei nomi dei giorni */
+    padding: 8px 0;
+  }
+
+  .calendar-day {
+    padding: 10px; /* Riduci il padding dei giorni */
+    font-size: 0.9rem; /* Riduci la dimensione del font dei numeri dei giorni */
+    border-radius: 8px; /* Riduci il border-radius */
+  }
+
+  .nota-indicatore {
+    width: 6px; /* Riduci la dimensione dell'indicatore della nota */
+    height: 6px;
+    margin-top: 2px;
+  }
+
+  app-nota-component {
+    margin-top: 15px; /* Riduci il margine superiore */
+    padding: 15px; /* Riduci il padding del componente note */
+    border-radius: 8px; /* Riduci il border-radius */
+  }
+
+  app-nota-component h3 {
+    font-size: 1.4em; /* Riduci la dimensione del titolo del componente note */
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+  }
+
+  app-nota-component p {
+    font-size: 0.9rem; /* Riduci la dimensione del font dei paragrafi */
+  }
+}
+
+@media (max-width: 480px) {
+    /* Ulteriori aggiustamenti per schermi molto piccoli, come i telefoni in verticale */
+    .calendar-grid {
+        grid-template-columns: repeat(auto-fit, minmax(45px, 1fr)); /* Ancora più piccoli se necessario */
+        gap: 3px;
+    }
+    .calendar-day {
+        padding: 8px;
+        font-size: 0.8rem;
+    }
+    .month-year {
+        font-size: 1.2rem;
+    }
+}

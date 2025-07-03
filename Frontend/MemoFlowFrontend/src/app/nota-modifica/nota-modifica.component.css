@@ -270,3 +270,42 @@
     width: 100%; /* I bottoni occupano tutta la larghezza */
   }
 }
+
+/* nota-modifica.component.css */
+
+/* ... (codice esistente) ... */
+
+/* Media Queries per layout responsivo */
+@media (max-width: 768px) {
+  .nota-detail-card {
+    padding: 30px 20px; /* Riduci il padding su schermi più piccoli */
+  }
+  .nota-detail-card h2 {
+    font-size: 1.8rem; /* Riduci la dimensione del titolo principale */
+  }
+  .note-display h3 {
+    font-size: 1.4rem; /* Riduci la dimensione del sottotitolo "Nota Selezionata" */
+  }
+  .nota-edit-form h3 {
+    font-size: 1.6rem; /* Riduci la dimensione del sottotitolo "Modifica Nota" */
+  }
+  .form-actions {
+    flex-direction: column; /* I bottoni vanno in colonna su schermi piccoli */
+    gap: 10px; /* Riduci il gap tra i bottoni */
+  }
+  .form-button {
+    width: 100%; /* I bottoni occupano tutta la larghezza */
+    padding: 12px; /* Riduci leggermente il padding dei bottoni */
+    font-size: 1rem; /* Riduci la dimensione del font dei bottoni */
+  }
+  .form-group label {
+    font-size: 0.85rem; /* Riduci leggermente la dimensione delle label */
+  }
+  .form-input {
+    padding: 10px 12px; /* Riduci leggermente il padding degli input */
+    font-size: 0.95rem; /* Riduci leggermente la dimensione del font degli input */
+  }
+  .full-content-area p, .svg-content {
+      font-size: 0.9rem; /* Riduci il font del contenuto della nota per schermi piccoli */
+  }
+}

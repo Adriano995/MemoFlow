@@ -158,3 +158,72 @@
   margin-right: auto;
   width: fit-content; /* Adatta la larghezza al contenuto */
 }
+
+/* Media Queries per layout responsivo */
+@media (max-width: 600px) {
+  .notes-container {
+    padding: 15px 20px; /* Riduci il padding sui lati */
+    margin: 10px auto; /* Riduci il margine superiore/inferiore */
+    max-width: 100%; /* Permetti di occupare quasi tutta la larghezza */
+    border-radius: 8px;
+  }
+
+  .notes-container h3 {
+    font-size: 1.5rem; /* Riduci la dimensione del titolo */
+    margin-bottom: 15px;
+  }
+
+  .action-button.primary-button {
+      width: 100%; /* Rendi il bottone "Crea Nuova Nota" full width */
+      margin-bottom: 15px; /* Aggiungi un margine sotto il bottone */
+  }
+
+  .note-item {
+    padding: 12px; /* Riduci il padding della singola nota */
+    border-radius: 8px;
+  }
+
+  .note-item h4 {
+    font-size: 1.1rem; /* Riduci la dimensione del titolo della nota */
+    margin-bottom: 8px;
+  }
+
+  .note-item p {
+    font-size: 0.85rem; /* Riduci la dimensione del testo della nota */
+  }
+
+  .note-actions {
+    flex-direction: column; /* Impila i bottoni di azione (Vedi/Modifica, Elimina) */
+    gap: 8px; /* Spazio ridotto tra i bottoni */
+  }
+
+  .action-button {
+    width: 100%; /* Fai occupare ai bottoni l'intera larghezza disponibile */
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    border-radius: 6px;
+  }
+
+  .no-notes-message,
+  .no-date-selected-message {
+    font-size: 0.9rem; /* Riduci la dimensione del font dei messaggi */
+    padding: 12px;
+    border-radius: 8px;
+  }
+
+  .no-notes-message button,
+  .no-date-selected-message button {
+      margin-top: 10px; /* Riduci il margine superiore del bottone nei messaggi */
+      width: 100%; /* Fai occupare l'intera larghezza */
+  }
+}
+
+@media (max-width: 400px) {
+    /* Ulteriori aggiustamenti per schermi molto piccoli */
+    .notes-container {
+        padding: 10px 15px;
+    }
+    .notes-container h3 {
+        font-size: 1.3rem;
+    }
+}
