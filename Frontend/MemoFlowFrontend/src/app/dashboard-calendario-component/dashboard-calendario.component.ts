@@ -7,133 +7,152 @@ import { PreviewNotaService } from '../preview-nota-component/preview-nota.servi
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-dashboard-calendario',
-  standalone: true,
-  imports: [CommonModule, PreviewNotaComponent, FormsModule],
-  providers: [],
-  templateUrl: './dashboard-calendario.component.html',
-  styleUrls: ['./dashboard-calendario.component.css']
+  selector: 'app-dashboard-calendario',
+  standalone: true,
+  imports: [CommonModule, PreviewNotaComponent, FormsModule],
+  providers: [],
+  templateUrl: './dashboard-calendario.component.html',
+  styleUrls: ['./dashboard-calendario.component.css']
 })
 export class DashboardCalendarioComponent implements OnInit {
-  viewDate: Date = new Date();
-  daysInCalendar: Date[] = [];
-  selectedDate: Date | null = null;
-  giorniConNote: Set<string> = new Set();
-  currentUserId: any;
+  viewDate: Date = new Date();
+  daysInCalendar: Date[] = [];
+  selectedDate: Date | null = null;
+  giorniConNote: Set<string> = new Set();
+  currentUserId: number | null = null;
+  weekdays: string[] = ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'];
 
-  constructor(
-    private authService: AuthService,
-    private previewNotaService: PreviewNotaService,
-    private cdr: ChangeDetectorRef // Iniettare ChangeDetectorRef
-  ) {}
+  constructor(
+    private authService: AuthService,
+    private previewNotaService: PreviewNotaService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
-  async ngOnInit(): Promise<void> {
-    console.log("DashboardCalendarioComponent ngOnInit start");
-    this.currentUserId = this.authService.getUserId();
-    console.log("currentUserId", this.currentUserId);
+  async ngOnInit(): Promise<void> {
+    console.log("DashboardCalendarioComponent ngOnInit start");
+    this.currentUserId = this.authService.getUserId(); 
+    console.log("currentUserId", this.currentUserId);
 
-    if (this.currentUserId === null) {
-      console.error('ID utente non disponibile. Effettuare il login.');
-      return;
-    }
+    if (this.currentUserId === null) {
+      console.error("User ID not available. Cannot load notes.");
+      return;
+    }
 
-    await this.loadNotesAndGenerateCalendar();
-  }
+    this.calculateDaysInMonth();
+    await this.fetchNotesForMonth(); // Questo ora recupererà tutte le note e le filtrerà
+    console.log("DashboardCalendarioComponent ngOnInit end");
+  }
 
-  async previousMonth(): Promise<void> {
-    this.viewDate = new Date(this.viewDate.getFullYear(), this.viewDate.getMonth() - 1, 1);
-    await this.loadNotesAndGenerateCalendar();
-  }
+  previousMonth(): void {
+    this.viewDate = new Date(this.viewDate.getFullYear(), this.viewDate.getMonth() - 1, 1);
+    this.updateCalendarAndNotes();
+  }
 
-  async nextMonth(): Promise<void> {
-    this.viewDate = new Date(this.viewDate.getFullYear(), this.viewDate.getMonth() + 1, 1);
-    await this.loadNotesAndGenerateCalendar();
-  }
+  nextMonth(): void {
+    this.viewDate = new Date(this.viewDate.getFullYear(), this.viewDate.getMonth() + 1, 1);
+    this.updateCalendarAndNotes();
+  }
 
-  private async loadNotesAndGenerateCalendar(): Promise<void> {
-    if (!this.currentUserId) return;
+  private async updateCalendarAndNotes(): Promise<void> {
+    this.calculateDaysInMonth();
+    await this.fetchNotesForMonth();
+    this.selectedDate = null;
+  }
 
-    const tutteNote = await this.previewNotaService.getNoteByUser(this.currentUserId);
-    console.log("Note raw dal backend:", tutteNote);
+  async fetchNotesForMonth(): Promise<void> {
+    this.giorniConNote.clear(); // Pulisci i giorni con note esistenti per il nuovo mese
 
-    this.giorniConNote = new Set(
-      tutteNote
-        .map((nota: any) => (nota.data || nota.dataCreazione || '').substring(0, 10)) // Ho aggiunto nota.dataCreazione come fallback
-        .filter(dateStr => dateStr !== '')
-    );
-    console.log("Giorni con note:", this.giorniConNote);
+    if (this.currentUserId === null) {
+      console.error("User ID is null, cannot fetch notes.");
+      return;
+    }
 
-    this.generateCalendarDays();
+    try {
+      // Recupera TUTTE le note per l'utente corrente
+      const allNotes = await this.previewNotaService.getNoteByUser(this.currentUserId);
+      
+      const currentMonth = this.viewDate.getMonth();
+      const currentYear = this.viewDate.getFullYear();
 
-    // Forza Angular a rilevare il cambiamento
-    this.cdr.detectChanges();
-  }
+      // Filtra le note per il mese e l'anno attualmente visualizzati
+      if (allNotes && Array.isArray(allNotes)) {
+        allNotes.forEach((nota: any) => {
+          const notaDate = new Date(nota.dataCreazione);
+          // Controlla se la nota rientra nel mese e nell'anno attualmente visualizzati
+          if (notaDate.getMonth() === currentMonth && notaDate.getFullYear() === currentYear) {
+            const yyyy = notaDate.getFullYear();
+            const mm = (notaDate.getMonth() + 1).toString().padStart(2, '0');
+            const dd = notaDate.getDate().toString().padStart(2, '0');
+            this.giorniConNote.add(`${yyyy}-${mm}-${dd}`);
+          }
+        });
+      } else {
+        console.warn("Struttura di risposta inaspettata per tutte le note dell'utente:", allNotes);
+      }
+      this.cdr.detectChanges(); // Forza il rilevamento dei cambiamenti dopo l'aggiornamento del Set
+    } catch (error) {
+      console.error("Errore nel caricamento di tutte le note dell'utente:", error);
+    }
+  }
 
-  generateCalendarDays(): void {
-    const firstDay = new Date(this.viewDate.getFullYear(), this.viewDate.getMonth(), 1);
-    const lastDay = new Date(this.viewDate.getFullYear(), this.viewDate.getMonth() + 1, 0);
-    const startDay = firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1; // Lunedì = 0
-    const totalDays = lastDay.getDate();
+  private calculateDaysInMonth(): void {
+    const year = this.viewDate.getFullYear();
+    const month = this.viewDate.getMonth();
 
-    const days: Date[] = [];
+    const days: Date[] = [];
+    const firstDayOfMonth = new Date(year, month, 1);
+    const lastDayOfMonth = new Date(year, month + 1, 0);
 
-    // Giorni del mese precedente
-    for (let i = startDay - 1; i >= 0; i--) {
-      days.push(new Date(this.viewDate.getFullYear(), this.viewDate.getMonth(), -i));
-    }
+    const firstDayOfWeek = firstDayOfMonth.getDay() === 0 ? 6 : firstDayOfMonth.getDay() - 1;
+    for (let i = firstDayOfWeek; i > 0; i--) {
+      days.unshift(new Date(year, month, 1 - i));
+    }
 
-    // Giorni del mese corrente
-    for (let i = 1; i <= totalDays; i++) {
-      days.push(new Date(this.viewDate.getFullYear(), this.viewDate.getMonth(), i));
-    }
+    for (let i = 1; i <= lastDayOfMonth.getDate(); i++) {
+      days.push(new Date(year, month, i));
+    }
 
-    // Riempie la riga finale fino a Domenica
-    const endPadding = 42 - days.length; // Assicurati che ci siano 6 settimane complete (6*7=42 giorni)
-    if (days.length < 42) {
-      for (let i = 1; i <= (42 - days.length); i++) {
-        days.push(new Date(this.viewDate.getFullYear(), this.viewDate.getMonth() + 1, i));
-      }
-    }
+    const totalDaysToShow = 42;
+    if (days.length < totalDaysToShow) {
+      for (let i = 1; days.length < totalDaysToShow; i++) {
+        days.push(new Date(this.viewDate.getFullYear(), this.viewDate.getMonth() + 1, i));
+      }
+    }
 
+    this.daysInCalendar = days;
+  }
 
-    this.daysInCalendar = days;
-  }
+  dayClicked(date: Date): void {
+    this.selectedDate = new Date(date);
+    this.cdr.detectChanges();
+  }
 
-  dayClicked(date: Date): void {
-    // Crea una nuova istanza di Date per assicurare che Angular rilevi il cambiamento dell'input
-    this.selectedDate = new Date(date);
-    // Potrebbe non essere strettamente necessario qui, ma non fa male in casi complessi
-    this.cdr.detectChanges();
-  }
+  isToday(date: Date): boolean {
+    const today = new Date();
+    return date.getDate() === today.getDate() &&
+           today.getMonth() === date.getMonth() &&
+           today.getFullYear() === date.getFullYear();
+  }
 
-  isToday(date: Date): boolean {
-    const today = new Date();
-    return date.getDate() === today.getDate() &&
-           date.getMonth() === today.getMonth() &&
-           date.getFullYear() === today.getFullYear();
-  }
+  isSameDay(date1: Date, date2: Date): boolean {
+    return date1.getDate() === date2.getDate() &&
+           date1.getMonth() === date2.getMonth() &&
+           date1.getFullYear() === date2.getFullYear();
+  }
 
-  isSameDay(date1: Date, date2: Date): boolean {
-    return date1.getDate() === date2.getDate() &&
-           date1.getMonth() === date2.getMonth() &&
-           date1.getFullYear() === date2.getFullYear();
-  }
+  isWeekend(date: Date): boolean {
+    const day = date.getDay();
+    return day === 0 || day === 6;
+  }
 
-  isWeekend(date: Date): boolean {
-    const day = date.getDay();
-    return day === 0 || day === 6;
-  }
+  hasNote(date: Date): boolean {
+    const yyyy = date.getFullYear();
+    const mm = (date.getMonth() + 1).toString().padStart(2, '0');
+    const dd = date.getDate().toString().padStart(2, '0');
+    return this.giorniConNote.has(`${yyyy}-${mm}-${dd}`);
+  }
 
-  hasNote(date: Date): boolean {
-    const yyyy = date.getFullYear();
-    const mm = (date.getMonth() + 1).toString().padStart(2, '0');
-    const dd = date.getDate().toString().padStart(2, '0');
-    const formatted = `${yyyy}-${mm}-${dd}`;
-    return this.giorniConNote.has(formatted);
-  }
-
-  // TrackBy function per ottimizzare *ngFor e aiuta Angular nel rendering
-  trackByDate(index: number, item: Date): string {
-    return item.toISOString();
-  }
+  trackByDate(index: number, day: Date): number {
+    return day.getTime();
+  }
 }

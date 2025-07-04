@@ -6,27 +6,27 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PreviewNotaService } from '../preview-nota-component/preview-nota.service'; 
 import { Nota } from '../preview-nota-component/preview-note.model'; 
 import { TipoNota } from '../preview-nota-component/tipo-nota.enum'; 
+import { SafeHtmlPipe } from './safe-html.pipe'; // <-- AGGIUNGI QUESTA RIGA: Assicurati che il percorso sia corretto
+
 @Component({
   selector: 'app-nota-modifica',
   standalone: true,
-  imports: [CommonModule, FormsModule], 
+  imports: [CommonModule, FormsModule, SafeHtmlPipe], // <-- AGGIUNGI SafeHtmlPipe QUI
   templateUrl: './nota-modifica.component.html',
   styleUrls: ['./nota-modifica.component.css']
 })
 export class NotaModificaComponent implements OnInit {
   notaId: number | null = null;
-  nota: Nota | null = null; // La nota completa recuperata
+  nota: Nota | null = null; 
   loading = true;
   error: string | null = null;
   successMessage: string | null = null;
 
-  // Campi per la modifica (legati a ngModel)
   titoloModifica: string = '';
   contenutoTestoModifica: string = '';
-  contenutoSVGModifica: string = ''; // Se la nota è di tipo DISEGNO e modificabile
-  tipoNotaModifica: TipoNota | null = null; // Se il tipo nota è modificabile
+  contenutoSVGModifica: string = ''; 
+  tipoNotaModifica: TipoNota | null = null; 
 
-  // Per il dropdown di TipoNota se modificabile
   tipiNota = Object.values(TipoNota);
 
   constructor(
@@ -40,7 +40,7 @@ export class NotaModificaComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       const idParam = params.get('id');
       if (idParam) {
-        this.notaId = +idParam; // Converte la stringa in numero
+        this.notaId = +idParam; 
         this.fetchNotaDettaglio(this.notaId);
       } else {
         this.error = 'ID nota non fornito.';
@@ -58,11 +58,10 @@ export class NotaModificaComponent implements OnInit {
       console.log('Nota recuperata in NotaModificaComponent:', this.nota);
 
       if (this.nota) {
-        // Popola i campi del form per la modifica con i valori attuali della nota
         this.titoloModifica = this.nota.titolo;
         this.contenutoTestoModifica = this.nota.contenutoTesto || '';
         this.contenutoSVGModifica = this.nota.contenutoSVG || '';
-        this.tipoNotaModifica = this.nota.tipoNota; // Inizializza anche il tipo
+        this.tipoNotaModifica = this.nota.tipoNota; 
         console.log('Campi del form popolati:', {
           titolo: this.titoloModifica,
           contenutoTesto: this.contenutoTestoModifica,
@@ -70,8 +69,7 @@ export class NotaModificaComponent implements OnInit {
           tipoNota: this.tipoNotaModifica
         });
 
-        // FORZA LA CHANGE DETECTION QUI!
-        this.cdr.detectChanges(); // <-- AGGIUNGI QUESTA RIGA
+        this.cdr.detectChanges(); 
       }
     } catch (err: any) {
       console.error('Errore nel recupero della nota:', err);
@@ -79,7 +77,7 @@ export class NotaModificaComponent implements OnInit {
     } finally {
       this.loading = false;
       console.log('Stato finale loading in NotaModificaComponent:', this.loading);
-      this.cdr.detectChanges(); // <-- AGGIUNGI QUESTA RIGA anche qui, per sicurezza
+      this.cdr.detectChanges(); 
     }
   }
 
@@ -94,25 +92,22 @@ export class NotaModificaComponent implements OnInit {
     this.successMessage = null;
 
     try {
-      // Prepara i dati da inviare al backend
       const updatedNotaData: Partial<Nota> = {
         titolo: this.titoloModifica,
-        tipoNota: this.tipoNotaModifica || TipoNota.TESTO // Usa il valore del form o un default
+        tipoNota: this.tipoNotaModifica || TipoNota.TESTO 
       };
 
       if (this.tipoNotaModifica === TipoNota.TESTO) {
         updatedNotaData.contenutoTesto = this.contenutoTestoModifica;
-        updatedNotaData.contenutoSVG = undefined; // Assicurati che l'altro campo sia vuoto se cambi tipo
+        updatedNotaData.contenutoSVG = undefined; 
       } else if (this.tipoNotaModifica === TipoNota.DISEGNO) {
         updatedNotaData.contenutoSVG = this.contenutoSVGModifica;
-        updatedNotaData.contenutoTesto = undefined; // Assicurati che l'altro campo sia vuoto
+        updatedNotaData.contenutoTesto = undefined; 
       }
 
       await this.previewNotaService.updateNota(this.notaId, updatedNotaData);
       this.successMessage = 'Nota aggiornata con successo!';
-      // Opzionalmente ricarica la nota per mostrare le modifiche persistenti dal backend
-      // await this.fetchNotaDettaglio(this.notaId);
-      this.router.navigate(['/dashboard']); // Reindirizza alla dashboard
+      this.router.navigate(['/dashboard']); 
     } catch (err: any) {
       console.error('Errore durante l\'aggiornamento della nota:', err);
       this.error = 'Errore durante l\'aggiornamento della nota. Riprova.';
@@ -138,7 +133,6 @@ export class NotaModificaComponent implements OnInit {
     try {
       await this.previewNotaService.deleteNota(this.notaId);
       this.successMessage = 'Nota eliminata con successo!';
-      // Naviga via dopo l'eliminazione
       this.router.navigate(['/dashboard']);
     } catch (err: any) {
       console.error('Errore durante l\'eliminazione della nota:', err);
@@ -148,7 +142,6 @@ export class NotaModificaComponent implements OnInit {
     }
   }
 
-  // Torna alla dashboard
   goBack(): void {
     this.router.navigate(['/dashboard']);
   }

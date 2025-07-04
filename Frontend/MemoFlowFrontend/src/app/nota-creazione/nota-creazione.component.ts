@@ -149,7 +149,6 @@ export class NotaCreazioneComponent implements OnInit, AfterViewInit, OnDestroy 
         console.error('onMouseDown: svgElement non disponibile.');
         return;
     }
-    // AGGIUNGI QUESTA RIGA: Impedisce il comportamento predefinito del browser (es. selezione testo)
     e.preventDefault(); 
 
     this.isDrawing = true;

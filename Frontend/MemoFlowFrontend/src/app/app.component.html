@@ -1,1 +1,5 @@
 <router-outlet></router-outlet>
+
+<button class="theme-toggle-button" (click)="toggleTheme()">
+  Cambia Tema: {{ isLightTheme() ? 'Scuro' : 'Chiaro' }}
+</button>

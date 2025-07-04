@@ -1,14 +1,91 @@
 /* You can add global styles to this file, and also import other style files */
 /* Box-sizing globale */
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Evita scroll orizzontale non desiderato */
+}
+
+/* Classe generica per i container principali delle pagine per evitare bordi a filo schermo */
+.page-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px; /* Padding su tutti i lati per distanziare dai bordi dello schermo */
+  box-sizing: border-box;
+  background-color: var(--page-bg);
+}
+
+/* Stili per i form container generici (usati in login, registrazione, creazione/modifica nota) */
+.card-base {
+  background-color: var(--card-bg);
+  padding: 40px 50px;
+  border-radius: 14px;
+  box-shadow: 0 8px 30px var(--shadow-orange-medium),
+              0 0 0 1px var(--shadow-orange-light);
+  width: 100%;
+  box-sizing: border-box;
+  color: var(--text-color);
+  margin: 20px; /* Assicura un margine esterno anche su schermi grandi */
+}
+
+/* Regole per i bottoni per evitare sovrapposizioni e migliorare il tocco su mobile */
+.button-base {
+  padding: 12px 20px;
+  font-size: 1rem; /* Dimensione base per una migliore leggibilità/tocco */
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  white-space: nowrap; /* Impedisce che il testo del bottone vada a capo */
+  text-align: center;
+  display: inline-flex; /* Permette allineamento del testo e padding interno */
+  justify-content: center;
+  align-items: center;
+}
+
+.button-base:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+
+.button-base:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* Per i gruppi di bottoni che potrebbero affiancarsi e sovrapporsi */
+.flex-row {
+  display: flex;
+  flex-wrap: wrap; /* Permette ai bottoni di andare a capo su schermi piccoli */
+  gap: 10px;
+  justify-content: center; /* Centra i bottoni quando vanno a capo */
+  margin-top: 20px; /* Spazio sopra i bottoni */
+}
+
+.flex-row > .button-base {
+  flex-grow: 1; /* Permette ai bottoni di espandersi */
+  min-width: 150px; /* Larghezza minima per evitare che diventino troppo stretti */
+}
+
+@media (max-width: 600px) {
+  .flex-row > .button-base {
+    width: 100%; /* I bottoni prendono tutta la larghezza su schermi molto piccoli */
+    margin-bottom: 10px; /* Spazio tra i bottoni impilati */
+  }
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
 }
 
-/* Variabili CSS Globali basate sul tema di login.component.css */
+/* Variabili CSS Globali per il tema SCURO (Default) */
 :root {
-  --primary-bg-dark: #121212; /* Sfondo principale scuro come il login form */
-  --secondary-bg-dark: #1c1c1c; /* Sfondo per elementi interni come input/nota-item */
-  --accent-orange: #ff6f00; /* Arancione acceso principale come i bottoni e titoli */
+  --primary-bg-dark: #121212; /* Sfondo principale scuro */
+  --secondary-bg-dark: #1c1c1c; /* Sfondo per elementi interni (input, card) */
+  --accent-orange: #ff6f00; /* Arancione acceso principale */
   --light-orange: #ffb366; /* Arancio chiaro per label e testo importante */
   --text-light: #eee; /* Testo chiaro generale */
   --text-lighter: #ddd; /* Testo leggermente più scuro per i paragrafi */
@@ -17,42 +94,107 @@
   --shadow-orange-light: rgba(255, 111, 0, 0.4); /* Ombra arancio leggera */
   --shadow-orange-medium: rgba(255, 111, 0, 0.6); /* Ombra arancio media */
   --shadow-orange-strong: rgba(255, 111, 0, 0.8); /* Ombra arancio forte */
+
+  /* Colori base per dark theme */
+  --page-bg: #222; /* Sfondo generale della pagina */
+  --card-bg: var(--primary-bg-dark);
+  --input-bg: var(--secondary-bg-dark);
+  --input-border: var(--border-dark);
+  --text-color: var(--text-light);
+  --text-secondary-color: var(--text-lighter);
+  --title-color: var(--accent-orange);
+  --button-primary-bg: var(--accent-orange);
+  --button-primary-text: var(--primary-bg-dark);
+  --button-primary-hover-bg: #e65c00;
+  --button-secondary-bg: var(--secondary-bg-dark);
+  --button-secondary-text: var(--light-orange);
+  --button-secondary-hover-bg: #333;
+  --button-danger-bg: #dc3545; /* Rosso per eliminazione */
+  --button-danger-text: white;
+  --button-danger-hover-bg: #c82333;
+  --link-color: var(--accent-orange);
+  --link-hover-color: #ff8c00;
+  --success-color: #4CAF50;
+  --error-color: #ff3b3b;
+  --message-bg-success: rgba(76, 175, 80, 0.1);
+  --message-border-success: #4CAF50;
+  --message-bg-error: rgba(255, 59, 59, 0.1);
+  --message-border-error: #ff3b3b;
 }
 
-/* Sfondo generale del body */
-html, body {
-  height: 100%;
-  margin: 0;
-  background-color: var(--primary-bg-dark); /* nero scuro */
+/* Variabili CSS Globali per il tema CHIARO */
+body.light-theme { /* Assicurati che questa classe sia quella applicata al body */
+  --primary-bg-dark: #f8f8f8; /* Sfondo principale chiaro */
+  --secondary-bg-dark: #ffffff; /* Sfondo per elementi interni (input, card) */
+  --accent-orange: #e65c00; /* Arancione leggermente più scuro o diverso per tema chiaro */
+  --light-orange: #cc4d00; /* Arancio più scuro per testo importante nel tema chiaro */
+  --text-light: #333; /* Testo scuro generale */
+  --text-lighter: #555; /* Testo leggermente più chiaro per i paragrafi */
+  --text-placeholder: #999; /* Colore placeholder */
+  --border-dark: #ccc; /* Bordo chiaro per input e celle calendario */
+  --shadow-orange-light: rgba(255, 111, 0, 0.1); /* Ombra arancio leggera (meno intensa) */
+  --shadow-orange-medium: rgba(255, 111, 0, 0.2); /* Ombra arancio media (meno intensa) */
+  --shadow-orange-strong: rgba(255, 111, 0, 0.3); /* Ombra arancio forte (meno intensa) */
+
+  /* Colori base per light theme */
+  --page-bg: #f0f2f5; /* Sfondo generale della pagina più chiaro */
+  --card-bg: var(--secondary-bg-dark);
+  --input-bg: var(--secondary-bg-dark);
+  --input-border: var(--border-dark);
+  --text-color: var(--text-light);
+  --text-secondary-color: var(--text-lighter);
+  --title-color: var(--accent-orange);
+  --button-primary-bg: var(--accent-orange);
+  --button-primary-text: white;
+  --button-primary-hover-bg: #cc4d00;
+  --button-secondary-bg: #e0e0e0;
+  --button-secondary-text: var(--accent-orange);
+  --button-secondary-hover-bg: #d0d0d0;
+  --button-danger-bg: #dc3545;
+  --button-danger-text: white;
+  --button-danger-hover-bg: #c82333;
+  --link-color: var(--accent-orange);
+  --link-hover-color: #cc4d00;
+  --success-color: #28a745;
+  --error-color: #dc3545;
+  --message-bg-success: rgba(40, 167, 69, 0.1);
+  --message-border-success: #28a745;
+  --message-bg-error: rgba(220, 53, 69, 0.1);
+  --message-border-error: #dc3545;
+}
+
+/* Stili base per il body (applica le variabili) */
+body {
+  background-color: var(--page-bg); /* Sfondo della pagina */
+  color: var(--text-color); /* Colore del testo generale */
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: var(--text-light); /* Testo chiaro di default */
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Transizione fluida */
 }
 
-/* Stili Globali per Form */
-.form-container-base {
-  padding: 25px 30px;
-  background-color: var(--primary-bg-dark); /* Sfondo nero scuro */
-  border-radius: 14px;
-  box-shadow: 0 8px 30px var(--shadow-orange-light),
+/* Regole generali per i componenti basate sulle variabili */
+.page-container {
+  background-color: var(--page-bg); /* Sfondo della pagina, se usato come container principale */
+  /* Di solito, page-container si trova nell'HTML del componente e gestisce altezza/centratura */
+}
+
+/* Card base */
+.card-base {
+  background-color: var(--card-bg); /* Sfondo per tutte le card/form */
+  box-shadow: 0 8px 30px var(--shadow-orange-medium),
               0 0 0 1px var(--shadow-orange-light);
-  color: var(--text-light);
-  border: 1px solid var(--accent-orange);
+  color: var(--text-color); /* Testo all'interno delle card */
 }
 
-.form-title-base {
-  color: var(--accent-orange);
-  margin-bottom: 20px;
-  font-size: 1.6em;
-  text-align: center;
-  border-top: none; /* Rimuove qualsiasi bordo superiore */
-  border-bottom: 1px solid var(--accent-orange); /* Linea continua arancio */
-  padding-bottom: 10px;
-  font-weight: 700;
-  letter-spacing: 0.8px;
-  text-shadow: 0 0 5px rgba(255,111,0,0.6);
+/* Titoli */
+.h2, .h3, .h4, .form-title-base { /* Ho aggiunto form-title-base che è in register/login html */
+  color: var(--title-color); /* Colore per i titoli */
+  text-shadow: 0 0 8px var(--shadow-orange-light); /* Ombra per i titoli */
 }
 
-.form-label-base {
+/* Label dei form */
+.form-label, .form-label-base { /* Ho aggiunto form-label-base per coerenza */
   display: block;
   margin-bottom: 8px;
   font-weight: 600;
@@ -60,52 +202,121 @@ html, body {
   color: var(--light-orange);
 }
 
-.form-input-base {
+/* Input dei form */
+.form-input, .form-input-base { /* Ho aggiunto form-input-base per coerenza */
   width: 100%;
   padding: 12px 14px;
   margin-bottom: 20px;
-  border: 1.5px solid var(--border-dark);
+  border: 1.5px solid var(--input-border);
   border-radius: 8px;
-  background-color: var(--secondary-bg-dark); /* Grigio molto scuro */
-  color: var(--text-light);
+  background-color: var(--input-bg);
+  color: var(--text-color);
   font-size: 1rem;
   transition: border-color 0.3s, background-color 0.3s, box-shadow 0.3s;
 }
 
-.form-input-base::placeholder {
+.form-input::placeholder, .form-input-base::placeholder {
   color: var(--text-placeholder);
 }
 
-.form-input-base:focus {
+.form-input:focus, .form-input-base:focus {
   border-color: var(--accent-orange);
-  background-color: var(--primary-bg-dark);
+  background-color: var(--input-bg); /* Mantiene lo sfondo o leggermente diverso */
   outline: none;
-  box-shadow: 0 0 10px var(--accent-orange);
+  box-shadow: 0 0 10px var(--shadow-orange-medium);
 }
 
-.form-button-submit-base {
-  width: 100%;
-  padding: 14px;
-  background-color: var(--accent-orange);
-  color: var(--primary-bg-dark); /* Testo scuro sul bottone arancione */
-  font-weight: 700;
-  border: none;
-  border-radius: 10px;
+/* Bottoni base */
+.button-base, .form-button-submit-base { /* Ho aggiunto form-button-submit-base per coerenza */
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  padding: 12px 25px; /* Padding generico per bottoni */
+  font-size: 1rem;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 1.1rem;
-  letter-spacing: 1.1px;
-  transition: background-color 0.3s, box-shadow 0.3s;
-  box-shadow: 0 6px 20px var(--shadow-orange-medium);
+  border: none;
 }
 
-.form-button-submit-base:hover {
-  background-color: #e65c00; /* Arancione leggermente più scuro */
-  box-shadow: 0 8px 25px var(--shadow-orange-strong);
+.button-primary, .login-button { /* Aggiunto login-button per coerenza */
+  background-color: var(--button-primary-bg);
+  color: var(--button-primary-text);
+}
+.button-primary:hover, .login-button:hover {
+  background-color: var(--button-primary-hover-bg);
 }
 
-.form-button-submit-base:disabled {
-  background-color: #444;
-  color: #999;
-  cursor: not-allowed;
-  box-shadow: none;
+.button-secondary, .action-button.secondary-button { /* Aggiunto action-button.secondary-button per coerenza */
+  background-color: var(--button-secondary-bg);
+  color: var(--button-secondary-text);
+  border: 1px solid var(--button-secondary-text);
+}
+.button-secondary:hover, .action-button.secondary-button:hover {
+  background-color: var(--button-secondary-hover-bg);
+}
+
+.button-danger, .delete-button { /* Aggiunto delete-button per coerenza */
+  background-color: var(--button-danger-bg);
+  color: var(--button-danger-text);
+}
+.button-danger:hover, .delete-button:hover {
+  background-color: var(--button-danger-hover-bg);
+}
+
+/* Messaggi di stato */
+.message-base {
+  font-weight: 600;
+  text-align: center;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 20px; /* Aggiunto margine per distanziare dai campi */
+}
+
+.success-message {
+  color: var(--success-color);
+  background-color: var(--message-bg-success);
+  border: 1px solid var(--message-border-success);
+}
+
+.error-message {
+  color: var(--error-color);
+  background-color: var(--message-bg-error);
+  border: 1px solid var(--message-border-error);
+}
+
+/* Link */
+a {
+  color: var(--link-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+a:hover {
+  color: var(--link-hover-color);
+  text-decoration: underline;
+}
+
+/* Stili specifici per i contenitori delle form (usati anche per registrazione/login) */
+.form-container-base {
+  height: 100vh; /* Prende tutta l'altezza della viewport */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box; /* Assicura che il padding non causi overflow */
+  background-color: var(--page-bg); /* Applica il colore di sfondo della pagina */
+}
+
+/* Aggiungo questi se non ci sono già, potrebbero essere in login/register.component.css */
+/* Per il wrapper dei form centrati, che contiene il form e il link */
+.form-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 400px; /* Default per login/register, sovrascrivibile per nota */
+}
+
+.registration-link-paragraph, .register-container p { /* Per il testo "Hai già un account?" */
+  text-align: center;
+  margin-top: 25px;
+  font-size: 0.95rem;
+  color: var(--text-color);
 }

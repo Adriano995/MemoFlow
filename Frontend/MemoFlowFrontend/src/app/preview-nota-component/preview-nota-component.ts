@@ -4,7 +4,7 @@ import { Component, Input, OnChanges, SimpleChanges, ChangeDetectorRef } from '@
 import { CommonModule } from '@angular/common';
 import { PreviewNotaService } from './preview-nota.service';
 import { Nota } from './preview-note.model';
-import { Router } from '@angular/router'; // Importa Router
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nota-component',
@@ -20,6 +20,7 @@ export class PreviewNotaComponent implements OnChanges {
   nota: Nota[] = [];
   loading = false;
   error: string | null = null;
+  noNotesMessage: string = ''; // Questo conterrà il messaggio dinamico
 
   constructor(
     private previewNotaService: PreviewNotaService,
@@ -32,30 +33,40 @@ export class PreviewNotaComponent implements OnChanges {
     if (this.date && this.userId) {
       console.log('Data and UserId present, fetching notes...');
       this.fetchNota();
+      this.setNoNotesMessage(this.date); // Aggiorna il messaggio quando una data è selezionata
     } else if (this.date && !this.userId) {
         console.warn('Data present but userId missing.');
         this.error = "ID utente non disponibile. Effettua il login per visualizzare le note.";
         this.nota = [];
+        this.setNoNotesMessage(this.date); // Aggiorna il messaggio anche qui
         this.cdr.detectChanges();
     } else {
         console.log('No date selected, clearing notes.');
         this.nota = [];
+        this.noNotesMessage = 'Seleziona un giorno per visualizzare o creare note.'; // Messaggio iniziale o quando nessuna data è selezionata
         this.cdr.detectChanges();
     }
+  }
+
+  private setNoNotesMessage(date: Date): void {
+    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+    const formattedDate = date.toLocaleDateString('it-IT', options);
+    this.noNotesMessage = `Nessuna nota disponibile per il giorno ${formattedDate}.`; //
   }
 
   async fetchNota() {
     if (!this.date || !this.userId) {
       console.warn('Impossibile recuperare le note: data o ID utente mancante.');
       this.nota = [];
-      this.cdr.detectChanges();
+      this.loading = false; // Assicurati che loading sia false anche qui
+      this.cdr.detectChanges(); //
       return;
     }
 
     this.loading = true;
     this.error = null;
     this.nota = [];
-    this.cdr.detectChanges();
+    this.cdr.detectChanges(); // Forza il rilevamento per mostrare "Caricamento..."
 
     try {
       const year = this.date.getFullYear();
@@ -71,8 +82,8 @@ export class PreviewNotaComponent implements OnChanges {
       console.error('Errore nel recupero delle note:', err);
       this.error = 'Impossibile caricare le note. Riprova più tardi.';
     } finally {
-      this.loading = false;
-      this.cdr.detectChanges();
+      this.loading = false; // Imposta loading su false dopo il recupero (successo o fallimento)
+      this.cdr.detectChanges(); // MOLTO IMPORTANTE: Forza l'aggiornamento della vista qui
     }
   }
 
@@ -93,11 +104,6 @@ export class PreviewNotaComponent implements OnChanges {
     return text;
   }
 
-  /**
-   * Gestisce il click sul bottone "Vedi Dettagli / Modifica".
-   * Reindirizza l'utente alla nuova pagina dedicata alla modifica della nota.
-   * @param notaId L'ID della nota da visualizzare/modificare.
-   */
   onViewOrEditNota(notaId: number | undefined): void {
     if (notaId === undefined) {
       console.error('ID nota non definito per visualizzazione/modifica.');
@@ -106,25 +112,19 @@ export class PreviewNotaComponent implements OnChanges {
     this.router.navigate(['/modifica-nota', notaId]);
   }
 
-  /**
-   * Gestisce il click sul bottone "Crea Nuova Nota".
-   * Reindirizza l'utente alla pagina di creazione della nota, passando data e userId.
-   */
   onCreateNewNota(): void {
     if (this.date && this.userId) {
-      // Usa la nuova funzione per formattare la data
       const formattedDate = this.formatDateToYYYYMMDD(this.date);
       this.router.navigate(['/crea-nota', { date: formattedDate, userId: this.userId }]);
     } else if (this.userId) {
-        // Se non c'è una data selezionata ma c'è un utente, naviga solo con l'utenteId
         this.router.navigate(['/crea-nota', { userId: this.userId }]);
     } else {
         console.error("Impossibile creare una nota: ID utente non disponibile.");
-        this.router.navigate(['/login']); // Reindirizza al login se non c'è utente
+        this.router.navigate(['/login']);
     }
   }
 
-    private formatDateToYYYYMMDD(date: Date): string {
+  private formatDateToYYYYMMDD(date: Date): string {
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const day = date.getDate().toString().padStart(2, '0');
@@ -144,10 +144,12 @@ export class PreviewNotaComponent implements OnChanges {
     try {
       await this.previewNotaService.deleteNota(notaId);
       console.log(`Nota con ID ${notaId} eliminata con successo.`);
-      await this.fetchNota();
+      await this.fetchNota(); // Ricarica le note dopo l'eliminazione
     } catch (error) {
       console.error(`Errore durante l'eliminazione della nota ${notaId}:`, error);
       alert('Errore durante l\'eliminazione della nota. Riprova più tardi.');
+    } finally {
+      this.cdr.detectChanges(); // Forza l'aggiornamento dopo eliminazione e ricarica
     }
   }
 }

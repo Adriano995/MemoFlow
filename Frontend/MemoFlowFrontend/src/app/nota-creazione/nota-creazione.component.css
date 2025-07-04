@@ -1,173 +1,207 @@
-/* Contenitore centrale (simil .login-container) */
-.form-container-base {
+/* nota-creazione.component.css */
+
+/* Contenitore principale della pagina di creazione nota */
+.page-container {
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 20px;
-  box-sizing: border-box; /* Assicura che il padding non causi overflow */
+  box-sizing: border-box;
+  background-color: var(--page-bg);
 }
 
-/* Form (simil .login-form) */
+/* Form */
 .nota-form {
-  background-color: #121212; /* nero scuro */
+  background-color: var(--card-bg);
   padding: 40px 50px;
   border-radius: 14px;
   box-shadow:
-    0 8px 30px rgba(255, 111, 0, 0.6), /* ombra arancio calda */
-    0 0 0 1px rgba(255, 111, 0, 0.4); /* bordo arancio sottile */
+    0 8px 30px var(--shadow-orange-medium),
+    0 0 0 1px var(--shadow-orange-light);
   width: 100%;
-  max-width: 500px; /* Aumentato leggermente per i campi nota */
+  max-width: 1200px; /* Larghezza massima aumentata per desktop */
+  margin: 20px auto; /* Centra orizzontalmente e aggiunge margine */
   position: relative;
   z-index: 1;
-  box-sizing: border-box; /* Assicura che padding e border siano inclusi nella width/height */
+  box-sizing: border-box;
+  color: var(--text-color);
 }
 
-/* Titolo */
-.nota-form h2 {
-  margin-bottom: 30px;
-  font-weight: 700;
-  font-size: 2rem;
+/* Intestazione */
+.form-title {
+  color: var(--title-color);
   text-align: center;
-  color: #ff6f00; /* arancio acceso */
-  letter-spacing: 1.2px;
-  text-shadow: 0 0 8px rgba(255,111,0,0.8);
+  margin-bottom: 30px;
+  font-size: 2.2rem;
+  letter-spacing: 1px;
+  text-shadow: 0 0 8px var(--shadow-orange-light);
 }
 
-/* Gruppo Form (per label e input) */
+/* Gruppo di input */
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
-/* Label */
-.nota-form label {
+/* Label degli input */
+.form-label {
   display: block;
   margin-bottom: 8px;
   font-weight: 600;
-  font-size: 0.9rem;
-  color: #ffb366; /* arancio chiaro */
+  color: var(--text-lighter);
+  font-size: 0.95rem;
 }
 
-/* Input, Select, Textarea */
+/* Input e textarea */
 .form-input {
   width: 100%;
   padding: 12px 14px;
-  /* margin-bottom: 20px; - Rimosso da qui, gestito da form-group */
-  border: 1.5px solid #333;
+  border: 1.5px solid var(--border-dark);
   border-radius: 8px;
-  background-color: #1c1c1c; /* grigio molto scuro */
-  color: #eee;
+  background-color: var(--secondary-bg-dark);
+  color: var(--text-light);
   font-size: 1rem;
   transition: border-color 0.3s, background-color 0.3s, box-shadow 0.3s;
-  box-sizing: border-box; /* Importante per width: 100% con padding */
-}
-
-.form-input::placeholder {
-  color: #666;
+  box-sizing: border-box;
 }
 
 .form-input:focus {
-  border-color: #ff6f00;
-  background-color: #121212;
   outline: none;
-  box-shadow: 0 0 10px #ff6f00;
+  border-color: var(--accent-orange);
+  background-color: var(--secondary-bg-hover);
+  box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.2);
 }
 
-/* Azioni Form (bottoni) */
+/* Azioni del form (bottoni) */
 .form-actions {
   display: flex;
-  gap: 15px; /* Spazio tra i bottoni */
+  justify-content: flex-end; /* Allinea i bottoni a destra */
+  gap: 10px; /* Spazio tra i bottoni */
   margin-top: 30px;
 }
 
-/* Bottone generico */
-.form-button {
-  flex: 1; /* Distribuisce lo spazio equamente */
-  padding: 14px;
-  font-weight: 700;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
+/* Pulsanti */
+.button-base {
+  padding: 12px 20px;
   font-size: 1.1rem;
-  letter-spacing: 1.1px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
   transition: background-color 0.3s, box-shadow 0.3s;
 }
 
-/* Bottone primario (Crea Nota) */
-.primary-button {
-  background-color: #ff6f00;
-  color: #121212;
-  box-shadow: 0 6px 20px rgba(255, 111, 0, 0.6);
+.button-primary {
+  background-color: var(--button-primary-bg);
+  color: var(--button-primary-text);
 }
 
-.primary-button:hover {
-  background-color: #e65c00;
-  box-shadow: 0 8px 25px rgba(230, 92, 0, 0.8);
+.button-primary:hover {
+  background-color: var(--button-primary-hover-bg);
+  box-shadow: 0 4px 15px var(--shadow-orange-strong);
 }
 
-/* Bottone secondario (Annulla) */
-.secondary-button {
-  background-color: #333; /* Un grigio scuro per il bottone annulla */
-  color: #eee;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+.button-secondary {
+  background-color: var(--button-secondary-bg);
+  color: var(--button-secondary-text);
 }
 
-.secondary-button:hover {
-  background-color: #555;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+.button-secondary:hover {
+  background-color: var(--button-secondary-hover-bg);
 }
 
+/* Pulsante "Torna alla Dashboard" */
+.back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+}
 
-/* Messaggi di errore e successo */
-.error-message, .success-message {
-  font-size: 0.95rem;
-  margin-bottom: 20px;
-  font-weight: 600;
-  text-align: center;
+/* Messaggi */
+.message-base {
   padding: 10px;
   border-radius: 8px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 0.95rem;
 }
 
-.error-message {
-  color: #ff3b3b; /* Rosso */
-  background-color: rgba(255, 59, 59, 0.1);
-  border: 1px solid #ff3b3b;
+.loading-message {
+  color: var(--text-lighter);
 }
-
 .success-message {
-  color: #4CAF50; /* Verde */
-  background-color: rgba(76, 175, 80, 0.1);
-  border: 1px solid #4CAF50;
+  background-color: var(--message-bg-success);
+  color: var(--message-text-success);
+  border: 1px solid var(--message-border-success);
+}
+.error-message {
+  background-color: var(--message-bg-error);
+  color: var(--message-text-error);
+  border: 1px solid var(--message-border-error);
 }
 
 /* Media Queries per layout responsivo */
-@media (max-width: 600px) {
+@media (max-width: 1250px) { /* Larghezza adattiva per schermi grandi */
+  .nota-form {
+    max-width: calc(100% - 40px);
+  }
+}
+
+@media (max-width: 768px) {
   .nota-form {
     padding: 30px 20px; /* Riduci il padding su schermi più piccoli */
+    margin: 15px; /* Aggiungi un margine esterno per non attaccarsi ai bordi */
+    max-width: calc(100% - 30px); /* Assicura che non fuoriesca */
   }
 
-  .nota-form h2 {
-    font-size: 1.6rem; /* Riduci la dimensione del titolo */
+  .form-title {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+  }
+
+  .form-group {
     margin-bottom: 20px;
   }
 
   .form-actions {
-    flex-direction: column; /* I bottoni vanno in colonna su schermi piccoli */
-    gap: 10px; /* Riduci il gap tra i bottoni */
+    flex-direction: column; /* I bottoni si stackano su mobile */
+    gap: 15px;
   }
 
-  .form-button {
+  .form-actions .button-base {
     width: 100%; /* I bottoni occupano tutta la larghezza */
-    padding: 12px; /* Riduci leggermente il padding dei bottoni */
-    font-size: 1rem; /* Riduci la dimensione del font dei bottoni */
   }
 
-  .form-group label {
-    font-size: 0.85rem; /* Riduci leggermente la dimensione delle label */
+  .back-button {
+    position: static; /* Rimuovi il posizionamento assoluto su mobile */
+    margin-bottom: 20px; /* Aggiungi spazio sotto il bottone */
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .nota-form {
+    padding: 25px 15px;
+    margin: 10px;
+  }
+
+  .form-title {
+    font-size: 1.6rem;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
   }
 
   .form-input {
-    padding: 10px 12px; /* Riduci leggermente il padding degli input */
-    font-size: 0.95rem; /* Riduci leggermente la dimensione del font degli input */
+    padding: 10px 12px;
+    font-size: 0.95rem;
+  }
+
+  .button-base {
+    padding: 10px 15px;
+    font-size: 1rem;
   }
 }
