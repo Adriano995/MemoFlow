@@ -1,16 +1,15 @@
 // nota-modifica.component.ts
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PreviewNotaService } from '../preview-nota-component/preview-nota.service'; // Assicurati che il percorso sia corretto
-import { Nota } from '../preview-nota-component/preview-note.model'; // Assicurati che il percorso sia corretto
-import { TipoNota } from '../preview-nota-component/tipo-nota.enum'; // Assicurati che il percorso sia corretto
-
+import { PreviewNotaService } from '../preview-nota-component/preview-nota.service'; 
+import { Nota } from '../preview-nota-component/preview-note.model'; 
+import { TipoNota } from '../preview-nota-component/tipo-nota.enum'; 
 @Component({
   selector: 'app-nota-modifica',
   standalone: true,
-  imports: [CommonModule, FormsModule], // FormsModule è indispensabile per [(ngModel)]
+  imports: [CommonModule, FormsModule], 
   templateUrl: './nota-modifica.component.html',
   styleUrls: ['./nota-modifica.component.css']
 })
@@ -33,18 +32,18 @@ export class NotaModificaComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private previewNotaService: PreviewNotaService
-  ) { }
+    private previewNotaService: PreviewNotaService,
+    private cdr: ChangeDetectorRef 
+  ) {}
 
   ngOnInit(): void {
-    // Recupera l'ID della nota dalla route
     this.route.paramMap.subscribe(params => {
       const idParam = params.get('id');
       if (idParam) {
         this.notaId = +idParam; // Converte la stringa in numero
         this.fetchNotaDettaglio(this.notaId);
       } else {
-        this.error = 'ID nota non fornito nell\'URL.';
+        this.error = 'ID nota non fornito.';
         this.loading = false;
       }
     });
@@ -53,21 +52,34 @@ export class NotaModificaComponent implements OnInit {
   async fetchNotaDettaglio(id: number): Promise<void> {
     this.loading = true;
     this.error = null;
-    this.successMessage = null; // Resetta messaggi
+    this.successMessage = null;
     try {
       this.nota = await this.previewNotaService.getNotaById(id);
+      console.log('Nota recuperata in NotaModificaComponent:', this.nota);
+
       if (this.nota) {
         // Popola i campi del form per la modifica con i valori attuali della nota
         this.titoloModifica = this.nota.titolo;
         this.contenutoTestoModifica = this.nota.contenutoTesto || '';
         this.contenutoSVGModifica = this.nota.contenutoSVG || '';
         this.tipoNotaModifica = this.nota.tipoNota; // Inizializza anche il tipo
+        console.log('Campi del form popolati:', {
+          titolo: this.titoloModifica,
+          contenutoTesto: this.contenutoTestoModifica,
+          contenutoSVG: this.contenutoSVGModifica,
+          tipoNota: this.tipoNotaModifica
+        });
+
+        // FORZA LA CHANGE DETECTION QUI!
+        this.cdr.detectChanges(); // <-- AGGIUNGI QUESTA RIGA
       }
     } catch (err: any) {
       console.error('Errore nel recupero della nota:', err);
       this.error = 'Impossibile caricare i dettagli della nota. Riprova.';
     } finally {
       this.loading = false;
+      console.log('Stato finale loading in NotaModificaComponent:', this.loading);
+      this.cdr.detectChanges(); // <-- AGGIUNGI QUESTA RIGA anche qui, per sicurezza
     }
   }
 

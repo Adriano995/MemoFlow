@@ -1,22 +1,27 @@
-<div class="form-container-base"> <div class="nota-detail-card"> <button class="back-button action-button secondary-button" (click)="goBack()">Torna alla Dashboard</button>
+<div class="form-container-base">
+  <div class="nota-detail-card">
+    <button class="back-button action-button secondary-button" (click)="goBack()">Torna alla Dashboard</button>
 
     <h2>Dettagli e Modifica Nota</h2>
 
     <div *ngIf="loading" class="loading-message">Caricamento dettagli nota...</div>
     <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
-    <div *ngIf="error" class="error-message">{{ error }}</div> <ng-container *ngIf="nota && !loading && !error">
+    <div *ngIf="error" class="error-message">{{ error }}</div>
+
+    <ng-container> <p style="color: blue;">DEBUG: Contenuto del nota-modifica.component.html dovrebbe essere visibile qui.</p>
+
       <div class="note-display">
         <h3>Nota Selezionata:</h3>
-        <p><strong>Titolo:</strong> {{ nota.titolo }}</p>
-        <p><strong>Tipo:</strong> {{ nota.tipoNota }}</p>
-        <p><strong>Data Creazione:</strong> {{ nota.dataCreazione | date:'dd/MM/yyyy HH:mm' }}</p>
-        <p *ngIf="nota.ultimaModifica"><strong>Ultima Modifica:</strong> {{ nota.ultimaModifica | date:'dd/MM/yyyy HH:mm' }}</p>
+        <p><strong>Titolo:</strong> {{ nota?.titolo }}</p>
+        <p><strong>Tipo:</strong> {{ nota?.tipoNota }}</p>
+        <p><strong>Data Creazione:</strong> {{ nota?.dataCreazione | date:'dd/MM/yyyy HH:mm' }}</p>
+        <p *ngIf="nota?.ultimaModifica"><strong>Ultima Modifica:</strong> {{ nota?.ultimaModifica | date:'dd/MM/yyyy HH:mm' }}</p>
 
         <div class="full-content-area">
           <h4>Contenuto Completo:</h4>
-          <p *ngIf="nota.contenutoTesto">{{ nota.contenutoTesto }}</p>
-          <div *ngIf="nota.contenutoSVG && nota.tipoNota === 'DISEGNO'" class="svg-content" [innerHTML]="nota.contenutoSVG"></div>
-          <p *ngIf="!nota.contenutoTesto && !nota.contenutoSVG">Nessun contenuto aggiuntivo.</p>
+          <p *ngIf="nota?.contenutoTesto">{{ nota?.contenutoTesto }}</p>
+          <div *ngIf="nota?.contenutoSVG && nota?.tipoNota === 'DISEGNO'" class="svg-content" [innerHTML]="nota?.contenutoSVG"></div>
+          <p *ngIf="!nota?.contenutoTesto && !nota?.contenutoSVG">Nessun contenuto aggiuntivo.</p>
         </div>
       </div>
 
@@ -53,6 +58,5 @@
         </div>
       </form>
     </ng-container>
-
   </div>
 </div>

@@ -28,68 +28,6 @@ html, body {
   color: var(--text-light); /* Testo chiaro di default */
 }
 
-/* Forza colori per FullCalendar per integrarsi con il tema scuro */
-.fc {
-  background: var(--primary-bg-dark) !important; /* Sfondo scuro principale */
-  color: var(--text-light) !important; /* Testo chiaro per tutti gli elementi */
-  border-radius: 14px; /* Angoli arrotondati come il login */
-  box-shadow: 0 8px 30px var(--shadow-orange-medium),
-              0 0 0 1px var(--shadow-orange-light); /* Ombra e bordo arancio */
-  overflow: hidden; /* Nasconde gli spigoli bianchi se persistono */
-}
-
-/* Tutti gli elementi interni del calendario devono essere scuri/arancio */
-.fc-theme-standard .fc-scrollgrid,
-.fc-theme-standard td,
-.fc-theme-standard th {
-    border-color: var(--border-dark) !important; /* Bordi delle celle scuri */
-    background-color: var(--secondary-bg-dark) !important; /* Sfondo delle celle scuro */
-}
-
-.fc .fc-toolbar-title,
-.fc .fc-daygrid-day-number, /* Numeri dei giorni */
-.fc .fc-event,
-.fc .fc-col-header-cell-cushion, /* Nomi dei giorni della settimana */
-.fc .fc-daygrid-day-top {
-  color: var(--light-orange) !important; /* Colore arancio chiaro per testo visibile */
-  background: transparent !important;
-}
-
-/* Sfondo celle e header del calendario */
-.fc .fc-daygrid-day,
-.fc .fc-col-header-cell,
-.fc .fc-scrollgrid {
-  background: var(--secondary-bg-dark) !important; /* Grigio molto scuro */
-  color: var(--text-light) !important; /* Assicurati che il testo sia chiaro */
-  border: 1px solid var(--border-dark) !important; /* Bordo scuro */
-}
-
-/* Stile per gli eventi del calendario */
-.fc .fc-event {
-  background: #3a1f00 !important; /* Arancione molto scuro per gli eventi */
-  color: var(--light-orange) !important; /* Testo arancio chiaro per gli eventi */
-  border: 1px solid var(--accent-orange) !important; /* Bordo arancione acceso */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-}
-
-/* Per i bordi delle celle della griglia dei giorni */
-.fc-daygrid-day {
-  border-color: var(--border-dark) !important;
-}
-
-/* Override ancora più specifici per il calendario per eliminare il bianco */
-.fc-view-harness,
-.fc-view-harness-active {
-  background: var(--primary-bg-dark) !important;
-}
-
-.fc-popover { /* Per popover/tooltip del calendario se presenti */
-  background: var(--secondary-bg-dark) !important;
-  border: 1px solid var(--accent-orange) !important;
-  color: var(--text-light) !important;
-}
-
-
 /* Stili Globali per Form */
 .form-container-base {
   padding: 25px 30px;
