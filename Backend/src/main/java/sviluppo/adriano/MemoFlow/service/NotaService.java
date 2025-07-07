@@ -52,11 +52,6 @@ public class NotaService {
 
         Nota nota = notaMapper.toEntity(createDto);
         nota.setUtente(utente);
-
-        // Imposta la data di creazione e ultima modifica al momento corrente
-        // Se vuoi che siano la dataNota + l'ora corrente, usa LocalDateTime.now() o la logica che preferisci
-        // Se vuoi che siano esattamente l'inizio del giorno della dataNota, lascia atStartOfDay()
-        // Lasciamo atStartOfDay() come da tua implementazione precedente, per coerenza con il DB.
         nota.setDataCreazione(createDto.getDataNota().atStartOfDay());
         nota.setUltimaModifica(createDto.getDataNota().atStartOfDay());
 
@@ -97,7 +92,7 @@ public class NotaService {
     public List<NotaDTO> getNoteByDataCreazioneAndUtenteId(LocalDate data, Long utenteId) {
         // Calcola l'inizio e la fine del giorno per la query
         LocalDateTime startOfDay = data.atStartOfDay();
-        LocalDateTime endOfDay = data.atTime(23, 59, 59, 999_999_999); // Fine del giorno, inclusi i millisecondi
+        LocalDateTime endOfDay = data.atTime(23, 59, 59, 999_999_999);
 
         List<Nota> note = notaRepository.findAllByDataCreazioneBetweenAndUtenteId(startOfDay, endOfDay, utenteId);
         return note.stream()

@@ -46,17 +46,21 @@ public class UtenteController {
         return ResponseEntity.ok(utenti);
     }
 
+    @Operation(
+            summary = "Recupera un singolo utente tramite ID",
+            description = "Restituisce i dettagli di un utente specifico tramite il suo ID. Se l'utente non viene trovato, restituisce 404 Not Found."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Utente recuperato con successo"),
+            @ApiResponse(responseCode = "404", description = "Utente non trovato")
+    })
     @GetMapping("/cercaSingolo/{id}")
-    public ResponseEntity<UtenteDTO> cercaSingolo(Long id){
-
+    public ResponseEntity<UtenteDTO> cercaSingolo(@PathVariable Long id){
         UtenteDTO utente = utenteService.cercaSingolo(id);
-
-        if (utente.equals(null)){
-            return  ResponseEntity.noContent().build();
+        if (utente == null){
+            return  ResponseEntity.notFound().build();
         }
-
         return ResponseEntity.ok(utente);
-
     }
 
     /*@GetMapping("/current")

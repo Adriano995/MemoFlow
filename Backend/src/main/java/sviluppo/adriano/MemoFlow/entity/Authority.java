@@ -11,7 +11,7 @@ public class Authority {
 
     @Id
     @Enumerated(EnumType.STRING)
-    private AuthorityEnum authorityEnum; // es: ROLE_USER, ROLE_ADMIN, ROLE_PROPRIETARIO_GRUPPO, ecc.
+    private AuthorityEnum authorityEnum; // es: ROLE_USER, ROLE_DEVELOPER, ROLE_PROPRIETARIO_GRUPPO, ecc.
 
     public Authority(){}
 
