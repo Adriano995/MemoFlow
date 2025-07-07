@@ -1,0 +1,33 @@
+<div class="page-container">
+  <div class="card-base">
+    <div class="form-wrapper">
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <h2 class="h2 form-title">Registrazione</h2>
+
+        <div class="form-group">
+          <label for="nome" class="form-label">Nome:</label>
+          <input id="nome" formControlName="nome" type="text" class="form-input" placeholder="Il tuo nome" />
+        </div>
+
+        <div class="form-group">
+          <label for="cognome" class="form-label">Cognome:</label>
+          <input id="cognome" formControlName="cognome" type="text" class="form-input" placeholder="Il tuo cognome" />
+        </div>
+
+        <div class="form-group">
+          <label for="email" class="form-label">Email:</label>
+          <input id="email" formControlName="email" type="email" class="form-input" placeholder="La tua email" />
+        </div>
+
+        <div class="form-group">
+          <label for="password" class="form-label">Password:</label>
+          <input id="password" formControlName="password" type="password" class="form-input" placeholder="La tua password" />
+        </div>
+
+        <button type="submit" [disabled]="!registerForm.valid" class="button-base button-primary">Registrati</button>
+      </form>
+
+      <p class="text-secondary link-paragraph">Hai già un account? <a routerLink="/login" class="link-accent">Accedi qui</a></p>
+    </div>
+  </div>
+</div>

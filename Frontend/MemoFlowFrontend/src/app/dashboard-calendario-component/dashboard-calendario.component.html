@@ -1,0 +1,31 @@
+<div class="page-container">
+  <div class="card-base calendario-container">
+    <div class="calendar-header">
+      <button class="header-button" (click)="previousMonth()">&#9664;</button>
+      <h2 class="current-month-year">{{ viewDate | date:'MMMM yyyy' }}</h2>
+      <button class="header-button" (click)="nextMonth()">&#9654;</button>
+    </div>
+
+    <div class="weekdays-grid">
+      <div *ngFor="let dayName of weekdays">{{ dayName }}</div> </div>
+
+    <div class="calendar-grid">
+      <div
+        *ngFor="let day of daysInCalendar; trackBy: trackByDate"
+        (click)="dayClicked(day)"
+        [attr.data-day-number]="day.getDate()"
+        [ngClass]="{
+          'calendar-day': true,
+          'today': isToday(day),
+          'selected': selectedDate && isSameDay(day, selectedDate),
+          'weekend': isWeekend(day),
+          'not-current-month': day.getMonth() !== viewDate.getMonth()
+        }"
+      >
+        <span class="day-number">{{ day.getDate() }}</span> <span *ngIf="hasNote(day)" class="nota-indicatore"></span>
+      </div>
+    </div>
+  </div>
+
+  <app-nota-component [date]="selectedDate" [userId]="currentUserId"></app-nota-component>
+</div>

@@ -23,9 +23,7 @@
               "src/assets"
             ],
             "styles": [
-              "node_modules/angular-calendar/css/angular-calendar.css",
-              "src/styles.css", 
-              "src/app/dashboard-calendario/dashboard-calendario.component.css"
+              "src/styles.css"
             ],
             "server": "src/main.server.ts",
             "outputMode": "server",

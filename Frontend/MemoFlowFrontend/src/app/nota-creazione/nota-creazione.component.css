@@ -1,0 +1,207 @@
+/* nota-creazione.component.css */
+
+/* Contenitore principale della pagina di creazione nota */
+.page-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: var(--page-bg);
+}
+
+/* Form */
+.nota-form {
+  background-color: var(--card-bg);
+  padding: 40px 50px;
+  border-radius: 14px;
+  box-shadow:
+    0 8px 30px var(--shadow-orange-medium),
+    0 0 0 1px var(--shadow-orange-light);
+  width: 100%;
+  max-width: 1200px; /* Larghezza massima aumentata per desktop */
+  margin: 20px auto; /* Centra orizzontalmente e aggiunge margine */
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  color: var(--text-color);
+}
+
+/* Intestazione */
+.form-title {
+  color: var(--title-color);
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2.2rem;
+  letter-spacing: 1px;
+  text-shadow: 0 0 8px var(--shadow-orange-light);
+}
+
+/* Gruppo di input */
+.form-group {
+  margin-bottom: 25px;
+}
+
+/* Label degli input */
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--text-lighter);
+  font-size: 0.95rem;
+}
+
+/* Input e textarea */
+.form-input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid var(--border-dark);
+  border-radius: 8px;
+  background-color: var(--secondary-bg-dark);
+  color: var(--text-light);
+  font-size: 1rem;
+  transition: border-color 0.3s, background-color 0.3s, box-shadow 0.3s;
+  box-sizing: border-box;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--accent-orange);
+  background-color: var(--secondary-bg-hover);
+  box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.2);
+}
+
+/* Azioni del form (bottoni) */
+.form-actions {
+  display: flex;
+  justify-content: flex-end; /* Allinea i bottoni a destra */
+  gap: 10px; /* Spazio tra i bottoni */
+  margin-top: 30px;
+}
+
+/* Pulsanti */
+.button-base {
+  padding: 12px 20px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.button-primary {
+  background-color: var(--button-primary-bg);
+  color: var(--button-primary-text);
+}
+
+.button-primary:hover {
+  background-color: var(--button-primary-hover-bg);
+  box-shadow: 0 4px 15px var(--shadow-orange-strong);
+}
+
+.button-secondary {
+  background-color: var(--button-secondary-bg);
+  color: var(--button-secondary-text);
+}
+
+.button-secondary:hover {
+  background-color: var(--button-secondary-hover-bg);
+}
+
+/* Pulsante "Torna alla Dashboard" */
+.back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+}
+
+/* Messaggi */
+.message-base {
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.loading-message {
+  color: var(--text-lighter);
+}
+.success-message {
+  background-color: var(--message-bg-success);
+  color: var(--message-text-success);
+  border: 1px solid var(--message-border-success);
+}
+.error-message {
+  background-color: var(--message-bg-error);
+  color: var(--message-text-error);
+  border: 1px solid var(--message-border-error);
+}
+
+/* Media Queries per layout responsivo */
+@media (max-width: 1250px) { /* Larghezza adattiva per schermi grandi */
+  .nota-form {
+    max-width: calc(100% - 40px);
+  }
+}
+
+@media (max-width: 768px) {
+  .nota-form {
+    padding: 30px 20px; /* Riduci il padding su schermi più piccoli */
+    margin: 15px; /* Aggiungi un margine esterno per non attaccarsi ai bordi */
+    max-width: calc(100% - 30px); /* Assicura che non fuoriesca */
+  }
+
+  .form-title {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-actions {
+    flex-direction: column; /* I bottoni si stackano su mobile */
+    gap: 15px;
+  }
+
+  .form-actions .button-base {
+    width: 100%; /* I bottoni occupano tutta la larghezza */
+  }
+
+  .back-button {
+    position: static; /* Rimuovi il posizionamento assoluto su mobile */
+    margin-bottom: 20px; /* Aggiungi spazio sotto il bottone */
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .nota-form {
+    padding: 25px 15px;
+    margin: 10px;
+  }
+
+  .form-title {
+    font-size: 1.6rem;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  .form-input {
+    padding: 10px 12px;
+    font-size: 0.95rem;
+  }
+
+  .button-base {
+    padding: 10px 15px;
+    font-size: 1rem;
+  }
+}
