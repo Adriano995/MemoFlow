@@ -1,30 +1,36 @@
 package sviluppo.adriano.MemoFlow.dto;
 
+import sviluppo.adriano.MemoFlow.entity.Authority;
 import sviluppo.adriano.MemoFlow.entity.Utente;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class UtenteDTO {
 
     private Long id;
     private String nome;
     private String cognome;
-    private CredenzialiDTO credenziali;
+    // Rimuovi questa riga: private CredenzialiDTO credenziali;
+    private Set<String> roles;
+    private String email; // Questa riga deve esserci!
 
     public UtenteDTO() {}
 
-    public UtenteDTO(Long id, String nome, String cognome, CredenzialiDTO credenziali){
+    public UtenteDTO(Long id, String nome, String cognome, String email) {
         this.id = id;
         this.nome = nome;
         this.cognome = cognome;
-        this.credenziali = credenziali;
+        this.email = email;
+        this.roles = new HashSet<>();
     }
 
-    public UtenteDTO(Utente utente) {
-        this.id = utente.getId();
-        this.nome = utente.getNome();
-        this.cognome = utente.getCognome();
-        if (utente.getCredenziali() != null) {
-            this.credenziali = new CredenzialiDTO(utente.getCredenziali());
-        }
+    public UtenteDTO(Long id, String nome, String cognome, String email, Set<String> roles) {
+        this.id = id;
+        this.nome = nome;
+        this.cognome = cognome;
+        this.email = email;
+        this.roles = roles;
     }
 
     public Long getId() {
@@ -51,11 +57,19 @@ public class UtenteDTO {
         this.cognome = cognome;
     }
 
-    public CredenzialiDTO getCredenziali() {
-        return credenziali;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCredenziali(CredenzialiDTO credenziali) {
-        this.credenziali = credenziali;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Set<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<String> roles) {
+        this.roles = roles;
     }
 }

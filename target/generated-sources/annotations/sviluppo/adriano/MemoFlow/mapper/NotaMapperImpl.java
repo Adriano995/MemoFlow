@@ -2,17 +2,15 @@ package sviluppo.adriano.MemoFlow.mapper;
 
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
-import sviluppo.adriano.MemoFlow.dto.CredenzialiDTO;
 import sviluppo.adriano.MemoFlow.dto.NotaDTO;
 import sviluppo.adriano.MemoFlow.dto.UtenteDTO;
 import sviluppo.adriano.MemoFlow.dto.creaDTO.NotaCreateDTO;
-import sviluppo.adriano.MemoFlow.entity.Credenziali;
 import sviluppo.adriano.MemoFlow.entity.Nota;
 import sviluppo.adriano.MemoFlow.entity.Utente;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-06-25T11:11:36+0200",
+    date = "2025-07-08T11:48:01+0200",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 21.0.7 (Oracle Corporation)"
 )
 @Component
@@ -88,20 +86,6 @@ public class NotaMapperImpl implements NotaMapper {
         entity.setUltimaModifica( dto.getUltimaModifica() );
     }
 
-    protected CredenzialiDTO credenzialiToCredenzialiDTO(Credenziali credenziali) {
-        if ( credenziali == null ) {
-            return null;
-        }
-
-        CredenzialiDTO credenzialiDTO = new CredenzialiDTO();
-
-        credenzialiDTO.setId( credenziali.getId() );
-        credenzialiDTO.setEmail( credenziali.getEmail() );
-        credenzialiDTO.setPassword( credenziali.getPassword() );
-
-        return credenzialiDTO;
-    }
-
     protected UtenteDTO utenteToUtenteDTO(Utente utente) {
         if ( utente == null ) {
             return null;
@@ -112,23 +96,8 @@ public class NotaMapperImpl implements NotaMapper {
         utenteDTO.setId( utente.getId() );
         utenteDTO.setNome( utente.getNome() );
         utenteDTO.setCognome( utente.getCognome() );
-        utenteDTO.setCredenziali( credenzialiToCredenzialiDTO( utente.getCredenziali() ) );
 
         return utenteDTO;
-    }
-
-    protected Credenziali credenzialiDTOToCredenziali(CredenzialiDTO credenzialiDTO) {
-        if ( credenzialiDTO == null ) {
-            return null;
-        }
-
-        Credenziali credenziali = new Credenziali();
-
-        credenziali.setId( credenzialiDTO.getId() );
-        credenziali.setEmail( credenzialiDTO.getEmail() );
-        credenziali.setPassword( credenzialiDTO.getPassword() );
-
-        return credenziali;
     }
 
     protected Utente utenteDTOToUtente(UtenteDTO utenteDTO) {
@@ -141,7 +110,6 @@ public class NotaMapperImpl implements NotaMapper {
         utente.setId( utenteDTO.getId() );
         utente.setNome( utenteDTO.getNome() );
         utente.setCognome( utenteDTO.getCognome() );
-        utente.setCredenziali( credenzialiDTOToCredenziali( utenteDTO.getCredenziali() ) );
 
         return utente;
     }

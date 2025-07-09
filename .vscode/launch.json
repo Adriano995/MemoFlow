@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-MemoFlowApplication<MemoFlow>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "sviluppo.adriano.MemoFlow.MemoFlowApplication",
+            "projectName": "MemoFlow",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

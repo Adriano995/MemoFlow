@@ -10,12 +10,13 @@ import sviluppo.adriano.MemoFlow.dto.creaDTO.CredenzialiCreateDTO;
 @Mapper(componentModel = "spring")
 public interface CredenzialiMapper {
 
-    @Mapping(target = "utenteId", ignore = true) // mappiamo utente solo nel service
+    @Mapping(target = "utenteId", ignore = true)
     CredenzialiDTO toDto(Credenziali entity);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "utente", ignore = true) // da settare nel service, non qui
+    @Mapping(target = "utente", ignore = true)
     Credenziali toEntity(CredenzialiCreateDTO dto);
 
+    @Mapping(target = "utente", ignore = true)
     void updateCredenzialiFromDto(CredenzialiDTO dto, @MappingTarget Credenziali entity);
 }

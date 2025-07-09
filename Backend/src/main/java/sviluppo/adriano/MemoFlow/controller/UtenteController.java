@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sviluppo.adriano.MemoFlow.dto.UtenteDTO;
+import sviluppo.adriano.MemoFlow.dto.cambiaRuoliDTO.UtenteCambiaRuoliDTO;
 import sviluppo.adriano.MemoFlow.dto.creaDTO.UtenteCreateDTO;
 import sviluppo.adriano.MemoFlow.dto.modificaDTO.UtenteCambiaDatiDTO;
 import sviluppo.adriano.MemoFlow.service.UtenteService;
@@ -41,7 +42,7 @@ public class UtenteController {
     public ResponseEntity<List<UtenteDTO>> cercaTutti() {
         List<UtenteDTO> utenti = utenteService.cercaTutti();
         if (utenti.isEmpty()) {
-            return ResponseEntity.noContent().build(); // HTTP 204 No Content
+            return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(utenti);
     }
@@ -55,12 +56,13 @@ public class UtenteController {
             @ApiResponse(responseCode = "404", description = "Utente non trovato")
     })
     @GetMapping("/cercaSingolo/{id}")
-    public ResponseEntity<UtenteDTO> cercaSingolo(@PathVariable Long id){
-        UtenteDTO utente = utenteService.cercaSingolo(id);
-        if (utente == null){
-            return  ResponseEntity.notFound().build();
+    public ResponseEntity<UtenteDTO> cercaSingolo(@PathVariable Long id) {
+        try {
+            UtenteDTO utenteDTO = utenteService.cercaSingolo(id);
+            return ResponseEntity.ok(utenteDTO);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        return ResponseEntity.ok(utente);
     }
 
     /*@GetMapping("/current")
@@ -105,6 +107,25 @@ public class UtenteController {
         return ResponseEntity.ok(utenteAggiornato);
     }
 
+    @Operation(
+            summary = "Aggiorna i ruoli di un utente",
+            description = "Sostituisce i ruoli esistenti di un utente con una nuova lista di ruoli specificata dall'ID."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Ruoli utente aggiornati con successo"),
+            @ApiResponse(responseCode = "404", description = "Utente non trovato"),
+            @ApiResponse(responseCode = "400", description = "Dati non validi o ruoli non esistenti"),
+            @ApiResponse(responseCode = "403", description = "Non autorizzato a modificare i ruoli") // Aggiungi questa se implementi sicurezza sui ruoli
+    })
+    @PutMapping("/cambiaRuoli/{id}") // Nuovo endpoint
+// Potrebbe essere necessario un @PreAuthorize qui, ad esempio per consentire solo agli ADMIN
+// @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<UtenteDTO> aggiornaRuoliUtente(
+            @PathVariable Long id,
+            @RequestBody @Valid UtenteCambiaRuoliDTO dto) {
+        UtenteDTO utenteAggiornato = utenteService.aggiornaRuoliUtente(id, dto);
+        return ResponseEntity.ok(utenteAggiornato);
+    }
 
     @Operation(
             summary = "Elimina un utente tramite ID",

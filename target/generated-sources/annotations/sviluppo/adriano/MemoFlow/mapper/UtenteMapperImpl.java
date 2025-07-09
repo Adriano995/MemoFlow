@@ -2,7 +2,6 @@ package sviluppo.adriano.MemoFlow.mapper;
 
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
-import sviluppo.adriano.MemoFlow.dto.CredenzialiDTO;
 import sviluppo.adriano.MemoFlow.dto.UtenteDTO;
 import sviluppo.adriano.MemoFlow.dto.creaDTO.CredenzialiCreateDTO;
 import sviluppo.adriano.MemoFlow.dto.creaDTO.UtenteCreateDTO;
@@ -11,7 +10,7 @@ import sviluppo.adriano.MemoFlow.entity.Utente;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-06-25T11:11:36+0200",
+    date = "2025-07-08T11:48:01+0200",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 21.0.7 (Oracle Corporation)"
 )
 @Component
@@ -25,7 +24,7 @@ public class UtenteMapperImpl implements UtenteMapper {
 
         UtenteDTO utenteDTO = new UtenteDTO();
 
-        utenteDTO.setCredenziali( credenzialiToCredenzialiDTO( entity.getCredenziali() ) );
+        utenteDTO.setEmail( entityCredenzialiEmail( entity ) );
         utenteDTO.setId( entity.getId() );
         utenteDTO.setNome( entity.getNome() );
         utenteDTO.setCognome( entity.getCognome() );
@@ -55,9 +54,9 @@ public class UtenteMapperImpl implements UtenteMapper {
 
         Utente utente = new Utente();
 
+        utente.setCredenziali( credenzialiCreateDTOToCredenziali( dto.getCredenziali() ) );
         utente.setNome( dto.getNome() );
         utente.setCognome( dto.getCognome() );
-        utente.setCredenziali( credenzialiCreateDTOToCredenziali( dto.getCredenziali() ) );
 
         return utente;
     }
@@ -68,32 +67,23 @@ public class UtenteMapperImpl implements UtenteMapper {
             return;
         }
 
-        entity.setId( dto.getId() );
         entity.setNome( dto.getNome() );
         entity.setCognome( dto.getCognome() );
-        if ( dto.getCredenziali() != null ) {
-            if ( entity.getCredenziali() == null ) {
-                entity.setCredenziali( new Credenziali() );
-            }
-            credenzialiDTOToCredenziali( dto.getCredenziali(), entity.getCredenziali() );
-        }
-        else {
-            entity.setCredenziali( null );
-        }
     }
 
-    protected CredenzialiDTO credenzialiToCredenzialiDTO(Credenziali credenziali) {
+    private String entityCredenzialiEmail(Utente utente) {
+        if ( utente == null ) {
+            return null;
+        }
+        Credenziali credenziali = utente.getCredenziali();
         if ( credenziali == null ) {
             return null;
         }
-
-        CredenzialiDTO credenzialiDTO = new CredenzialiDTO();
-
-        credenzialiDTO.setId( credenziali.getId() );
-        credenzialiDTO.setEmail( credenziali.getEmail() );
-        credenzialiDTO.setPassword( credenziali.getPassword() );
-
-        return credenzialiDTO;
+        String email = credenziali.getEmail();
+        if ( email == null ) {
+            return null;
+        }
+        return email;
     }
 
     protected Credenziali credenzialiCreateDTOToCredenziali(CredenzialiCreateDTO credenzialiCreateDTO) {
@@ -107,15 +97,5 @@ public class UtenteMapperImpl implements UtenteMapper {
         credenziali.setPassword( credenzialiCreateDTO.getPassword() );
 
         return credenziali;
-    }
-
-    protected void credenzialiDTOToCredenziali(CredenzialiDTO credenzialiDTO, Credenziali mappingTarget) {
-        if ( credenzialiDTO == null ) {
-            return;
-        }
-
-        mappingTarget.setId( credenzialiDTO.getId() );
-        mappingTarget.setEmail( credenzialiDTO.getEmail() );
-        mappingTarget.setPassword( credenzialiDTO.getPassword() );
     }
 }

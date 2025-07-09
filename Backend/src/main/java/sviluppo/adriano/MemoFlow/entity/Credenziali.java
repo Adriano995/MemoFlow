@@ -1,17 +1,19 @@
+// File: sviluppo/adriano/MemoFlow/entity/Credenziali.java
 package sviluppo.adriano.MemoFlow.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "credential")
+// Rinominiamo la tabella per coerenza con il nome della classe al plurale
+@Table(name = "credenziali")
 public class Credenziali {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Usiamo IDENTITY
     private Long id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "utente_id", referencedColumnName = "id", unique = true)
     @JsonBackReference
     private Utente utente;
@@ -24,8 +26,7 @@ public class Credenziali {
 
     public Credenziali(){}
 
-    public Credenziali(Long id, Utente utente, String email, String password){
-        this.id = id;
+    public Credenziali(Utente utente, String email, String password){
         this.utente = utente;
         this.email = email;
         this.password = password;

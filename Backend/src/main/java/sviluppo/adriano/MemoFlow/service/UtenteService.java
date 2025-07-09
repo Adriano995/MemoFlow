@@ -1,21 +1,32 @@
 package sviluppo.adriano.MemoFlow.service;
 
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import sviluppo.adriano.MemoFlow.dto.creaDTO.CredenzialiCreateDTO;
 import sviluppo.adriano.MemoFlow.dto.UtenteDTO;
+import sviluppo.adriano.MemoFlow.dto.cambiaRuoliDTO.UtenteCambiaRuoliDTO;
+import sviluppo.adriano.MemoFlow.dto.creaDTO.CredenzialiCreateDTO;
+import sviluppo.adriano.MemoFlow.dto.creaDTO.UtenteCreateDTO;
 import sviluppo.adriano.MemoFlow.dto.modificaDTO.UtenteCambiaDatiDTO;
+import sviluppo.adriano.MemoFlow.entity.Authority;
 import sviluppo.adriano.MemoFlow.entity.Credenziali;
 import sviluppo.adriano.MemoFlow.entity.Utente;
-import sviluppo.adriano.MemoFlow.dto.creaDTO.UtenteCreateDTO;
+import sviluppo.adriano.MemoFlow.entity.UtenteAuthority;
+import sviluppo.adriano.MemoFlow.enums.AuthorityEnum;
+import sviluppo.adriano.MemoFlow.mapper.UtenteMapper;
+import sviluppo.adriano.MemoFlow.repository.AuthorityRepository;
 import sviluppo.adriano.MemoFlow.repository.CredenzialiRepository;
 import sviluppo.adriano.MemoFlow.repository.UtenteRepository;
-import sviluppo.adriano.MemoFlow.mapper.UtenteMapper;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -24,14 +35,19 @@ public class UtenteService {
     private UtenteRepository utenteRepository;
     private CredenzialiRepository credenzialiRepository;
     private UtenteMapper utenteMapper;
+    private AuthorityRepository authorityRepository;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UtenteService(UtenteRepository utenteRepository, CredenzialiRepository credenzialiRepository, UtenteMapper utenteMapper) {
+    public UtenteService(UtenteRepository utenteRepository, CredenzialiRepository credenzialiRepository, UtenteMapper utenteMapper, AuthorityRepository authorityRepository, PasswordEncoder passwordEncoder) {
         this.utenteRepository = utenteRepository;
         this.credenzialiRepository = credenzialiRepository;
         this.utenteMapper = utenteMapper;
+        this.authorityRepository = authorityRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
+    @Transactional
     public List<UtenteDTO> cercaTutti() {
         List<Utente> utenti = utenteRepository.findAll();
         return utenti.stream()
@@ -39,38 +55,73 @@ public class UtenteService {
                 .toList();
     }
 
+    @Transactional
     public UtenteDTO cercaSingolo(Long id){
         Utente utente = utenteRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Utente con ID " + id + " non trovato"));
 
-        return utenteMapper.toDto(utente);
+        UtenteDTO utenteDTO = utenteMapper.toDto(utente);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.getName().equals(utente.getCredenziali().getEmail())) {
+            Set<String> userRoles = authentication.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .collect(Collectors.toSet());
+            utenteDTO.setRoles(userRoles);
+        }
+
+         return utenteDTO;
     }
 
+    @Transactional
     public UtenteDTO creaUtente(UtenteCreateDTO utenteDto) {
 
-        // Prendi le credenziali dal DTO di creazione
+        // Validazione credenziali (fondamentale)
         CredenzialiCreateDTO credDto = utenteDto.getCredenziali();
-
         if (credDto == null || credDto.getEmail() == null || credDto.getPassword() == null) {
-            throw new IllegalArgumentException("Credenziali mancanti");
+            throw new IllegalArgumentException("Dati delle credenziali mancanti o incompleti.");
         }
 
+        // Verifica unicità email
         if (credenzialiRepository.findByEmail(credDto.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("Email già esistente");
+            throw new IllegalArgumentException("Email già esistente. Si prega di usare un'altra email.");
         }
 
-        // Mappa il DTO di creazione (UtenteCreateDTO) all'entità Utente
-        Utente utente = utenteMapper.toEntity(utenteDto);
+        // 1. Mappa il DTO a entità Utente
+        Utente utenteToSave = utenteMapper.toEntity(utenteDto);
 
-        // Associa bidirezionalmente le credenziali
-        Credenziali credenziali = utente.getCredenziali();
-        credenziali.setUtente(utente);
+        // 2. Hash della password e associazione alle Credenziali
+        // Ottieni l'oggetto Credenziali che è stato creato e associato dall'UtenteMapper
+        Credenziali credenzialiFromMapper = utenteToSave.getCredenziali();
+        if (credenzialiFromMapper == null) {
+            throw new IllegalStateException("L'utenteMapper non ha creato le credenziali associate.");
+        }
+        credenzialiFromMapper.setPassword(passwordEncoder.encode(credDto.getPassword()));
+        // Assicurati che l'associazione bidirezionale sia corretta (se il mapper non la imposta già)
+        credenzialiFromMapper.setUtente(utenteToSave);
 
-        // Salva l'utente (cascade salva anche le credenziali)
-        Utente salvato = utenteRepository.save(utente);
+        // 3. Assegnazione del ruolo di default
+        Authority userRole = authorityRepository.findById(AuthorityEnum.ROLE_USER)
+                .orElseThrow(() -> new RuntimeException("Errore: Ruolo 'ROLE_USER' non trovato nel database. Assicurati che DataInitializer sia stato eseguito correttamente."));
 
-        // Mappa l'entità salvata a DTO di lettura (UtenteDTO)
-        return utenteMapper.toDto(salvato);
+        // 4. Crea l'associazione UtenteAuthority esplicita
+        UtenteAuthority utenteAuthority = new UtenteAuthority(utenteToSave, userRole);
+
+        // 5. Aggiungi l'associazione alla collezione di Utente.
+        // Questo è il lato "proprietario" della relazione @OneToMany in Utente.
+        utenteToSave.addUtenteAuthority(utenteAuthority);
+
+        // 6. Salva l'entità Utente. Grazie a CascadeType.ALL, salverà anche Credenziali e UtenteAuthority.
+        Utente salvatoUtente = utenteRepository.save(utenteToSave);
+
+        Set<String> roles = salvatoUtente.getUserAuthorities().stream()
+                .map(ua -> ua.getAuthority().getAuthorityEnum().name())
+                .collect(Collectors.toSet());
+
+        // 7. Mappa l'entità salvata a DTO e ritorna
+        // L'email deve essere presa dall'oggetto Credenziali EFFETTIVAMENTE salvato.
+        return new UtenteDTO(salvatoUtente.getId(), salvatoUtente.getNome(), salvatoUtente.getCognome(), salvatoUtente.getCredenziali().getEmail(), roles);
     }
 
     public UtenteDTO findByEmail(String email) {
@@ -80,6 +131,7 @@ public class UtenteService {
         return utenteMapper.toDto(cred.getUtente());
     }
 
+    @Transactional
     public UtenteDTO aggiornaUtente(Long id, UtenteCambiaDatiDTO dto) {
         Utente utente = utenteRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Utente con ID " + id + " non trovato"));
@@ -93,7 +145,40 @@ public class UtenteService {
         return utenteMapper.toDto(utenteAggiornato);
     }
 
+    @Transactional
+    public UtenteDTO aggiornaRuoliUtente(Long id, UtenteCambiaRuoliDTO dto) {
+        Utente utente = utenteRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Utente con ID " + id + " non trovato"));
 
+        // Rimuovi tutte le associazioni di autorità esistenti
+        utente.getUserAuthorities().clear(); // orphanRemoval=true elimina le vecchie associazioni
+
+        // Aggiungi le nuove autorità basate sul DTO
+        for (String roleName : dto.getRoles()) {
+            AuthorityEnum authorityEnum;
+            try {
+                authorityEnum = AuthorityEnum.valueOf(roleName);
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException("Ruolo non valido: " + roleName);
+            }
+            Authority authority = authorityRepository.findById(authorityEnum)
+                    .orElseThrow(() -> new RuntimeException("Errore: Ruolo '" + roleName + "' non trovato nel database."));
+
+            UtenteAuthority utenteAuthority = new UtenteAuthority(utente, authority);
+            utente.getUserAuthorities().add(utenteAuthority); 
+        }
+
+        Utente utenteAggiornato = utenteRepository.save(utente);
+
+        Set<String> roles = utenteAggiornato.getUserAuthorities().stream()
+                .map(ua -> ua.getAuthority().getAuthorityEnum().name())
+                .collect(Collectors.toSet());
+
+        return new UtenteDTO(utenteAggiornato.getId(), utenteAggiornato.getNome(), utenteAggiornato.getCognome(), utenteAggiornato.getCredenziali().getEmail(), roles);
+    }
+
+
+    @Transactional
     public void eliminaUser(Long id) {
         if (!utenteRepository.existsById(id)) {
             throw new EntityNotFoundException("Utente con ID " + id + " non trovato");

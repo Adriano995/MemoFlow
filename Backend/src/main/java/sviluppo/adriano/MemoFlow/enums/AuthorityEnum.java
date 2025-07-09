@@ -1,9 +1,14 @@
 package sviluppo.adriano.MemoFlow.enums;
 
-public enum  AuthorityEnum {
+import org.springframework.security.core.GrantedAuthority;
+
+public enum  AuthorityEnum implements GrantedAuthority {
     
      ROLE_USER,
-     ROLE_ADMIN,
-     ROLE_PROPRIETARIO_GRUPPO
+     ROLE_DEVELOPER,
+     ROLE_PROPRIETARIO_GRUPPO;
 
+     public String getAuthority(){
+          return name();
+     }
 }
