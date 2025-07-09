@@ -100,6 +100,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+        .cors(cors -> cors.configurationSource(corsConfigurationSource())) // <--- MODIFICA QUI
                 // Disabilita la protezione CSRF (necessario per API REST stateless con JWT)
                 .csrf(AbstractHttpConfigurer::disable)
                 // Configura la gestione delle eccezioni di autenticazione
@@ -139,6 +140,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/nota/{id}").permitAll()
                         .requestMatchers(HttpMethod.GET, "/nota/perDataEUtente").permitAll()
                         .requestMatchers(HttpMethod.GET, "/nota/perUtente").permitAll() // Aggiunto da NotaController
+                        .requestMatchers("/nota/**").authenticated()
                         // Tutte le altre richieste richiedono autenticazione
                         .anyRequest().authenticated()
                 );

@@ -1,12 +1,15 @@
 package sviluppo.adriano.MemoFlow.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
 import sviluppo.adriano.MemoFlow.dto.CredenzialiDTO;
 import sviluppo.adriano.MemoFlow.dto.modificaDTO.modificaCredenzialiDTO.CambiaEmailDTO;
 import sviluppo.adriano.MemoFlow.dto.modificaDTO.modificaCredenzialiDTO.CambiaPasswordDTO;
 import sviluppo.adriano.MemoFlow.entity.Credenziali;
 import sviluppo.adriano.MemoFlow.repository.CredenzialiRepository;
+import sviluppo.adriano.MemoFlow.security.service.UserDetailServiceImpl;
 
 @Service
 public class CredenzialiService {
@@ -20,7 +23,14 @@ public class CredenzialiService {
 
     // Cambia password, verifica vecchia password
     public CredenzialiDTO cambiaPassword(CambiaPasswordDTO dto) {
-        Credenziali cred = credenzialiRepository.findByUtenteId(dto.getUtenteId())
+        // Recupera l'id utente autenticato dal SecurityContext
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!(principal instanceof UserDetailServiceImpl.UserPrincipal userDetails)) {
+            throw new SecurityException("Utente non autenticato");
+        }
+        Long userId = userDetails.getId();
+
+        Credenziali cred = credenzialiRepository.findByUtenteId(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Utente non trovato"));
 
         if (!cred.getPassword().equals(dto.getVecchiaPassword())) {
@@ -33,8 +43,14 @@ public class CredenzialiService {
         return new CredenzialiDTO(aggiornata); // Risposta "pulita"
     }
 
-    public CredenzialiDTO cambiaEmail(Long utenteId, CambiaEmailDTO dto) {
-        Credenziali cred = credenzialiRepository.findByUtenteId(utenteId)
+    public CredenzialiDTO cambiaEmail(CambiaEmailDTO dto) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!(principal instanceof UserDetailServiceImpl.UserPrincipal userDetails)) {
+            throw new SecurityException("Utente non autenticato");
+        }
+        Long userId = userDetails.getId();
+
+        Credenziali cred = credenzialiRepository.findByUtenteId(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Utente non trovato"));
 
         // Verifica che la vecchia email corrisponda

@@ -1,11 +1,15 @@
 package sviluppo.adriano.MemoFlow.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 import sviluppo.adriano.MemoFlow.dto.CredenzialiDTO;
 import sviluppo.adriano.MemoFlow.dto.modificaDTO.modificaCredenzialiDTO.CambiaEmailDTO;
 import sviluppo.adriano.MemoFlow.dto.modificaDTO.modificaCredenzialiDTO.CambiaPasswordDTO;
@@ -44,8 +48,7 @@ public class CredenzialiController {
     @PostMapping("/cambiaEmail")
     public ResponseEntity<?> cambiaEmail(@RequestBody CambiaEmailDTO dto) {
         try {
-            Long utenteId = dto.getUtenteId(); // ✅ lo prendi direttamente dal JSON
-            CredenzialiDTO aggiornata = credenzialiService.cambiaEmail(utenteId, dto);
+            CredenzialiDTO aggiornata = credenzialiService.cambiaEmail(dto);
             return ResponseEntity.ok(new MessageResponse("Email aggiornata con successo per " + aggiornata.getEmail()));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));

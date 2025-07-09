@@ -1,22 +1,31 @@
 package sviluppo.adriano.MemoFlow.controller;
 
+import java.time.LocalDate;
+import java.util.List;
+
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.web.bind.annotation.*;
+import sviluppo.adriano.MemoFlow.dto.NotaDTO;
 import sviluppo.adriano.MemoFlow.dto.creaDTO.NotaCreateDTO;
 import sviluppo.adriano.MemoFlow.dto.modificaDTO.CambiaNotaDTO;
-import sviluppo.adriano.MemoFlow.dto.NotaDTO;
 import sviluppo.adriano.MemoFlow.service.NotaService;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @RestController
 @RequestMapping("/nota")
@@ -74,7 +83,7 @@ public class NotaController {
             NotaDTO nuovaNota = notaService.creaNota(createDto);
             return ResponseEntity.status(HttpStatus.CREATED).body(nuovaNota);
         } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // O un messaggio di errore più specifico
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Utente non trovato
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(null);
         }
@@ -90,7 +99,7 @@ public class NotaController {
     })
     @GetMapping("/perDataEUtente")
     public ResponseEntity<List<NotaDTO>> getNoteByDataCreazioneAndUtenteId(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data, // LocalDate per ricevere solo la data
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data, 
             @RequestParam Long utenteId) {
         List<NotaDTO> note = notaService.getNoteByDataCreazioneAndUtenteId(data, utenteId);
         return ResponseEntity.ok(note);

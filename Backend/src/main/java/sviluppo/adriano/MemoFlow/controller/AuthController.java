@@ -1,9 +1,10 @@
 // File: sviluppo/adriano/MemoFlow/controller/AuthController.java
 package sviluppo.adriano.MemoFlow.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,28 +16,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import sviluppo.adriano.MemoFlow.dto.LoginDTO;
-// Non useremo più Credenziali direttamente qui per la risposta del login JWT
-// import sviluppo.adriano.MemoFlow.entity.Credenziali;
-import sviluppo.adriano.MemoFlow.security.jwt.JwtUtil; // Importa il tuo JwtUtil
-import sviluppo.adriano.MemoFlow.security.service.UserDetailServiceImpl; // O CustomUserDetailsService
-import sviluppo.adriano.MemoFlow.response.JwtResponse; // Creeremo questa classe DTO per la risposta JWT
 
-// Potresti non aver più bisogno di AuthService.login se gestisci l'autenticazione qui
-// import sviluppo.adriano.MemoFlow.service.AuthService;
-
-
-import java.util.List;
-import java.util.stream.Collectors;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses; // Importa il tuo JwtUtil
+import sviluppo.adriano.MemoFlow.dto.LoginDTO; // O CustomUserDetailsService
+import sviluppo.adriano.MemoFlow.security.jwt.JwtUtil;
+import sviluppo.adriano.MemoFlow.security.service.UserDetailServiceImpl;
 
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-
-    // Non avrai più bisogno di AuthService per il login diretto, Spring Security lo gestisce
-    // @Autowired
-    // private AuthService authService;
 
     @Autowired
     private AuthenticationManager authenticationManager; // Per autenticare l'utente
@@ -58,7 +49,7 @@ public class AuthController {
             @ApiResponse(responseCode = "400", description = "Dati della richiesta non validi")
     })
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
+    public ResponseEntity<?> authenticateUser(@RequestBody LoginDTO loginDTO) {
         try {
             // 1. Autentica l'utente tramite AuthenticationManager
             Authentication authentication = authenticationManager.authenticate(
@@ -84,11 +75,13 @@ public class AuthController {
                     .collect(Collectors.toList());
 
             // Costruisci la risposta usando il nuovo JwtResponse DTO
-            return ResponseEntity.ok(new JwtResponse(
-                    jwt,
-                    userDetails.getId(),         // Assicurati che il tuo UserPrincipal abbia un metodo getId()
-                    userDetails.getUsername(),   // Sarà l'email
-                    roles
+            return ResponseEntity.ok(Map.of(
+                    "token", jwt,
+                    "user", Map.of(
+                            "id", userDetails.getId(),
+                            "nome", userDetails.getUsername(),
+                            "email", userDetails.getUsername()
+                    )
             ));
 
         } catch (org.springframework.security.core.AuthenticationException e) {

@@ -7,36 +7,36 @@ import { PreviewNotaService } from '../preview-nota-component/preview-nota.servi
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-dashboard-calendario',
-  standalone: true,
-  imports: [CommonModule, PreviewNotaComponent, FormsModule],
-  providers: [],
-  templateUrl: './dashboard-calendario.component.html',
-  styleUrls: ['./dashboard-calendario.component.css']
+  selector: 'app-dashboard-calendario',
+  standalone: true,
+  imports: [CommonModule, PreviewNotaComponent, FormsModule],
+  providers: [],
+  templateUrl: './dashboard-calendario.component.html',
+  styleUrls: ['./dashboard-calendario.component.css']
 })
 export class DashboardCalendarioComponent implements OnInit {
-  viewDate: Date = new Date();
-  daysInCalendar: Date[] = [];
-  selectedDate: Date | null = null;
-  giorniConNote: Set<string> = new Set();
-  currentUserId: number | null = null;
-  weekdays: string[] = ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'];
+  viewDate: Date = new Date();
+  daysInCalendar: Date[] = [];
+  selectedDate: Date | null = null;
+  giorniConNote: Set<string> = new Set();
+  currentUserId: number | null = null;
+  weekdays: string[] = ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'];
 
-  constructor(
-    private authService: AuthService,
-    private previewNotaService: PreviewNotaService,
-    private cdr: ChangeDetectorRef
-  ) {}
+ constructor(
+  private authService: AuthService,
+    private previewNotaService: PreviewNotaService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
-  async ngOnInit(): Promise<void> {
-    console.log("DashboardCalendarioComponent ngOnInit start");
-    this.currentUserId = this.authService.getUserId(); 
-    console.log("currentUserId", this.currentUserId);
+ async ngOnInit(): Promise<void> {
+    console.log("DashboardCalendarioComponent ngOnInit start");
+    this.currentUserId = this.authService.getUserId(); 
+    console.log("currentUserId", this.currentUserId);
 
-    if (this.currentUserId === null) {
-      console.error("User ID not available. Cannot load notes.");
-      return;
-    }
+    if (this.currentUserId === null) {
+      console.error("User ID not available. Cannot load notes.");
+      return;
+    }
 
     this.calculateDaysInMonth();
     await this.fetchNotesForMonth(); // Questo ora recupererà tutte le note e le filtrerà

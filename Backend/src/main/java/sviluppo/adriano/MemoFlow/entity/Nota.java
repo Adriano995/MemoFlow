@@ -2,9 +2,16 @@ package sviluppo.adriano.MemoFlow.entity;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import sviluppo.adriano.MemoFlow.enums.TipoNota;
 
 @Entity
@@ -18,7 +25,7 @@ public class Nota {
     private String titolo;
 
     @Enumerated(EnumType.STRING)
-    private TipoNota tipoNota; // TESTO o DISEGNO
+    private TipoNota tipoNota; 
 
     @Column(columnDefinition = "TEXT")
     private String contenutoTesto;
@@ -29,7 +36,8 @@ public class Nota {
     private LocalDateTime dataCreazione;
     private LocalDateTime ultimaModifica;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "utente_id", nullable = false)
     private Utente utente;
 
     public Nota(){};

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AxiosService } from '../core/axios.service';
-import { TokenService } from './token.service';
+import { TokenService } from '../auth/token.service';
 
 interface CredenzialiCreateDTO {
   email: string;

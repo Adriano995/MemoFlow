@@ -1,22 +1,25 @@
 package sviluppo.adriano.MemoFlow.service;
 
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import sviluppo.adriano.MemoFlow.dto.creaDTO.NotaCreateDTO;
-import sviluppo.adriano.MemoFlow.dto.modificaDTO.CambiaNotaDTO;
-import sviluppo.adriano.MemoFlow.dto.NotaDTO;
-import sviluppo.adriano.MemoFlow.entity.Nota;
-import sviluppo.adriano.MemoFlow.entity.Utente;
-import sviluppo.adriano.MemoFlow.mapper.NotaMapper;
-import sviluppo.adriano.MemoFlow.repository.NotaRepository;
-import sviluppo.adriano.MemoFlow.repository.UtenteRepository;
-
-import java.time.LocalDate; // Importa LocalDate
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
+import sviluppo.adriano.MemoFlow.dto.NotaDTO;
+import sviluppo.adriano.MemoFlow.dto.creaDTO.NotaCreateDTO;
+import sviluppo.adriano.MemoFlow.dto.modificaDTO.CambiaNotaDTO;
+import sviluppo.adriano.MemoFlow.entity.Nota;
+import sviluppo.adriano.MemoFlow.entity.Utente;
+import sviluppo.adriano.MemoFlow.mapper.NotaMapper; // Importa LocalDate
+import sviluppo.adriano.MemoFlow.repository.NotaRepository;
+import sviluppo.adriano.MemoFlow.repository.UtenteRepository;
+import sviluppo.adriano.MemoFlow.security.service.UserDetailServiceImpl;
 
 @Service
 @Transactional
@@ -64,6 +67,13 @@ public class NotaService {
         Nota nota = notaRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Nota con ID " + id + " non trovata"));
 
+        // --- CONTROLLO DI SICUREZZA ---
+        Long currentUserId = getCurrentUserId();
+        if (!nota.getUtente().getId().equals(currentUserId)) {
+            throw new SecurityException("Non puoi modificare una nota che non ti appartiene!");
+        }
+        // --- FINE CONTROLLO ---
+
         if (modifica.getTitolo() != null) {
             nota.setTitolo(modifica.getTitolo());
         }
@@ -76,16 +86,21 @@ public class NotaService {
             nota.setTipoNota(modifica.getTipoNota());
         }
 
-        nota.setUltimaModifica(LocalDateTime.now()); // Aggiorna all'ora corrente di modifica
+        nota.setUltimaModifica(LocalDateTime.now());
 
         Nota salvata = notaRepository.save(nota);
         return notaMapper.toDto(salvata);
     }
 
     public void eliminaNota(Long id) {
-        if (!notaRepository.existsById(id)) {
-            throw new EntityNotFoundException("Nota con ID " + id + " non trovata per l'eliminazione.");
+        Nota nota = notaRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Nota con ID " + id + " non trovata per l'eliminazione."));
+
+        Long currentUserId = getCurrentUserId();
+        if (!nota.getUtente().getId().equals(currentUserId)) {
+            throw new SecurityException("Non puoi eliminare una nota che non ti appartiene!");
         }
+
         notaRepository.deleteById(id);
     }
 
@@ -105,5 +120,14 @@ public class NotaService {
         return note.stream()
                 .map(notaMapper::toDto)
                 .collect(Collectors.toList());
+    }
+
+    // Metodo di utilità per recuperare l'id utente autenticato
+    private Long getCurrentUserId() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetailServiceImpl.UserPrincipal userDetails) {
+            return userDetails.getId();
+        }
+        throw new SecurityException("Utente non autenticato");
     }
 }

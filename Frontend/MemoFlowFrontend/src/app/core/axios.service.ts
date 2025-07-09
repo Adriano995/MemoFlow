@@ -59,4 +59,18 @@ export class AxiosService {
     const response = await this.axiosInstance.delete<T>(url, config);
     return response.data;
   }
+
+  async login(email: string, password: string): Promise<boolean> {
+    try {
+      const response = await this.post<any>('/auth/login', { email, password });
+      if (response && response.token) {
+        this.tokenService.saveToken(response.token);
+        return true;
+      }
+      return false;
+    } catch (error) {
+      // gestisci errore
+      return false;
+    }
+  }
 }
