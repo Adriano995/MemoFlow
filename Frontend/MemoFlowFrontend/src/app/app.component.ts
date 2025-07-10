@@ -2,15 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ThemeService } from './theme';
+import { UserComponent } from "./user/user.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
     RouterOutlet,
-    CommonModule
-  ],
-  providers: [ThemeService], // Se ThemeService è providedIn: 'root', questo non è strettamente necessario qui, ma non causa problemi.
+    CommonModule,
+    UserComponent
+],
+  providers: [ThemeService], 
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -20,11 +22,10 @@ export class AppComponent implements OnInit {
   constructor(private themeService: ThemeService) {}
 
   ngOnInit(): void {
-    // Non è necessario chiamare nulla qui, il ThemeService si inizializza da solo.
   }
 
   toggleTheme(): void {
-    this.themeService.toggleTheme(); // Ora questo metodo esiste nel ThemeService
+    this.themeService.toggleTheme();
   }
 
   isLightTheme(): boolean {

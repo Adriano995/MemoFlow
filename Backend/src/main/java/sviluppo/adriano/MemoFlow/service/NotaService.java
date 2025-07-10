@@ -16,7 +16,7 @@ import sviluppo.adriano.MemoFlow.dto.creaDTO.NotaCreateDTO;
 import sviluppo.adriano.MemoFlow.dto.modificaDTO.CambiaNotaDTO;
 import sviluppo.adriano.MemoFlow.entity.Nota;
 import sviluppo.adriano.MemoFlow.entity.Utente;
-import sviluppo.adriano.MemoFlow.mapper.NotaMapper; // Importa LocalDate
+import sviluppo.adriano.MemoFlow.mapper.NotaMapper; 
 import sviluppo.adriano.MemoFlow.repository.NotaRepository;
 import sviluppo.adriano.MemoFlow.repository.UtenteRepository;
 import sviluppo.adriano.MemoFlow.security.service.UserDetailServiceImpl;
@@ -67,12 +67,10 @@ public class NotaService {
         Nota nota = notaRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Nota con ID " + id + " non trovata"));
 
-        // --- CONTROLLO DI SICUREZZA ---
         Long currentUserId = getCurrentUserId();
         if (!nota.getUtente().getId().equals(currentUserId)) {
             throw new SecurityException("Non puoi modificare una nota che non ti appartiene!");
         }
-        // --- FINE CONTROLLO ---
 
         if (modifica.getTitolo() != null) {
             nota.setTitolo(modifica.getTitolo());
@@ -105,7 +103,6 @@ public class NotaService {
     }
 
     public List<NotaDTO> getNoteByDataCreazioneAndUtenteId(LocalDate data, Long utenteId) {
-        // Calcola l'inizio e la fine del giorno per la query
         LocalDateTime startOfDay = data.atStartOfDay();
         LocalDateTime endOfDay = data.atTime(23, 59, 59, 999_999_999);
 
@@ -122,7 +119,6 @@ public class NotaService {
                 .collect(Collectors.toList());
     }
 
-    // Metodo di utilità per recuperare l'id utente autenticato
     private Long getCurrentUserId() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserDetailServiceImpl.UserPrincipal userDetails) {

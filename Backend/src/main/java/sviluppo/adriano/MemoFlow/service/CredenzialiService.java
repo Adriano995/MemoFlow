@@ -21,9 +21,7 @@ public class CredenzialiService {
         this.credenzialiRepository = credenzialiRepository;
     }
 
-    // Cambia password, verifica vecchia password
     public CredenzialiDTO cambiaPassword(CambiaPasswordDTO dto) {
-        // Recupera l'id utente autenticato dal SecurityContext
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (!(principal instanceof UserDetailServiceImpl.UserPrincipal userDetails)) {
             throw new SecurityException("Utente non autenticato");
@@ -40,7 +38,7 @@ public class CredenzialiService {
         cred.setPassword(dto.getNuovaPassword());
         Credenziali aggiornata = credenzialiRepository.save(cred);
 
-        return new CredenzialiDTO(aggiornata); // Risposta "pulita"
+        return new CredenzialiDTO(aggiornata);
     }
 
     public CredenzialiDTO cambiaEmail(CambiaEmailDTO dto) {
@@ -53,12 +51,10 @@ public class CredenzialiService {
         Credenziali cred = credenzialiRepository.findByUtenteId(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Utente non trovato"));
 
-        // Verifica che la vecchia email corrisponda
         if (!cred.getEmail().equals(dto.getVecchiaEmail())) {
             throw new IllegalArgumentException("Email attuale non corretta");
         }
 
-        // Verifica che la nuova email non sia già in uso
         if (credenzialiRepository.findByEmail(dto.getNuovaEmail()).isPresent()) {
             throw new IllegalArgumentException("La nuova email è già in uso");
         }

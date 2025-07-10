@@ -1,4 +1,3 @@
-// File: sviluppo/adriano/MemoFlow/security/jwt/JwtUtil.java
 package sviluppo.adriano.MemoFlow.security.jwt;
 
 import io.jsonwebtoken.*;
@@ -16,29 +15,18 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Classe di utilità per la gestione dei JSON Web Tokens (JWT).
- * Si occupa della generazione, validazione e parsing dei token.
- */
 @Component
 public class JwtUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtUtil.class);
 
-    // Chiave segreta per la firma del token, letta dalle proprietà dell'applicazione (es. application.properties)
-    // DEVE essere sufficientemente lunga (es. 256 bit = 32 caratteri casuali)
     @Value("${jwt.secret}")
     private String jwtSecret;
 
-    // Durata di validità del token JWT in millisecondi (es. 24 ore)
     @Value("${jwt.expiration.ms}")
     private int jwtExpirationMs;
 
-    // Metodo per generare la chiave segreta (da stringa base64)
     private SecretKey getSigningKey() {
-        // Decodifica la stringa base64 della chiave segreta in un array di byte
-        // e crea un oggetto SecretKey.
-        // Questo è il modo raccomandato da jjwt per gestire le chiavi.
         return Keys.hmacShaKeyFor(jwtSecret.getBytes());
     }
 
@@ -48,21 +36,19 @@ public class JwtUtil {
      * @return Il token JWT generato.
      */
     public String generateJwtToken(Authentication authentication) {
-        // L'oggetto UserDetails è il rappresentante dell'utente autenticato in Spring Security.
         UserDetails userPrincipal = (UserDetails) authentication.getPrincipal();
 
-        // Estrai i ruoli (Authorities) dell'utente e convertili in una lista di stringhe.
         List<String> roles = userPrincipal.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
         return Jwts.builder()
-                .setSubject((userPrincipal.getUsername())) // Soggetto del token (solitamente l'email o l'ID utente)
-                .claim("roles", roles) // Aggiungi i ruoli come "claim" personalizzato nel token
-                .setIssuedAt(new Date()) // Data di emissione del token
-                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs)) // Data di scadenza del token
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256) // Firma il token con la chiave segreta e algoritmo HS256
-                .compact(); // Costruisci il token come stringa compatta
+                .setSubject((userPrincipal.getUsername())) 
+                .claim("roles", roles) 
+                .setIssuedAt(new Date()) 
+                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs)) 
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256) 
+                .compact(); 
     }
 
     /**
@@ -76,7 +62,7 @@ public class JwtUtil {
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
-                .getSubject(); // Recupera il soggetto del token
+                .getSubject();
     }
 
     /**

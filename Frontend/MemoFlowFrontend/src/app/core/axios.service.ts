@@ -69,7 +69,6 @@ export class AxiosService {
       }
       return false;
     } catch (error) {
-      // gestisci errore
       return false;
     }
   }

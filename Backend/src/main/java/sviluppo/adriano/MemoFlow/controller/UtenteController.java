@@ -73,15 +73,6 @@ public class UtenteController {
         }
     }
 
-    /*@GetMapping("/current")
-    public ResponseEntity<UtenteDTO> getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();
-        UtenteDTO user = utenteService.findByEmail(email);
-        return ResponseEntity.ok(user);
-    }*/
-
-
     @Operation(
             summary = "Crea un nuovo utente",
             description = "Registra un nuovo utente con credenziali associate. Email deve essere unica."
@@ -123,11 +114,9 @@ public class UtenteController {
             @ApiResponse(responseCode = "200", description = "Ruoli utente aggiornati con successo"),
             @ApiResponse(responseCode = "404", description = "Utente non trovato"),
             @ApiResponse(responseCode = "400", description = "Dati non validi o ruoli non esistenti"),
-            @ApiResponse(responseCode = "403", description = "Non autorizzato a modificare i ruoli") // Aggiungi questa se implementi sicurezza sui ruoli
+            @ApiResponse(responseCode = "403", description = "Non autorizzato a modificare i ruoli") 
     })
-    @PutMapping("/cambiaRuoli/{id}") // Nuovo endpoint
-// Potrebbe essere necessario un @PreAuthorize qui, ad esempio per consentire solo agli ADMIN
-// @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/cambiaRuoli/{id}") 
     public ResponseEntity<UtenteDTO> aggiornaRuoliUtente(
             @PathVariable Long id,
             @RequestBody @Valid UtenteCambiaRuoliDTO dto) {

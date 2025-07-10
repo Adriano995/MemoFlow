@@ -1,4 +1,3 @@
-// File: sviluppo/adriano/MemoFlow/security/service/UserDetailServiceImpl.java
 package sviluppo.adriano.MemoFlow.security.service;
 
 import java.util.List;
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import sviluppo.adriano.MemoFlow.entity.Credenziali;
 import sviluppo.adriano.MemoFlow.entity.Utente;
-import sviluppo.adriano.MemoFlow.entity.UtenteAuthority; // Importa l'entità UtenteAuthority
+import sviluppo.adriano.MemoFlow.entity.UtenteAuthority; 
 import sviluppo.adriano.MemoFlow.repository.CredenzialiRepository;
 
 @Service
@@ -53,10 +52,9 @@ public class UserDetailServiceImpl implements UserDetailsService {
         }
 
         public static UserPrincipal build(Utente utente, Credenziali credenziali) {
-            // Estrai le authorities dall'entità Utente tramite la collezione userAuthorities
             List<GrantedAuthority> authorities = utente.getUserAuthorities().stream()
-                    .map(UtenteAuthority::getAuthority) // Ottieni l'oggetto Authority da UtenteAuthority
-                    .map(authority -> new SimpleGrantedAuthority(authority.getAuthorityEnum().name())) // Ottieni l'Enum e il suo nome
+                    .map(UtenteAuthority::getAuthority) 
+                    .map(authority -> new SimpleGrantedAuthority(authority.getAuthorityEnum().name())) 
                     .collect(Collectors.toList());
 
             return new UserPrincipal(

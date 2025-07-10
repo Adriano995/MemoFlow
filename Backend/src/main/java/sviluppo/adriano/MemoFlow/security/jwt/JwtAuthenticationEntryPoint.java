@@ -1,4 +1,3 @@
-// File: sviluppo/adriano/MemoFlow/security/jwt/JwtAuthenticationEntryPoint.java
 package sviluppo.adriano.MemoFlow.security.jwt;
 
 import jakarta.servlet.ServletException;
@@ -12,13 +11,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-/**
- * Gestore per le eccezioni di autenticazione in Spring Security.
- * Questa classe viene invocata quando un utente non autenticato tenta di accedere
- * a una risorsa che richiede autenticazione, o quando si verifica un fallimento
- * dell'autenticazione (es. token JWT non valido o mancante).
- * Restituisce una risposta HTTP 401 (Unauthorized) al client.
- */
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
@@ -38,10 +30,6 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
                          AuthenticationException authException) throws IOException, ServletException {
 
         logger.error("Errore di autenticazione: {}", authException.getMessage());
-
-        // Imposta lo stato della risposta a 401 Unauthorized.
-        // Puoi anche aggiungere un messaggio nel corpo della risposta se lo desideri,
-        // ma per una API REST è spesso sufficiente lo stato 401.
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Errore: Non autorizzato");
     }
 }

@@ -77,50 +77,37 @@ public class UtenteService {
     @Transactional
     public UtenteDTO creaUtente(UtenteCreateDTO utenteDto) {
 
-        // Validazione credenziali (fondamentale)
         CredenzialiCreateDTO credDto = utenteDto.getCredenziali();
         if (credDto == null || credDto.getEmail() == null || credDto.getPassword() == null) {
             throw new IllegalArgumentException("Dati delle credenziali mancanti o incompleti.");
         }
 
-        // Verifica unicità email
         if (credenzialiRepository.findByEmail(credDto.getEmail()).isPresent()) {
             throw new IllegalArgumentException("Email già esistente. Si prega di usare un'altra email.");
         }
 
-        // 1. Mappa il DTO a entità Utente
         Utente utenteToSave = utenteMapper.toEntity(utenteDto);
 
-        // 2. Hash della password e associazione alle Credenziali
-        // Ottieni l'oggetto Credenziali che è stato creato e associato dall'UtenteMapper
         Credenziali credenzialiFromMapper = utenteToSave.getCredenziali();
         if (credenzialiFromMapper == null) {
             throw new IllegalStateException("L'utenteMapper non ha creato le credenziali associate.");
         }
         credenzialiFromMapper.setPassword(passwordEncoder.encode(credDto.getPassword()));
-        // Assicurati che l'associazione bidirezionale sia corretta (se il mapper non la imposta già)
         credenzialiFromMapper.setUtente(utenteToSave);
 
-        // 3. Assegnazione del ruolo di default
         Authority userRole = authorityRepository.findById(AuthorityEnum.ROLE_USER)
                 .orElseThrow(() -> new RuntimeException("Errore: Ruolo 'ROLE_USER' non trovato nel database. Assicurati che DataInitializer sia stato eseguito correttamente."));
 
-        // 4. Crea l'associazione UtenteAuthority esplicita
         UtenteAuthority utenteAuthority = new UtenteAuthority(utenteToSave, userRole);
 
-        // 5. Aggiungi l'associazione alla collezione di Utente.
-        // Questo è il lato "proprietario" della relazione @OneToMany in Utente.
         utenteToSave.addUtenteAuthority(utenteAuthority);
 
-        // 6. Salva l'entità Utente. Grazie a CascadeType.ALL, salverà anche Credenziali e UtenteAuthority.
         Utente salvatoUtente = utenteRepository.save(utenteToSave);
 
         Set<String> roles = salvatoUtente.getUserAuthorities().stream()
                 .map(ua -> ua.getAuthority().getAuthorityEnum().name())
                 .collect(Collectors.toSet());
 
-        // 7. Mappa l'entità salvata a DTO e ritorna
-        // L'email deve essere presa dall'oggetto Credenziali EFFETTIVAMENTE salvato.
         return new UtenteDTO(salvatoUtente.getId(), salvatoUtente.getNome(), salvatoUtente.getCognome(), salvatoUtente.getCredenziali().getEmail(), roles);
     }
 
@@ -136,7 +123,6 @@ public class UtenteService {
         Utente utente = utenteRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Utente con ID " + id + " non trovato"));
 
-        // Aggiorna solo i dati anagrafici previsti dal DTO
         utente.setNome(dto.getNome());
         utente.setCognome(dto.getCognome());
 
@@ -150,10 +136,8 @@ public class UtenteService {
         Utente utente = utenteRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Utente con ID " + id + " non trovato"));
 
-        // Rimuovi tutte le associazioni di autorità esistenti
-        utente.getUserAuthorities().clear(); // orphanRemoval=true elimina le vecchie associazioni
+        utente.getUserAuthorities().clear(); 
 
-        // Aggiungi le nuove autorità basate sul DTO
         for (String roleName : dto.getRoles()) {
             AuthorityEnum authorityEnum;
             try {
