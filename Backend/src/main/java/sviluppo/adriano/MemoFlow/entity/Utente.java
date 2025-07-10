@@ -3,9 +3,9 @@ package sviluppo.adriano.MemoFlow.entity;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference; // Importa HashSet
+import com.fasterxml.jackson.annotation.JsonManagedReference; 
 
-import jakarta.persistence.CascadeType;     // Importa Set
+import jakarta.persistence.CascadeType;     
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -30,9 +30,9 @@ public class Utente{
     @JsonManagedReference
     private Credenziali credenziali;
 
-    // AGGIUNGI QUESTO BLOCCO PER LA RELAZIONE CON UtenteAuthority
+    
     @OneToMany(mappedBy = "utente", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    private Set<UtenteAuthority> userAuthorities = new HashSet<>(); // <-- INIZIALIZZA QUI!
+    private Set<UtenteAuthority> userAuthorities = new HashSet<>(); 
 
     public Utente(){}
 
@@ -40,16 +40,12 @@ public class Utente{
         this.id = id;
         this.nome = nome;
         this.cognome = cognome;
-        // Se non inizializzato sopra alla dichiarazione, inizializza anche qui:
-        // this.userAuthorities = new HashSet<>();
     }
 
     public Utente(String nome, String cognome, Credenziali credenziali) {
         this.nome = nome;
         this.cognome = cognome;
         this.credenziali = credenziali;
-        // Se non inizializzato sopra alla dichiarazione, inizializza anche qui:
-        // this.userAuthorities = new HashSet<>();
     }
 
     public Long getId() {
@@ -88,7 +84,6 @@ public class Utente{
         }
     }
 
-    // NUOVI GETTER/SETTER PER userAuthorities
     public Set<UtenteAuthority> getUserAuthorities() {
         return userAuthorities;
     }
@@ -97,14 +92,11 @@ public class Utente{
         this.userAuthorities = userAuthorities;
     }
 
-    // Metodo addUtenteAuthority che causava l'errore
     public void addUtenteAuthority(UtenteAuthority utenteAuthority) {
-        // Questa riga ora non dovrebbe più lanciare NPE
         this.userAuthorities.add(utenteAuthority);
-        utenteAuthority.setUtente(this); // Imposta anche il lato proprietario della relazione
+        utenteAuthority.setUtente(this); 
     }
 
-    // Metodo per rimuovere l'associazione se necessario
     public void removeUtenteAuthority(UtenteAuthority utenteAuthority) {
         this.userAuthorities.remove(utenteAuthority);
         utenteAuthority.setUtente(null);

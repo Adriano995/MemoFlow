@@ -10,7 +10,7 @@ import sviluppo.adriano.MemoFlow.entity.Authority;
 public class UtenteAuthority {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Usiamo IDENTITY
+    @GeneratedValue(strategy = GenerationType.IDENTITY) 
     private Long id;
 
 
@@ -20,7 +20,7 @@ public class UtenteAuthority {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "authority_enum", nullable = false) // NOME COLONNA CHE MAPPA AuthorityEnum.name()
+    @JoinColumn(name = "authority_enum", nullable = false) 
     private Authority authority;
 
     public UtenteAuthority(){}
