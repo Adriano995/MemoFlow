@@ -22,7 +22,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import sviluppo.adriano.MemoFlow.repository.AuthorityRepository;
-import sviluppo.adriano.MemoFlow.security.jwt.JwtAuthFilter; 
+import sviluppo.adriano.MemoFlow.security.jwt.JwtAuthFilter;
 import sviluppo.adriano.MemoFlow.security.jwt.JwtAuthenticationEntryPoint; 
 import sviluppo.adriano.MemoFlow.security.service.UserDetailServiceImpl;
 
@@ -130,7 +130,8 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:4200"));
+        configuration.setAllowedOrigins(List.of("http://localhost:4200", "http://192.168.1.180:4200"));
+        //configuration.addAllowedOriginPattern("*");
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
