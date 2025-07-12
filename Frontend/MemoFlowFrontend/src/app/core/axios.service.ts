@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { TokenService } from '../auth/token.service';
 
@@ -8,15 +9,25 @@ import { TokenService } from '../auth/token.service';
 export class AxiosService {
   private axiosInstance: AxiosInstance;
 
-  constructor(private tokenService: TokenService) {
+  constructor(
+    private tokenService: TokenService,
+    @Inject(PLATFORM_ID) private platformId: Object // Serve per capire se siamo in browser o no
+  ) {
+    // 🔁 Se siamo nel browser, prendiamo l'IP dinamico. Altrimenti fallback a localhost
+    const backendHost = isPlatformBrowser(this.platformId)
+      ? window.location.hostname
+      : 'localhost';
+
+    // ✅ Configurazione base di Axios con IP dinamico
     this.axiosInstance = axios.create({
-      baseURL: 'http://localhost:8080',
+      baseURL: `http://${backendHost}:8080`,
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       }
     });
 
+    // 🔐 Intercettore per aggiungere il token
     this.axiosInstance.interceptors.request.use(
       (config) => {
         const token = this.tokenService.getToken();
@@ -28,10 +39,11 @@ export class AxiosService {
       (error) => Promise.reject(error)
     );
 
+    // 🔄 Intercettore per gestire risposte (es. 401)
     this.axiosInstance.interceptors.response.use(
       (response) => response,
       (error) => {
-        if (error.response?.status === 401) {
+        if (isPlatformBrowser(this.platformId) && error.response?.status === 401) {
           this.tokenService.clearToken();
           window.location.href = '/login';
         }
