@@ -23,7 +23,7 @@ Tecnologie utilizzate:
 
 ---
 
-## 1. Setup Database
+## Setup Database
 
 Creare un database PostgreSQL:
    - Nome: MemoFlowDB
