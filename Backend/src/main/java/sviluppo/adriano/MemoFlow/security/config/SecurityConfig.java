@@ -108,11 +108,12 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET,"/utente/listaUtenti").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/utente/aggiornaDati/{id}").hasAnyRole("DEVELOPER", "USER")
                         .requestMatchers(HttpMethod.PUT, "/utente/cambiaRuoli/{id}").permitAll() //.hasAnyRole("DEVELOPER", "PROPRIETARIO_GRUPPO")
-                        .requestMatchers(HttpMethod.GET, "/nota/listaTutte").hasAnyRole("USER")
+                        .requestMatchers(HttpMethod.GET, "/nota/listaTutte").hasAnyRole("DEVELOPER", "PROPRIETARIO_GRUPPO")
                         .requestMatchers(HttpMethod.GET, "/nota/{id}").hasAnyRole("DEVELOPER", "USER")
                         .requestMatchers(HttpMethod.GET, "/nota/perDataEUtente").hasAnyRole("DEVELOPER", "USER")
                         .requestMatchers(HttpMethod.GET, "/nota/perUtente").hasAnyRole("DEVELOPER", "USER")
-                        .requestMatchers("/nota/**").authenticated()
+                        .requestMatchers("/nota/**").hasAnyRole("DEVELOPER", "USER")
+                        .requestMatchers("/eventi/**").hasAnyRole("DEVELOPER", "USER")
                         .anyRequest().authenticated()
                 );
 

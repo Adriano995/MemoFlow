@@ -1,9 +1,10 @@
-package sviluppo.adriano.MemoFlow.dto.creaDTO;
+package sviluppo.adriano.MemoFlow.dto;
 
 import java.time.LocalDateTime;
 
-public class EventoCreateDTO {
+public class EventoDTO {
     
+    private Long id;
     private String titolo;
     private String descrizione;
     private LocalDateTime dataInizio;
@@ -12,11 +13,14 @@ public class EventoCreateDTO {
     private LocalDateTime oraFine;
     private String luogo;
     private String stato;
-    //private Long utenteId;
 
-    public EventoCreateDTO() {}
+    private UtenteDTO utenteDTO;
 
-    public EventoCreateDTO(String titolo, String descrizione, LocalDateTime dataInizio, LocalDateTime dataFine, LocalDateTime oraInizio, LocalDateTime oraFine, String luogo, String stato/*, Long utenteId*/) {
+    public EventoDTO() {}
+
+    public EventoDTO(Long id, String titolo, String descrizione, LocalDateTime dataInizio, LocalDateTime dataFine,
+            LocalDateTime oraInizio, LocalDateTime oraFine, String luogo, String stato, UtenteDTO utenteDTO) {
+        this.id = id;
         this.titolo = titolo;
         this.descrizione = descrizione;
         this.dataInizio = dataInizio;
@@ -25,7 +29,15 @@ public class EventoCreateDTO {
         this.oraFine = oraFine;
         this.luogo = luogo;
         this.stato = stato;
-        //this.utenteId = utenteId;
+        this.utenteDTO = utenteDTO;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitolo() {
@@ -92,13 +104,13 @@ public class EventoCreateDTO {
         this.stato = stato;
     }
 
-/*    public Long getUtenteId() {
-        return utenteId;
+    public UtenteDTO getUtenteDTO() {
+        return utenteDTO;
     }
 
-    public void setUtenteId(Long utenteId) {
-        this.utenteId = utenteId;
+    public void setUtenteDTO(UtenteDTO utenteDTO) {
+        this.utenteDTO = utenteDTO;
     }
-*/
- 
+
+
 }

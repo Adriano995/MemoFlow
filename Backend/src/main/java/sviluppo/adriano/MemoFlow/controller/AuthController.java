@@ -36,9 +36,8 @@ public class AuthController {
     private JwtUtil jwtUtil; // Per generare il token JWT
 
     @Autowired
-    private UserDetailServiceImpl userDetailsService; // Per recuperare i dettagli utente completi (solo se necessario per la risposta, altrimenti non serve iniettarlo qui)
-
-
+    private UserDetailServiceImpl userDetailsService; 
+    
     @Operation(
             summary = "Effettua il login dell'utente",
             description = "Autentica l'utente tramite email e password. Se le credenziali sono corrette, restituisce un token JWT e i dati dell'utente."
