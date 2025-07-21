@@ -1,8 +1,8 @@
 package sviluppo.adriano.MemoFlow.dto.creaDTO;
 
-import sviluppo.adriano.MemoFlow.enums.TipoNota;
-
 import java.time.LocalDate;
+
+import sviluppo.adriano.MemoFlow.enums.TipoNota;
 
 public class NotaCreateDTO {
 
@@ -11,7 +11,7 @@ public class NotaCreateDTO {
     private String contenutoSVG;
     private TipoNota tipoNota;
     private Long utenteId;
-    private LocalDate dataNota; // <-- Per gestire note con giorni diversi
+    private LocalDate dataNota;
 
     public NotaCreateDTO(){}
 

@@ -1,7 +1,11 @@
 package sviluppo.adriano.MemoFlow.security.jwt;
 
-import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.crypto.SecretKey;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,10 +14,13 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.SecretKey;
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JwtUtil {
@@ -83,7 +90,7 @@ public class JwtUtil {
             logger.error("Token JWT non supportato: {}", e.getMessage());
         } catch (IllegalArgumentException e) {
             logger.error("La stringa del JWT è vuota: {}", e.getMessage());
-        } catch (SignatureException e) { // Aggiunto per gestire errori di firma
+        } catch (SignatureException e) {
             logger.error("Firma JWT non valida: {}", e.getMessage());
         }
 

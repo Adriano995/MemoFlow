@@ -1,9 +1,7 @@
 package sviluppo.adriano.MemoFlow.security.jwt;
 
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +12,12 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import sviluppo.adriano.MemoFlow.security.service.UserDetailServiceImpl;
 
-import java.io.IOException;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import sviluppo.adriano.MemoFlow.security.service.UserDetailServiceImpl;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
@@ -58,7 +59,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     /**
      * Metodo helper per estrarre il token JWT dall'header "Authorization".
-     * Il token è solitamente nel formato "Bearer <token>".
+     * Il token è "Bearer <token>".
      * @param request La richiesta HTTP.
      * @return La stringa del token JWT o null se non presente/non valido.
      */
