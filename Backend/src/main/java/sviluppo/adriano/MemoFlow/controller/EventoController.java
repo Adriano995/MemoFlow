@@ -1,7 +1,9 @@
 package sviluppo.adriano.MemoFlow.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,6 +22,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import sviluppo.adriano.MemoFlow.dto.EventoDTO;
 import sviluppo.adriano.MemoFlow.dto.creaDTO.EventoCreateDTO;
 import sviluppo.adriano.MemoFlow.dto.modificaDTO.EventoCambiaDTO;
+import sviluppo.adriano.MemoFlow.enums.EventoStato;
 import sviluppo.adriano.MemoFlow.service.EventoService;
 
 @RestController
@@ -98,4 +102,75 @@ public class EventoController {
         eventoService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @Operation(summary = "Trova eventi per stato")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Eventi trovati")
+    })
+    @GetMapping("/stato")
+    public ResponseEntity<List<EventoDTO>> findByStato(@RequestParam EventoStato stato) {
+        List<EventoDTO> eventi = eventoService.findAllByStato(stato);
+        return ResponseEntity.ok(eventi);
+    }
+
+    @Operation(summary = "Trova eventi per stato e utente corrente")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Eventi trovati")
+    })
+    @GetMapping("/stato/utente")
+    public ResponseEntity<List<EventoDTO>> findByStatoAndUtente(@RequestParam String stato) {
+        Long utenteId = eventoService.getCurrentUserId(); 
+        List<EventoDTO> eventi = eventoService.findAllByStatoAndUtenteId(stato, utenteId);
+        return ResponseEntity.ok(eventi);
+    }
+
+    @Operation(summary = "Trova eventi nell'intervallo di date (dataInizio)")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Eventi trovati")
+    })
+    @GetMapping("/intervallo-inizio")
+    public ResponseEntity<List<EventoDTO>> findByIntervalloInizio(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
+        List<EventoDTO> eventi = eventoService.findAllByDataInizioBetween(start, end);
+        return ResponseEntity.ok(eventi);
+    }
+
+    @Operation(summary = "Trova eventi con dataInizio > X per utente corrente")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Eventi trovati")
+    })
+    @GetMapping("/dopo-inizio")
+    public ResponseEntity<List<EventoDTO>> findByInizioAfter(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataInizio) {
+        Long utenteId = eventoService.getCurrentUserId(); 
+        List<EventoDTO> eventi = eventoService.findAllByDataInizioAfterAndUtenteId(dataInizio, utenteId);
+        return ResponseEntity.ok(eventi);
+    }
+
+    @Operation(summary = "Trova eventi con dataFine < X per utente corrente")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Eventi trovati")
+    })
+    @GetMapping("/prima-fine")
+    public ResponseEntity<List<EventoDTO>> findByFineBefore(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataFine) {
+        Long utenteId = eventoService.getCurrentUserId(); 
+        List<EventoDTO> eventi = eventoService.findAllByDataFineBeforeAndUtenteId(dataFine, utenteId);
+        return ResponseEntity.ok(eventi);
+    }
+
+    @Operation(summary = "Trova eventi tra due date per utente corrente")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Eventi trovati")
+    })
+    @GetMapping("/tra-due-date")
+    public ResponseEntity<List<EventoDTO>> findByDataInizioEFine(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime inizio,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fine) {
+        Long utenteId = eventoService.getCurrentUserId(); 
+        List<EventoDTO> eventi = eventoService.findAllByDataInizioAfterAndDataFineBeforeAndUtenteId(inizio, fine, utenteId);
+        return ResponseEntity.ok(eventi);
+    }
+
 }

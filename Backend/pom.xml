@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>sviluppo.adriano</groupId>
 	<artifactId>MemoFlow</artifactId>
-	<version>0.6.0-beta</version>
+	<version>0.6.1-beta</version>
 	<name>MemoFlow</name>
 	<description>Demo project for Spring Boot</description>
 	
@@ -76,6 +76,10 @@
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>42.7.6</version>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
 		</dependency>
 
 		<dependency>

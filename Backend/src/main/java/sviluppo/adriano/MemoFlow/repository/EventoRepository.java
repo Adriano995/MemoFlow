@@ -1,25 +1,32 @@
 package sviluppo.adriano.MemoFlow.repository;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import sviluppo.adriano.MemoFlow.entity.Evento;
+import sviluppo.adriano.MemoFlow.enums.EventoStato;
 
 public interface EventoRepository extends JpaRepository<Evento, Long>  {
 
-    Optional<Evento> findByUtenteId(Long utenteId);
+    
+    List<Evento> findAllByUtenteId(Long utenteId);
 
-    Optional<Evento> findAllByDataInizioBetween(LocalDateTime start, LocalDateTime end);
+    List<Evento> findAllByDataInizioBetween(LocalDateTime start, LocalDateTime end);
 
-    Optional<Evento> findAllByStato(String stato);
+    List<Evento> findAllByStato(EventoStato stato);
 
-    Optional<Evento> findAllByStatoAndUtenteId(String stato, Long utenteId);
+    List<Evento> findAllByStatoAndUtenteId(String stato, Long utenteId);
 
-    Optional<Evento> findAllByDataInizioAfterAndUtenteId(LocalDateTime dataInizio, Long utenteId);
+    List<Evento> findAllByDataInizioAfterAndUtenteId(LocalDateTime dataInizio, Long utenteId);
 
-    Optional<Evento> findAllByDataFineBeforeAndUtenteId(LocalDateTime dataFine, Long utenteId);
+    List<Evento> findAllByDataFineBeforeAndUtenteId(LocalDateTime dataFine, Long utenteId);
 
-    Optional<Evento> findAllByDataInizioAfterAndDataFineBeforeAndUtenteId(LocalDateTime dataInizio, LocalDateTime dataFine, Long utenteId);
+    List<Evento> findAllByDataInizioAfterAndDataFineBeforeAndUtenteId(
+        LocalDateTime dataInizio,
+        LocalDateTime dataFine,
+        Long utenteId
+    );
+
 }
