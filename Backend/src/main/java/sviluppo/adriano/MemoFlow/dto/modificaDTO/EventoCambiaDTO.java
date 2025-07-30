@@ -8,14 +8,14 @@ public class EventoCambiaDTO {
     private String descrizione;
     private LocalDateTime dataInizio;
     private LocalDateTime dataFine;
-    private LocalDateTime oraInizio;
-    private LocalDateTime oraFine;
+    //private LocalDateTime oraInizio;
+    //private LocalDateTime oraFine;
     private String luogo;
     private String stato;
 
     public EventoCambiaDTO() {    }
 
-    public EventoCambiaDTO(String titolo, String descrizione, LocalDateTime dataInizio, LocalDateTime dataFine,
+    /*public EventoCambiaDTO(String titolo, String descrizione, LocalDateTime dataInizio, LocalDateTime dataFine,
             LocalDateTime oraInizio, LocalDateTime oraFine, String luogo, String stato) {
         this.titolo = titolo;
         this.descrizione = descrizione;
@@ -25,8 +25,17 @@ public class EventoCambiaDTO {
         this.oraFine = oraFine;
         this.luogo = luogo;
         this.stato = stato;
-    }
+    }*/
     
+    public EventoCambiaDTO(String titolo, String descrizione, LocalDateTime dataInizio, LocalDateTime dataFine, String luogo, String stato) { // Modifica il costruttore
+        this.titolo = titolo;
+        this.descrizione = descrizione;
+        this.dataInizio = dataInizio;
+        this.dataFine = dataFine;
+        this.luogo = luogo;
+        this.stato = stato;
+    }
+
     public String getTitolo() {
         return titolo;
     }
@@ -51,7 +60,7 @@ public class EventoCambiaDTO {
     public void setDataFine(LocalDateTime dataFine) {
         this.dataFine = dataFine;
     }
-    public LocalDateTime getOraInizio() {
+    /*public LocalDateTime getOraInizio() {
         return oraInizio;
     }
     public void setOraInizio(LocalDateTime oraInizio) {
@@ -62,7 +71,7 @@ public class EventoCambiaDTO {
     }
     public void setOraFine(LocalDateTime oraFine) {
         this.oraFine = oraFine;
-    }
+    }*/
     public String getLuogo() {
         return luogo;
     }

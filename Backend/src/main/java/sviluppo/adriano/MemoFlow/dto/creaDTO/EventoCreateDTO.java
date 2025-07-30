@@ -8,24 +8,33 @@ public class EventoCreateDTO {
     private String descrizione;
     private LocalDateTime dataInizio;
     private LocalDateTime dataFine;
-    private LocalDateTime oraInizio;
-    private LocalDateTime oraFine;
+    //private LocalDateTime oraInizio;
+    //private LocalDateTime oraFine;
     private String luogo;
     private String stato;
     //private Long utenteId;
 
     public EventoCreateDTO() {}
 
-    public EventoCreateDTO(String titolo, String descrizione, LocalDateTime dataInizio, LocalDateTime dataFine, LocalDateTime oraInizio, LocalDateTime oraFine, String luogo, String stato/*, Long utenteId*/) {
+    //public EventoCreateDTO(String titolo, String descrizione, LocalDateTime dataInizio, LocalDateTime dataFine, LocalDateTime oraInizio, LocalDateTime oraFine, String luogo, String stato/*, Long utenteId*/) {
+    //    this.titolo = titolo;
+    //    this.descrizione = descrizione;
+    //    this.dataInizio = dataInizio;
+    //    this.dataFine = dataFine;
+    //    this.oraInizio = oraInizio;
+    //    this.oraFine = oraFine;
+    //    this.luogo = luogo;
+    //    this.stato = stato;
+        //this.utenteId = utenteId;
+    //}
+
+        public EventoCreateDTO(String titolo, String descrizione, LocalDateTime dataInizio, LocalDateTime dataFine, String luogo, String stato) { // Modifica il costruttore
         this.titolo = titolo;
         this.descrizione = descrizione;
         this.dataInizio = dataInizio;
         this.dataFine = dataFine;
-        this.oraInizio = oraInizio;
-        this.oraFine = oraFine;
         this.luogo = luogo;
         this.stato = stato;
-        //this.utenteId = utenteId;
     }
 
     public String getTitolo() {
@@ -52,7 +61,7 @@ public class EventoCreateDTO {
         this.dataInizio = dataInizio;
     }
 
-    public LocalDateTime getDataFine() {
+    LocalDateTime getDataFine() {
         return dataFine;
     }
 
@@ -60,7 +69,7 @@ public class EventoCreateDTO {
         this.dataFine = dataFine;
     }
 
-    public LocalDateTime getOraInizio() {
+    /*public LocalDateTime getOraInizio() {
         return oraInizio;
     }
 
@@ -74,7 +83,7 @@ public class EventoCreateDTO {
 
     public void setOraFine(LocalDateTime oraFine) {
         this.oraFine = oraFine;
-    }
+    }*/
 
     public String getLuogo() {
         return luogo;

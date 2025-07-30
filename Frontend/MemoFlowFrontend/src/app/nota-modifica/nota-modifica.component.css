@@ -1,557 +1,215 @@
-/* nota-modifica.component.css */
+/* preview-nota-component.css */
 
-/* Contenitore principale della pagina di dettaglio/modifica nota */
-.page-container {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  /* Aumenta il padding superiore per distanziare il contenitore principale dalla barra del browser */
-  padding: 80px 20px 20px 20px; /* top: 80px, right: 20px, bottom: 20px, left: 20px */
-  box-sizing: border-box;
-  background-color: var(--page-bg);
-}
-
-/* Card principale per dettagli/modifica */
-.nota-detail-card {
+/* Stili di base per il contenitore delle note, per centrarlo o dargli una dimensione massima */
+.notes-container {
   background-color: var(--card-bg);
-  /* Manteniamo il padding che hai impostato per la card, cioè 80px sopra e 50px sui lati. */
-  /* Questo padding sarà gestito internamente alla card. */
-  padding: 80px 50px; /* Questo è il valore che hai fornito come "cambiato così" */
-  border-radius: 14px;
-  box-shadow:
-    0 8px 30px var(--shadow-orange-medium),
-    0 0 0 1px var(--shadow-orange-light);
-  width: 100%;
-  max-width: 1200px;
-  margin: 20px auto; /* Centra orizzontalmente e aggiunge margine */
-  position: relative; /* Mantieni se ci sono altri elementi posizionati in modo assoluto/relativo */
-  z-index: 1;
-  box-sizing: border-box;
-  color: var(--text-color);
-}
-
-/* Pulsante "Torna alla Dashboard" */
-.back-button {
-  /* Aggiungi un margine inferiore per separarlo dal titolo h2 sottostante. */
-  margin-bottom: 25px; /* Regola questo valore per la spaziatura desiderata */
-  display: inline-block; /* O block, se preferisci che occupi tutta la larghezza */
-  padding: 10px 15px;
-  font-size: 1rem;
-}
-
-/* Titoli */
-.form-title {
-  color: var(--title-color);
-  text-align: center;
-  margin-bottom: 30px;
-  font-size: 2.2rem;
-  letter-spacing: 1px;
-  text-shadow: 0 0 8px var(--shadow-orange-light);
-}
-
-.section-title {
-  color: var(--accent-orange);
-  font-size: 1.6rem;
-  margin-top: 25px;
-  margin-bottom: 15px;
-  border-bottom: 2px solid var(--accent-orange-lightest-alpha);
-  padding-bottom: 5px;
-}
-
-.item-title {
-  color: var(--text-color);
-  font-size: 1.3rem;
-  margin-bottom: 10px;
-}
-
-/* Aree di visualizzazione e modifica nota */
-.note-display,
-.note-edit-form {
-  margin-top: 20px;
-  padding: 20px;
-  background-color: var(--secondary-bg-dark);
-  border-radius: 10px;
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
-}
-
-.note-display p {
-  margin-bottom: 10px;
-  line-height: 1.5;
-}
-
-.full-content-area {
-  margin-top: 20px;
-  padding: 15px;
-  background-color: var(--secondary-bg-light);
-  border-radius: 8px;
-  border: 1px dashed var(--border-dark);
-  white-space: pre-wrap; /* Mantiene la formattazione del testo */
-  word-wrap: break-word; /* Rompe le parole lunghe */
-  color: var(--text-light);
-}
-
-/* Form Groups e Input (simili a creazione) */
-.form-group {
-  margin-bottom: 20px;
-}
-
-.form-label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 600;
-  color: var(--text-lighter);
-  font-size: 0.95rem;
-}
-
-.form-input {
-  width: 100%;
-  padding: 12px 14px;
-  border: 1.5px solid var(--border-dark);
-  border-radius: 8px;
-  background-color: var(--secondary-bg-dark);
-  color: var(--text-light);
-  font-size: 1rem;
-  transition: border-color 0.3s, background-color 0.3s, box-shadow 0.3s;
-  box-sizing: border-box;
-}
-
-.form-input:focus {
-  outline: none;
-  border-color: var(--accent-orange);
-  background-color: var(--secondary-bg-hover);
-  box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.2);
-}
-
-textarea.form-input {
-  resize: vertical;
-  min-height: 100px;
-}
-
-/* Azioni del form (bottoni) */
-.form-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 30px;
-}
-
-/* Pulsanti */
-.button-base {
-  padding: 12px 20px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s, box-shadow 0.3s;
-}
-
-.button-primary {
-  background-color: var(--button-primary-bg);
-  color: var(--button-primary-text);
-}
-
-.button-primary:hover {
-  background-color: var(--button-primary-hover-bg);
-  box-shadow: 0 4px 15px var(--shadow-orange-strong);
-}
-
-.button-secondary {
-  background-color: var(--button-secondary-bg);
-  color: var(--button-secondary-text);
-}
-
-.button-secondary:hover {
-  background-color: var(--button-secondary-hover-bg);
-}
-
-.delete-button {
-  background-color: var(--button-danger-bg);
-  color: var(--button-danger-text);
-}
-
-.delete-button:hover {
-  background-color: var(--button-danger-hover-bg);
-}
-
-/* Messaggi */
-.message-base {
-  padding: 10px;
-  border-radius: 8px;
-  margin-bottom: 15px;
-  text-align: center;
-  font-size: 0.95rem;
-}
-
-.loading-message {
-  color: var(--text-lighter);
-}
-.success-message {
-  background-color: var(--message-bg-success);
-  color: var(--message-text-success);
-  border: 1px solid var(--message-border-success);
-}
-.error-message {
-  background-color: var(--message-bg-error);
-  color: var(--message-text-error);
-  border: 1px solid var(--message-border-error);
-}
-
-
-/* Media Queries per layout responsivo */
-@media (max-width: 1250px) { /* Larghezza adattiva per schermi grandi */
-  .nota-detail-card {
-    max-width: calc(100% - 40px);
-  }
-}
-
-@media (max-width: 768px) {
-  .nota-detail-card {
-    padding: 30px 20px; /* Riduci il padding su schermi più piccoli */
-    margin: 20px; /* Aggiungi un margine esterno per non attaccarsi ai bordi */
-    max-width: calc(100% - 30px); /* Assicura che non fuoriesca */
-  }
-
-  .back-button {
-    position: static; /* Rimuovi il posizionamento assoluto su mobile */
-    margin-bottom: 20px; /* Aggiungi spazio sotto il bottone */
-    width: 100%;
-    text-align: center;
-  }
-
-  .form-title {
-    font-size: 1.8rem; /* Riduci la dimensione del titolo principale */
-    margin-top: 10px; /* Aggiungi margine superiore se back-button è statico */
-  }
-
-  .section-title {
-    font-size: 1.4rem;
-  }
-
-  .form-group {
-    margin-bottom: 15px;
-  }
-
-  .form-actions {
-    flex-direction: column; /* I bottoni si stackano su mobile */
-    gap: 15px;
-  }
-
-  .form-actions .button-base {
-    width: 100%; /* I bottoni occupano tutta la larghezza */
-  }
-}
-
-@media (max-width: 480px) {
-  .nota-detail-card {
-    padding: 25px 15px;
-    margin: 10px;
-  }
-
-  .form-title {
-    font-size: 1.6rem;
-  }
-
-  .section-title {
-    font-size: 1.2rem;
-  }
-
-  .form-input {
-    padding: 10px 12px;
-    font-size: 0.95rem;
-  }
-
-  .button-base {
-    padding: 10px 15px;
-    font-size: 1rem;
-  }
-}/* nota-modifica.component.css */
-
-/* Contenitore principale della pagina di dettaglio/modifica nota */
-.page-container {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  box-sizing: border-box;
-  background-color: var(--page-bg);
-}
-
-/* Card principale per dettagli/modifica */
-.nota-detail-card {
-  background-color: var(--card-bg);
-  padding: 40px 50px;
+  padding: 20px 30px;
   border-radius: 14px;
   box-shadow:
     0 8px 30px var(--shadow-orange-medium),
     0 0 0 1px var(--shadow-orange-light);
   width: 100%;
   max-width: 1200px; /* Larghezza massima aumentata per desktop */
-  margin: 20px auto; /* Centra orizzontalmente e aggiunge margine */
-  position: relative;
-  z-index: 1;
+  margin: 50px auto 20px auto; /* MODIFICATO: AUMENTATO MARGINE SUPERIORE per desktop */
   box-sizing: border-box;
   color: var(--text-color);
-}
-
-/* Pulsante "Torna alla Dashboard" */
-.back-button {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  z-index: 10;
-  padding: 10px 15px;
-  font-size: 1rem;
-}
-
-/* Titoli */
-.form-title {
-  color: var(--title-color);
-  text-align: center;
-  margin-bottom: 30px;
-  font-size: 2.2rem;
-  letter-spacing: 1px;
-  text-shadow: 0 0 8px var(--shadow-orange-light);
-}
-
-.section-title {
-  color: var(--accent-orange);
-  font-size: 1.6rem;
-  margin-top: 25px;
-  margin-bottom: 15px;
-  border-bottom: 2px solid var(--accent-orange-lightest-alpha);
-  padding-bottom: 5px;
-}
-
-.item-title {
-  color: var(--text-color);
-  font-size: 1.3rem;
-  margin-bottom: 10px;
-}
-
-/* Aree di visualizzazione e modifica nota */
-.note-display,
-.note-edit-form {
-  margin-top: 20px;
-  padding: 20px;
-  background-color: var(--secondary-bg-dark);
-  border-radius: 10px;
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
-}
-
-.note-display p {
-  margin-bottom: 10px;
-  line-height: 1.5;
-}
-
-.full-content-area {
-  margin-top: 20px;
-  padding: 15px;
-  background-color: var(--secondary-bg-light);
-  border-radius: 8px;
-  border: 1px dashed var(--border-dark);
-  white-space: pre-wrap; /* Mantiene la formattazione del testo */
-  word-wrap: break-word; /* Rompe le parole lunghe */
-  color: var(--text-light);
-}
-
-/* Form Groups e Input (simili a creazione) */
-.form-group {
-  margin-bottom: 20px;
-}
-
-.form-label {
+  min-height: 300px;
   display: block;
-  margin-bottom: 8px;
-  font-weight: 600;
-  color: var(--text-lighter);
-  font-size: 0.95rem;
 }
 
-.form-input {
-  width: 100%;
-  padding: 12px 14px;
-  border: 1.5px solid var(--border-dark);
-  border-radius: 8px;
-  background-color: var(--secondary-bg-dark);
-  color: var(--text-light);
-  font-size: 1rem;
-  transition: border-color 0.3s, background-color 0.3s, box-shadow 0.3s;
-  box-sizing: border-box;
-}
-
-.form-input:focus {
-  outline: none;
-  border-color: var(--accent-orange);
-  background-color: var(--secondary-bg-hover);
-  box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.2);
-}
-
-textarea.form-input {
-  resize: vertical;
-  min-height: 100px;
-}
-
-/* Azioni del form (bottoni) */
-.form-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 30px;
-}
-
-/* Pulsanti */
-.button-base {
-  padding: 12px 20px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s, box-shadow 0.3s;
-}
-
-.button-primary {
-  background-color: var(--button-primary-bg);
-  color: var(--button-primary-text);
-}
-
-.button-primary:hover {
-  background-color: var(--button-primary-hover-bg);
-  box-shadow: 0 4px 15px var(--shadow-orange-strong);
-}
-
-.button-secondary {
-  background-color: var(--button-secondary-bg);
-  color: var(--button-secondary-text);
-}
-
-.button-secondary:hover {
-  background-color: var(--button-secondary-hover-bg);
-}
-
-.delete-button {
-  background-color: var(--button-danger-bg);
-  color: var(--button-danger-text);
-}
-
-.delete-button:hover {
-  background-color: var(--button-danger-hover-bg);
-}
-
-/* Messaggi */
-.message-base {
-  padding: 10px;
-  border-radius: 8px;
-  margin-bottom: 15px;
+/* Titoli delle sezioni */
+.notes-container h3 {
+  color: var(--title-color); /* Usa la variabile globale */
   text-align: center;
+  margin-bottom: 25px;
+  font-size: 1.8rem;
+  letter-spacing: 1px;
+  text-shadow: 0 0 6px var(--shadow-orange-light); /* Usa la variabile globale */
+}
+
+/* Stile per singola nota */
+.note-item {
+  background-color: var(--secondary-bg-dark); /* Usa la variabile globale */
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.note-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.note-item h4 {
+  color: var(--text-color);
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  word-break: break-word; /* Rompi le parole lunghe */
+}
+
+.note-item .text-secondary {
+  color: var(--text-light); /* Colore testo secondario */
+  font-size: 0.9em;
+  margin-bottom: 5px;
+  word-break: break-word; /* Rompi le parole lunghe */
+}
+
+.note-item .note-preview {
+  font-style: italic;
+  font-size: 0.95em;
+  max-height: 60px; /* Limita l'altezza della preview */
+  overflow: hidden; /* Nasconde il testo in eccesso */
+  text-overflow: ellipsis; /* Aggiunge i puntini di sospensione */
+  white-space: normal; /* Permette il wrap del testo */
+  line-height: 1.4;
+  margin-bottom: 15px;
+}
+
+/* Azioni per la singola nota (modifica, elimina) */
+.note-actions {
+  display: flex;
+  gap: 10px; /* Spazio tra i bottoni */
+  margin-top: 15px;
+}
+
+.note-actions .button-base {
+  flex-grow: 1; /* Permette ai bottoni di espandersi */
+  padding: 8px 12px;
   font-size: 0.95rem;
+  width: auto; /* Lascia che flex-grow gestisca la larghezza */
+}
+
+.note-separator {
+  border: none;
+  border-top: 1px dashed var(--border-dark); /* Linea tratteggiata */
+  margin: 20px 0;
+}
+
+/* Bottone Crea Nuova Nota */
+.create-new-note-button {
+  margin: 0 auto 30px auto; /* Centra e aggiunge margine */
+  display: block; /* Necessario per margin: auto */
+  max-width: 300px; /* Limita la larghezza del bottone */
+}
+
+/* Messaggi (loading, no notes, error) */
+.message-base {
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 500;
+  border: 1px solid var(--border-light);
+  background-color: var(--secondary-bg-light);
+  color: var(--text-color);
+}
+
+.no-notes-message {
+  margin-top: 30px;
+  color: var(--text-lighter);
+  /* Aggiunte per centrare e spaziare il bottone */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.no-notes-message .create-new-note-button {
+  margin-top: 20px; /* Aggiunge spazio sopra il bottone "Crea Nuova Nota" */
+  margin-bottom: 0; /* Assicura che non ci sia margine inferiore in più */
 }
 
 .loading-message {
   color: var(--text-lighter);
 }
-.success-message {
-  background-color: var(--message-bg-success);
-  color: var(--message-text-success);
-  border: 1px solid var(--message-border-success);
-}
 .error-message {
+  color: var(--error-color);
   background-color: var(--message-bg-error);
-  color: var(--message-text-error);
   border: 1px solid var(--message-border-error);
 }
 
 
 /* Media Queries per layout responsivo */
 @media (max-width: 1250px) { /* Larghezza adattiva per schermi grandi */
-  .nota-detail-card {
+  .notes-container {
     max-width: calc(100% - 40px);
   }
 }
 
 @media (max-width: 768px) {
-  .nota-detail-card {
-    padding: 30px 20px; /* Riduci il padding su schermi più piccoli */
-    margin: 20px; /* Aggiungi un margine esterno per non attaccarsi ai bordi */
-    max-width: calc(100% - 30px); /* Assicura che non fuoriesca */
+  .notes-container {
+    padding: 10px 15px;
+    margin: 20px 10px 10px 10px; /* Margine superiore ridotto per mobile */
   }
 
-  .back-button {
-    position: static; /* Rimuovi il posizionamento assoluto su mobile */
-    margin-bottom: 20px; /* Aggiungi spazio sotto il bottone */
-    width: 100%;
-    text-align: center;
-  }
-
-  .form-title {
-    font-size: 1.8rem; /* Riduci la dimensione del titolo principale */
-    margin-top: 10px; /* Aggiungi margine superiore se back-button è statico */
-  }
-
-  .section-title {
-    font-size: 1.4rem;
-  }
-
-  .form-group {
+  .notes-container h3 {
+    font-size: 1.5rem;
     margin-bottom: 15px;
   }
 
-  .form-actions {
-    flex-direction: column; /* I bottoni si stackano su mobile */
-    gap: 15px;
+  .action-button.primary-button {
+      width: 100%; /* Rendi il bottone "Crea Nuova Nota" full width */
+      margin-bottom: 15px; /* Aggiungi un margine sotto il bottone */
   }
 
-  .form-actions .button-base {
-    width: 100%; /* I bottoni occupano tutta la larghezza */
+  .note-item {
+    padding: 12px; /* Riduci il padding della singola nota */
+    border-radius: 8px;
+  }
+
+  .note-item h4 {
+    font-size: 1.1rem; /* Riduci la dimensione del titolo della nota */
+    margin-bottom: 8px;
+  }
+
+  .note-actions {
+    flex-direction: column; /* I bottoni di modifica/elimina su mobile si stackano */
+  }
+
+  .note-actions .button-base {
+    width: 100%; /* I bottoni si espandono a tutta larghezza */
   }
 }
 
 @media (max-width: 480px) {
-  .nota-detail-card {
-    padding: 25px 15px;
-    margin: 10px;
-  }
-
-  .form-title {
-    font-size: 1.6rem;
-  }
-
-  .section-title {
-    font-size: 1.2rem;
-  }
-
-  .form-input {
-    padding: 10px 12px;
-    font-size: 0.95rem;
-  }
-
-  .button-base {
+  .notes-container {
     padding: 10px 15px;
+    margin: 20px 10px 10px 10px; /* Margine superiore ridotto per mobile */
+  }
+
+  .notes-container h3 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+  }
+
+  .note-item {
+    padding: 10px;
+  }
+
+  .note-item h4 {
     font-size: 1rem;
+  }
+
+  .note-item .text-secondary {
+    font-size: 0.85em;
+  }
+
+  .note-item .note-preview {
+    font-size: 0.9em;
+    max-height: 50px;
+  }
+
+  .note-actions .button-base {
+    font-size: 0.9rem;
+    padding: 6px 10px;
   }
 }
 
-@media (max-width: 768px) {
-  .nota-detail-card {
-    padding: 30px 20px; /* Riduci il padding su schermi più piccoli */
-    margin: 20px;
-    max-width: calc(100% - 30px);
-  }
-
-  .back-button {
-    /* Questa regola rimane in quanto gestisce il comportamento specifico su mobile.
-       Ora sarà coerente con il comportamento desktop. */
-    position: static;
-    margin-bottom: 20px;
-    width: 100%;
-    text-align: center;
-  }
-
-  .form-title {
-    font-size: 1.8rem;
-    margin-top: 10px; /* Questo margine compenserà l'assenza del bottone fisso */
+@media (max-width: 1250px) { /* Larghezza adattiva per schermi grandi */
+  .notes-container {
+    max-width: calc(100% - 40px);
+    margin: 40px auto 20px auto; /* Leggermente ridotto per schermi tra 1250px e 768px */
   }
 }

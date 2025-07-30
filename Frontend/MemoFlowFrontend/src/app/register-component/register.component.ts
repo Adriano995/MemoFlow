@@ -21,8 +21,8 @@ export class RegisterComponent {
     private router: Router
   ){
     this.registerForm = this.fb.group({
-      nome: ['', Validators.required], // Aggiunto 'nome'
-      cognome: ['', Validators.required], // Aggiunto 'cognome'
+      nome: ['', Validators.required], 
+      cognome: ['', Validators.required], 
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     })
@@ -30,22 +30,18 @@ export class RegisterComponent {
 
   async onSubmit(){
     if (this.registerForm.valid) {
-      // Estrai nome e cognome oltre a email e password
       const { nome, cognome, email, password } = this.registerForm.value;
-      if (!email || !password) return; // Potresti voler aggiungere controlli per nome/cognome qui se sono required
+      if (!email || !password) return; 
 
       try {
-        // Passa tutti i dati al servizio, che li formatterà come UtenteCreateDTO
-        await this.authService.register(nome, cognome, email, password); // Modificato qui
+        await this.authService.register(nome, cognome, email, password); 
         console.log('Registrazione riuscita!');
-        this.router.navigate(['/login']); // Redirect qui
+        this.router.navigate(['/login']);
       } catch (error) {
         console.error('Errore durante la registrazione:', error);
-        // mostra errore a schermo
       }
     } else {
         console.warn('Form non valido!');
-        // Logica per mostrare errori di validazione all'utente
     }
   }
 }

@@ -1,0 +1,115 @@
+.form-container {
+  padding: 20px 30px;
+  max-width: 800px; 
+  margin: 30px auto; 
+  box-sizing: border-box;
+  color: var(--text-color); 
+}
+
+h2 {
+  color: var(--accent-orange); 
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 2em;
+}
+
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: var(--text-color-light);
+}
+
+.form-group input[type="text"],
+.form-group input[type="date"],
+.form-group input[type="time"],
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--input-bg); 
+  color: var(--text-color);
+  font-size: 1em;
+  box-sizing: border-box; 
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="date"]:focus,
+.form-group input[type="time"]:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--accent-orange); 
+  box-shadow: 0 0 0 3px rgba(var(--accent-orange-rgb), 0.2); 
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+
+.date-time-group .input-group {
+  display: flex;
+  gap: 15px; 
+}
+
+.date-time-group .input-group input {
+  flex: 1; 
+}
+
+
+.error-message {
+  color: var(--error-red); 
+  font-size: 0.85em;
+  margin-top: 5px;
+}
+
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end; 
+  gap: 15px; 
+  margin-top: 30px;
+}
+
+.btn {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-primary {
+  background-color: var(--accent-orange);
+  color: white;
+}
+
+.btn-primary:hover:not([disabled]) {
+  background-color: var(--accent-orange-dark); 
+}
+
+.btn-primary[disabled] {
+  background-color: var(--disabled-bg);
+  color: var(--disabled-text);
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background-color: var(--secondary-btn-bg); 
+  color: var(--secondary-btn-text);
+  border: 1px solid var(--secondary-btn-border);
+}
+
+.btn-secondary:hover {
+  background-color: var(--secondary-btn-hover-bg);
+  color: var(--secondary-btn-hover-text);
+}
