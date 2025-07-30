@@ -23,10 +23,6 @@ public interface EventoRepository extends JpaRepository<Evento, Long>  {
 
     List<Evento> findAllByDataFineBeforeAndUtenteId(LocalDateTime dataFine, Long utenteId);
 
-    List<Evento> findAllByDataInizioAfterAndDataFineBeforeAndUtenteId(
-        LocalDateTime dataInizio,
-        LocalDateTime dataFine,
-        Long utenteId
-    );
+    List<Evento> findAllByDataInizioAfterAndDataFineBeforeAndUtenteId(LocalDateTime dataInizio, LocalDateTime dataFine, Long utenteId);
 
 }

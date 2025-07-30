@@ -2,14 +2,15 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PreviewNotaComponent } from "../preview-nota-component/preview-nota-component";
 import { AuthService } from '../auth/auth.service';
-import { PreviewNotaService } from '../preview-nota-component/preview-nota.service';
+import { PreviewNotaService } from '../services/preview-nota.service';
 import { FormsModule } from '@angular/forms';
 import { UserComponent } from "../user/user.component";
+import { PreviewEventoComponent } from '../preview-evento/preview-evento';
 
 @Component({
   selector: 'app-dashboard-calendario',
   standalone: true,
-  imports: [CommonModule, PreviewNotaComponent, FormsModule, UserComponent, UserComponent],
+  imports: [CommonModule, PreviewNotaComponent, FormsModule, UserComponent, UserComponent, PreviewEventoComponent],
   providers: [],
   templateUrl: './dashboard-calendario.component.html',
   styleUrls: ['./dashboard-calendario.component.css']

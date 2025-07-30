@@ -8,7 +8,8 @@
     </div>
 
     <div class="weekdays-grid">
-      <div *ngFor="let dayName of weekdays">{{ dayName }}</div> </div>
+      <div *ngFor="let dayName of weekdays">{{ dayName }}</div>
+    </div>
 
     <div class="calendar-grid">
       <div
@@ -23,10 +24,14 @@
           'not-current-month': day.getMonth() !== viewDate.getMonth()
         }"
       >
-        <span class="day-number">{{ day.getDate() }}</span> <span *ngIf="hasNote(day)" class="nota-indicatore"></span>
+        <span class="day-number">{{ day.getDate() }}</span>
+        <span *ngIf="hasNote(day)" class="nota-indicatore"></span>
       </div>
     </div>
   </div>
 
   <app-nota-component [date]="selectedDate" [userId]="currentUserId"></app-nota-component>
+
+  <app-preview-evento [date]="selectedDate" [userId]="currentUserId"></app-preview-evento>
+  
 </div>

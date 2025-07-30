@@ -3,7 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ThemeService } from './theme';
 import { UserComponent } from "./user/user.component";
-import { Evento } from "./evento-component/evento.component";
+import { EventoCreazioneComponent } from './evento-creazione/evento-creazione';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +12,7 @@ import { Evento } from "./evento-component/evento.component";
     RouterOutlet,
     CommonModule,
     UserComponent,
-    Evento
+    EventoCreazioneComponent
 ],
   providers: [ThemeService], 
   templateUrl: './app.component.html',

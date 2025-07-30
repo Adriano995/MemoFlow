@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Evento } from './evento';
+import { PreviewEvento } from './preview-evento';
 
-describe('Evento', () => {
-  let component: Evento;
-  let fixture: ComponentFixture<Evento>;
+describe('PreviewEvento', () => {
+  let component: PreviewEvento;
+  let fixture: ComponentFixture<PreviewEvento>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Evento]
+      imports: [PreviewEvento]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Evento);
+    fixture = TestBed.createComponent(PreviewEvento);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

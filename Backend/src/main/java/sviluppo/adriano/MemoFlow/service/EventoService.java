@@ -73,12 +73,12 @@ public class EventoService extends AbstractCrudService<
         if (updateDto.getDataFine() != null) {
             entity.setDataFine(updateDto.getDataFine());
         }
-        if (updateDto.getOraInizio() != null) {
+        /*if (updateDto.getOraInizio() != null) {
             entity.setOraInizio(updateDto.getOraInizio());
         }
         if (updateDto.getOraFine() != null) {
             entity.setOraFine(updateDto.getOraFine());
-        }
+        }*/
         if (updateDto.getLuogo() != null) {
             entity.setLuogo(updateDto.getLuogo());
         }
@@ -158,14 +158,20 @@ public class EventoService extends AbstractCrudService<
     }
 
     @Transactional(readOnly = true)
-    public List<EventoDTO> findAllByDataInizioAfterAndDataFineBeforeAndUtenteId(
-        LocalDateTime dataInizio,
-        LocalDateTime dataFine,
-        Long utenteId
-    ) {
+    public List<EventoDTO> findAllByDataInizioAfterAndDataFineBeforeAndUtenteId(LocalDateTime dataInizio, LocalDateTime dataFine, Long utenteId) {
         return repository.findAllByDataInizioAfterAndDataFineBeforeAndUtenteId(dataInizio, dataFine, utenteId)
             .stream()
             .map(this::toDto)
             .toList();
     }
+
+    /*public List<EventoDTO> getEventoByDataCreazioneAndUtenteId(LocalDate data, Long utenteId) {
+        LocalDateTime startOfDay = data.atStartOfDay();
+        LocalDateTime endOfDay = data.atTime(23, 59, 59, 999_999_999);
+
+        List<Evento> eventi = repository.findAllByDataInizioAfterAndDataFineBeforeAndUtenteId(startOfDay, endOfDay, utenteId);
+        return eventi.stream()
+                .map(eventoMapper::toDto)
+                .collect(Collectors.toList());
+    }*/
 }

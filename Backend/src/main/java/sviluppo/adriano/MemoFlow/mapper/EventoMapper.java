@@ -23,12 +23,12 @@ public interface EventoMapper {
     @Mapping(source = "stato", target = "stato", qualifiedByName = "stringToStato")
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "utente", ignore = true)
-    Evento toEntity(EventoDTO dto);
+    Evento toEntity(EventoDTO dto); // Questo mapper da DTO a Entity non dovrebbe essere per la creazione, ma per aggiornamenti forse.
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "stato", qualifiedByName = "stringToStato")
-    //@Mapping(source = "utenteId", target = "utente", qualifiedByName = "idToUtente")
-    Evento toEntity(EventoCreateDTO dto);
+    //@Mapping(source = "utenteId", target = "utente", qualifiedByName = "idToUtente") // Commentato
+    Evento toEntity(EventoCreateDTO dto); // Mappa da EventoCreateDTO a Evento Entity
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "utente", ignore = true)

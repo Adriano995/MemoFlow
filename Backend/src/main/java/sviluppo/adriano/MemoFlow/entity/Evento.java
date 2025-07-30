@@ -6,6 +6,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -31,8 +32,8 @@ public class Evento {
     private LocalDateTime dataInizio;
     private LocalDateTime dataFine;
 
-    private LocalDateTime oraInizio;
-    private LocalDateTime oraFine;
+    //private LocalDateTime oraInizio;
+    //private LocalDateTime oraFine;
 
     @Column(columnDefinition = "TEXT")
     private String luogo;
@@ -40,13 +41,14 @@ public class Evento {
     @Enumerated(EnumType.STRING)
     private EventoStato stato;
 
-    @ManyToOne(optional = false)
+    
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "utente_id", nullable = false)
     private Utente utente;
 
     public Evento() {}
 
-    public Evento(Long id, String titolo, String descrizione, LocalDateTime dataInizio, LocalDateTime dataFine,
+    /*public Evento(Long id, String titolo, String descrizione, LocalDateTime dataInizio, LocalDateTime dataFine,
             LocalDateTime oraInizio, LocalDateTime oraFine, String luogo, EventoStato stato, Utente utente) {
         this.id = id;
         this.titolo = titolo;
@@ -58,7 +60,19 @@ public class Evento {
         this.luogo = luogo;
         this.stato = stato;
         this.utente = utente;
-    }
+    }*/
+
+    public Evento(Long id, String titolo, String descrizione, LocalDateTime dataInizio, LocalDateTime dataFine,
+            String luogo, EventoStato stato, Utente utente) { 
+        this.id = id;
+        this.titolo = titolo;
+        this.descrizione = descrizione;
+        this.dataInizio = dataInizio;
+        this.dataFine = dataFine;
+        this.luogo = luogo;
+        this.stato = stato;
+        this.utente = utente;
+    }   
 
     public Long getId() {
         return id;
@@ -100,7 +114,7 @@ public class Evento {
         this.dataFine = dataFine;
     }
 
-    public LocalDateTime getOraInizio() {
+    /*public LocalDateTime getOraInizio() {
         return oraInizio;
     }
 
@@ -114,7 +128,7 @@ public class Evento {
 
     public void setOraFine(LocalDateTime oraFine) {
         this.oraFine = oraFine;
-    }
+    }*/
 
     public String getLuogo() {
         return luogo;

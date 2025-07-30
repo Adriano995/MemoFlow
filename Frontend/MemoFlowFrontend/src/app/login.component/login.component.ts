@@ -1,4 +1,3 @@
-// login.component.ts - Nessuna modifica necessaria per ora.
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -34,10 +33,9 @@ export class LoginComponent {
       const success = await this.authService.login(email, password);
       if (success) {
         console.log('Login riuscito!');
-        this.router.navigate(['/dashboard']); // <-- redirect qui
+        this.router.navigate(['/dashboard']); 
       } else {
         console.log('Login fallito');
-        // mostra errore a schermo
       }
     }
   }

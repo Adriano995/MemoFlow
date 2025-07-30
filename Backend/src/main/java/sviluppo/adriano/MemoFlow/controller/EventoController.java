@@ -1,6 +1,7 @@
 package sviluppo.adriano.MemoFlow.controller;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -160,17 +161,22 @@ public class EventoController {
         return ResponseEntity.ok(eventi);
     }
 
-    @Operation(summary = "Trova eventi tra due date per utente corrente")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Eventi trovati")
-    })
     @GetMapping("/tra-due-date")
-    public ResponseEntity<List<EventoDTO>> findByDataInizioEFine(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime inizio,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fine) {
-        Long utenteId = eventoService.getCurrentUserId(); 
-        List<EventoDTO> eventi = eventoService.findAllByDataInizioAfterAndDataFineBeforeAndUtenteId(inizio, fine, utenteId);
-        return ResponseEntity.ok(eventi);
-    }
+    public ResponseEntity<List<EventoDTO>> getEventiBetweenDates(
+            @RequestParam("inizio") String inizioStr,
+            @RequestParam("fine") String fineStr,
+            @RequestParam("userId") Long userId) {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
+            LocalDateTime inizio = LocalDateTime.parse(inizioStr, formatter);
+            LocalDateTime fine = LocalDateTime.parse(fineStr, formatter);
+
+            List<EventoDTO> eventi = eventoService.findAllByDataInizioAfterAndDataFineBeforeAndUtenteId(inizio, fine, userId);
+            return ResponseEntity.ok(eventi);
+        } catch (Exception e) {
+            System.err.println("Errore nel recupero eventi tra due date: " + e.getMessage());
+            return ResponseEntity.status(500).build();
+        }
+    }
 }

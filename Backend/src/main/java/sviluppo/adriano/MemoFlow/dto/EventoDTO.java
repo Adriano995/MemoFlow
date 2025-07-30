@@ -9,8 +9,8 @@ public class EventoDTO {
     private String descrizione;
     private LocalDateTime dataInizio;
     private LocalDateTime dataFine;
-    private LocalDateTime oraInizio;
-    private LocalDateTime oraFine;
+    //private LocalDateTime oraInizio;
+    //private LocalDateTime oraFine;
     private String luogo;
     private String stato;
 
@@ -18,7 +18,7 @@ public class EventoDTO {
 
     public EventoDTO() {}
 
-    public EventoDTO(Long id, String titolo, String descrizione, LocalDateTime dataInizio, LocalDateTime dataFine,
+    /*public EventoDTO(Long id, String titolo, String descrizione, LocalDateTime dataInizio, LocalDateTime dataFine,
             LocalDateTime oraInizio, LocalDateTime oraFine, String luogo, String stato, UtenteDTO utenteDTO) {
         this.id = id;
         this.titolo = titolo;
@@ -27,6 +27,18 @@ public class EventoDTO {
         this.dataFine = dataFine;
         this.oraInizio = oraInizio;
         this.oraFine = oraFine;
+        this.luogo = luogo;
+        this.stato = stato;
+        this.utenteDTO = utenteDTO;
+    }*/
+
+    public EventoDTO(Long id, String titolo, String descrizione, LocalDateTime dataInizio, LocalDateTime dataFine,
+            String luogo, String stato, UtenteDTO utenteDTO) { // Modifica il costruttore
+        this.id = id;
+        this.titolo = titolo;
+        this.descrizione = descrizione;
+        this.dataInizio = dataInizio;
+        this.dataFine = dataFine;
         this.luogo = luogo;
         this.stato = stato;
         this.utenteDTO = utenteDTO;
@@ -72,7 +84,7 @@ public class EventoDTO {
         this.dataFine = dataFine;
     }
 
-    public LocalDateTime getOraInizio() {
+    /*public LocalDateTime getOraInizio() {
         return oraInizio;
     }
 
@@ -86,8 +98,7 @@ public class EventoDTO {
 
     public void setOraFine(LocalDateTime oraFine) {
         this.oraFine = oraFine;
-    }
-
+    }*/
     public String getLuogo() {
         return luogo;
     }

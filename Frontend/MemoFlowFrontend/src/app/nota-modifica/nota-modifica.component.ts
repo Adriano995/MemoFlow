@@ -3,8 +3,8 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PreviewNotaService } from '../preview-nota-component/preview-nota.service'; 
-import { Nota } from '../preview-nota-component/preview-note.model'; 
+import { PreviewNotaService } from '../services/preview-nota.service'; 
+import { Nota } from '../models/preview-note.model'; 
 import { TipoNota } from '../preview-nota-component/tipo-nota.enum'; 
 import { SafeHtmlPipe } from './safe-html.pipe'; // <-- AGGIUNGI QUESTA RIGA: Assicurati che il percorso sia corretto
 
