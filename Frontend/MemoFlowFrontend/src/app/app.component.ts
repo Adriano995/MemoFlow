@@ -10,14 +10,13 @@ import { EventoCreazioneComponent } from './evento-creazione/evento-creazione';
 @Component({
   selector: 'app-root',
   standalone: true,
-imports: [
-  RouterOutlet,
-  CommonModule,
-  RouterModule,
-  UserComponent,
-  EventoCreazioneComponent
-],
-
+  imports: [
+    RouterOutlet,
+    CommonModule,
+    RouterModule,
+    UserComponent,
+    EventoCreazioneComponent
+  ],
   providers: [ThemeService], 
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
@@ -25,10 +24,11 @@ imports: [
 export class AppComponent implements OnInit {
   title = 'MemoFlowFrontend';
 
-  constructor(private themeService: ThemeService) {}
+  utenteId = 1;
 
-  ngOnInit(): void {
-  }
+  constructor(private themeService: ThemeService, private authService: AuthService, private router: Router) {}
+
+  ngOnInit(): void {}
 
   toggleTheme(): void {
     this.themeService.toggleTheme();
@@ -36,5 +36,23 @@ export class AppComponent implements OnInit {
 
   isLightTheme(): boolean {
     return this.themeService.getCurrentTheme() === 'light';
+  }
+
+  isLoggedIn(): boolean {
+    return this.authService.isAuthenticated();
+  }
+
+  get userId(): number | null {
+    return this.authService.getUserId();
+  }
+
+  shouldShowNavbar(): boolean {
+    const hiddenRoutes = ['/login', '/register'];
+    return this.isLoggedIn() && !hiddenRoutes.includes(this.router.url);
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }
