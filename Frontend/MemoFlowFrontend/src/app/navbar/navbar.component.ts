@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
-import { UserService } from '../user.service';
-import { User } from '../user.model';
 import { Observable, of } from 'rxjs';
+import { User } from '../user/user.model';
+import { UserService } from '../user/user.service';
 
 @Component({
   selector: 'app-navbar',
