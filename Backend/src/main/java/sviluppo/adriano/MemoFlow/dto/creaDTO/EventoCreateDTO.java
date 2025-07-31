@@ -61,7 +61,7 @@ public class EventoCreateDTO {
         this.dataInizio = dataInizio;
     }
 
-    LocalDateTime getDataFine() {
+    public LocalDateTime getDataFine() {
         return dataFine;
     }
 

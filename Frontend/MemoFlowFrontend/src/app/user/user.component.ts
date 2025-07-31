@@ -8,6 +8,8 @@ import { User } from './user.model';
 import { Subject, take } from 'rxjs'; // Importa Subject e take
 import { catchError } from 'rxjs/operators'; // Importa catchError
 import { of } from 'rxjs'; // Importa of
+import { Router } from '@angular/router';
+import { AuthService } from '../auth/auth.service';
 
 
 @Component({
@@ -126,7 +128,7 @@ onSubmit(): void {
         // Questo blocco si esegue solo se la chiamata API ha successo o se catchError ha emesso null
         if (result !== null) { // Controlla che non sia un risultato di errore
           this.successMessage = 'Profilo aggiornato con successo!';
-          this.router.navigate(['/dashboard']); // Naviga solo in caso di successo
+          this.router.navigate(['/dashboard']); // Naviga alla pagina del dashboard o dove preferisci
         }
         this.loading = false; // Ferma lo stato di caricamento
       });
@@ -158,7 +160,7 @@ onSubmit(): void {
       if (result !== null) { // Solo se l'operazione ha avuto successo
         this.authService.logout();
         this.successMessage = 'Account eliminato con successo.';
-        this.router.navigate(['/login']);
+        this.router.navigate(['/login']); // Naviga alla pagina di login
       }
       this.loading = false;
     });
