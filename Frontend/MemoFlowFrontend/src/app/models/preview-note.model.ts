@@ -1,5 +1,5 @@
 import { User } from '../user/user.model';
-import { TipoNota } from './tipo-nota.enum';
+import { TipoNota } from '../preview-nota-component/tipo-nota.enum';
 export interface Nota {
   id?: number;
   titolo: string;

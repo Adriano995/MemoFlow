@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 public class PasswordEncoderConfig {
 
-    //GENERARE TOKEN QUI
     @Component
     @Configuration
     public class PasswordConfig {

@@ -5,14 +5,17 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.0</version>
+		<version>3.2.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>sviluppo.adriano</groupId>
 	<artifactId>MemoFlow</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.6.1-beta</version>
 	<name>MemoFlow</name>
 	<description>Demo project for Spring Boot</description>
+	
+	<packaging>jar</packaging> <!-- Default ma ho preferito specificare -->
+
 	<url/>
 	<licenses>
 		<license/>
@@ -72,7 +75,11 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>42.7.3</version>
+			<version>42.7.6</version>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
 		</dependency>
 
 		<dependency>

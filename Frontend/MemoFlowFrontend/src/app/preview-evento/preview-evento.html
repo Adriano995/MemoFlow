@@ -1,0 +1,39 @@
+<div class="events-container card-base">
+  <h3>Eventi per il {{ date | date:'dd/MM/yyyy' }}</h3>
+
+  <div *ngIf="isLoading" class="loading-indicator">
+    Caricamento eventi...
+  </div>
+
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="!isLoading && eventi.length === 0 && !errorMessage" class="no-events">
+    <p>Nessun evento per questa data.</p>
+    
+  </div>
+
+  <button (click)="goToCreateEvento()" class="btn btn-primary">Crea un Evento per questo giorno</button>
+
+  
+  <div *ngIf="eventi.length > 0" class="event-list">
+    <div *ngFor="let evento of eventi" class="event-card">
+      <div class="event-header">
+        <h4>{{ evento.titolo }}</h4>
+        <span [ngClass]="['status-tag', getStatoClass(evento.stato)]">{{ evento.stato | titlecase }}</span>
+      </div>
+      <p *ngIf="evento.descrizione"><strong>Descrizione:</strong> {{ evento.descrizione }}</p>
+
+      <p>Inizio: {{ evento.dataInizio | date:'short' }}</p>
+      <p>Fine: {{ evento.dataFine | date:'short' }}</p>
+
+      <p *ngIf="evento.luogo"><strong>Luogo:</strong> {{ evento.luogo }}</p>
+
+      <div class="event-actions">
+        <button (click)="editEvento(evento.id!)" class="btn btn-secondary">Modifica</button>
+        <button (click)="deleteEvento(evento.id!)" class="btn btn-danger">Elimina</button>
+      </div>
+    </div>
+  </div>
+</div>

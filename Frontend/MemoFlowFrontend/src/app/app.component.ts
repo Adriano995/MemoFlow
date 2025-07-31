@@ -5,6 +5,7 @@ import { ThemeService } from './theme';
 import { UserComponent } from "./user/user.component";
 import { RouterModule, Router } from '@angular/router';
 import { AuthService } from './auth/auth.service';
+import { EventoCreazioneComponent } from './evento-creazione/evento-creazione';
 
 @Component({
   selector: 'app-root',
@@ -13,8 +14,9 @@ import { AuthService } from './auth/auth.service';
     RouterOutlet,
     CommonModule,
     RouterModule,
-    UserComponent
-],
+    UserComponent,
+    EventoCreazioneComponent
+  ],
   providers: [ThemeService], 
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
@@ -24,10 +26,9 @@ export class AppComponent implements OnInit {
 
   utenteId = 1;
 
-  constructor(private themeService: ThemeService,private authService: AuthService,private router: Router) {}
-  
-  ngOnInit(): void {
-  }
+  constructor(private themeService: ThemeService, private authService: AuthService, private router: Router) {}
+
+  ngOnInit(): void {}
 
   toggleTheme(): void {
     this.themeService.toggleTheme();

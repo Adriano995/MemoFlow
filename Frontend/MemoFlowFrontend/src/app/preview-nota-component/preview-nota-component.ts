@@ -2,8 +2,8 @@
 
 import { Component, Input, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PreviewNotaService } from './preview-nota.service';
-import { Nota } from './preview-note.model';
+import { PreviewNotaService } from '../services/preview-nota.service';
+import { Nota } from '../models/preview-note.model';
 import { Router } from '@angular/router';
 
 @Component({
@@ -20,7 +20,7 @@ export class PreviewNotaComponent implements OnChanges {
   nota: Nota[] = [];
   loading = false;
   error: string | null = null;
-  noNotesMessage: string = ''; // Questo conterrà il messaggio dinamico
+  noNotesMessage: string = ''; 
 
   constructor(
     private previewNotaService: PreviewNotaService,
@@ -33,17 +33,17 @@ export class PreviewNotaComponent implements OnChanges {
     if (this.date && this.userId) {
       console.log('Data and UserId present, fetching notes...');
       this.fetchNota();
-      this.setNoNotesMessage(this.date); // Aggiorna il messaggio quando una data è selezionata
+      this.setNoNotesMessage(this.date); 
     } else if (this.date && !this.userId) {
         console.warn('Data present but userId missing.');
         this.error = "ID utente non disponibile. Effettua il login per visualizzare le note.";
         this.nota = [];
-        this.setNoNotesMessage(this.date); // Aggiorna il messaggio anche qui
+        this.setNoNotesMessage(this.date); 
         this.cdr.detectChanges();
     } else {
         console.log('No date selected, clearing notes.');
         this.nota = [];
-        this.noNotesMessage = 'Seleziona un giorno per visualizzare o creare note.'; // Messaggio iniziale o quando nessuna data è selezionata
+        this.noNotesMessage = 'Seleziona un giorno per visualizzare o creare note.'; 
         this.cdr.detectChanges();
     }
   }
@@ -51,22 +51,22 @@ export class PreviewNotaComponent implements OnChanges {
   private setNoNotesMessage(date: Date): void {
     const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
     const formattedDate = date.toLocaleDateString('it-IT', options);
-    this.noNotesMessage = `Nessuna nota disponibile per il giorno ${formattedDate}.`; //
+    this.noNotesMessage = `Nessuna nota disponibile per il giorno ${formattedDate}.`; 
   }
 
   async fetchNota() {
     if (!this.date || !this.userId) {
       console.warn('Impossibile recuperare le note: data o ID utente mancante.');
       this.nota = [];
-      this.loading = false; // Assicurati che loading sia false anche qui
-      this.cdr.detectChanges(); //
+      this.loading = false; 
+      this.cdr.detectChanges(); 
       return;
     }
 
     this.loading = true;
     this.error = null;
     this.nota = [];
-    this.cdr.detectChanges(); // Forza il rilevamento per mostrare "Caricamento..."
+    this.cdr.detectChanges(); 
 
     try {
       const year = this.date.getFullYear();
@@ -82,8 +82,8 @@ export class PreviewNotaComponent implements OnChanges {
       console.error('Errore nel recupero delle note:', err);
       this.error = 'Impossibile caricare le note. Riprova più tardi.';
     } finally {
-      this.loading = false; // Imposta loading su false dopo il recupero (successo o fallimento)
-      this.cdr.detectChanges(); // MOLTO IMPORTANTE: Forza l'aggiornamento della vista qui
+      this.loading = false;
+      this.cdr.detectChanges();
     }
   }
 
@@ -144,12 +144,12 @@ export class PreviewNotaComponent implements OnChanges {
     try {
       await this.previewNotaService.deleteNota(notaId);
       console.log(`Nota con ID ${notaId} eliminata con successo.`);
-      await this.fetchNota(); // Ricarica le note dopo l'eliminazione
+      await this.fetchNota(); 
     } catch (error) {
       console.error(`Errore durante l'eliminazione della nota ${notaId}:`, error);
       alert('Errore durante l\'eliminazione della nota. Riprova più tardi.');
     } finally {
-      this.cdr.detectChanges(); // Forza l'aggiornamento dopo eliminazione e ricarica
+      this.cdr.detectChanges();
     }
   }
 }
