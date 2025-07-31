@@ -1,1 +1,43 @@
-<p>user-modifica.component works!</p>
+<h2>Modifica Dati Utente</h2>
+
+<form [formGroup]="form" (ngSubmit)="onSaveUser()" novalidate>
+  <label>
+    Nome:
+    <input formControlName="nome" type="text" />
+  </label>
+  <br />
+
+  <label>
+    Cognome:
+    <input formControlName="cognome" type="text" />
+  </label>
+  <br />
+
+  <label>
+    Email:
+    <input formControlName="email" type="email" />
+  </label>
+  <br />
+
+  <button type="submit" [disabled]="form.invalid">Salva Anagrafica</button>
+</form>
+
+<hr>
+
+<h2>Cambia Password</h2>
+
+<form [formGroup]="passwordForm" (ngSubmit)="onChangePassword()" novalidate>
+  <label>
+    Password Attuale:
+    <input formControlName="oldPassword" type="password" />
+  </label>
+  <br />
+
+  <label>
+    Nuova Password:
+    <input formControlName="newPassword" type="password" />
+  </label>
+  <br />
+
+  <button type="submit" [disabled]="passwordForm.invalid">Aggiorna Password</button>
+</form>

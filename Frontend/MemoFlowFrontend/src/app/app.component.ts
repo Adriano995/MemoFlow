@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ThemeService } from './theme';
-import { UserComponent } from "./user/user.component";
 import { RouterModule, Router } from '@angular/router';
 import { AuthService } from './auth/auth.service';
 import { EventoCreazioneComponent } from './evento-creazione/evento-creazione';
+import { UserComponent } from './user/user.component';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +24,7 @@ import { EventoCreazioneComponent } from './evento-creazione/evento-creazione';
 export class AppComponent implements OnInit {
   title = 'MemoFlowFrontend';
 
-  utenteId = 1;
+  //utenteId = 1;
 
   constructor(private themeService: ThemeService, private authService: AuthService, private router: Router) {}
 

@@ -10,7 +10,7 @@ import { PreviewEventoComponent } from '../preview-evento/preview-evento';
 @Component({
   selector: 'app-dashboard-calendario',
   standalone: true,
-  imports: [CommonModule, PreviewNotaComponent, FormsModule, UserComponent, UserComponent, PreviewEventoComponent],
+  imports: [CommonModule, PreviewNotaComponent, FormsModule, UserComponent, PreviewEventoComponent],
   providers: [],
   templateUrl: './dashboard-calendario.component.html',
   styleUrls: ['./dashboard-calendario.component.css']
