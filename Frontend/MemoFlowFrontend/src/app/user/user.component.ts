@@ -1,21 +1,21 @@
-import { Component, OnInit, OnDestroy } from '@angular/core'; // Importa OnDestroy
+import { Component, OnInit, OnDestroy } from '@angular/core'; 
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../auth/auth.service';
+import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from './user.service';
 import { User } from './user.model';
-import { Subject, take } from 'rxjs'; // Importa Subject e take
-import { catchError } from 'rxjs/operators'; // Importa catchError
-import { of } from 'rxjs'; // Importa of
-import { Router } from '@angular/router';
-import { AuthService } from '../auth/auth.service';
+import { Subject, take } from 'rxjs'; 
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs'; 
 
 
 @Component({
   selector: 'app-user',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterLink],
   templateUrl: './user.component.html',
-  styleUrls: ['./user.component.css']
+  styleUrl: './user.component.css'
 })
 
 export class UserComponent implements OnInit, OnDestroy { // Implementa OnDestroy
@@ -66,8 +66,8 @@ export class UserComponent implements OnInit, OnDestroy { // Implementa OnDestro
         console.error('Errore nel caricamento dell\'utente:', error);
         this.errorMessage = 'Errore nel caricamento dei dati utente. Riprova.';
         this.loading = false;
-        // Ritorna un nuovo Observable (ad esempio, di `null`) per permettere al flusso di continuare
-        // senza bloccare il `subscribe`.
+        // Ritorna un nuovo Observable (ad esempio, di null) per permettere al flusso di continuare
+        // senza bloccare il subscribe.
         return of(null);
       })
     ).subscribe(user => {
