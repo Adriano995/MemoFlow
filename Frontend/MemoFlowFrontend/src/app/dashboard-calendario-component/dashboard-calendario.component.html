@@ -1,4 +1,3 @@
-
 <div class="page-container">
   <div class="card-base calendario-container">
     <div class="calendar-header">
@@ -26,12 +25,14 @@
       >
         <span class="day-number">{{ day.getDate() }}</span>
         <span *ngIf="hasNote(day)" class="nota-indicatore"></span>
+        <span *ngIf="hasEvent(day)" class="evento-indicatore"></span>
       </div>
     </div>
   </div>
 
-  <app-nota-component [date]="selectedDate" [userId]="currentUserId"></app-nota-component>
 
+
+</div>  
+
+  <app-nota-component [date]="selectedDate" [userId]="currentUserId"></app-nota-component>
   <app-preview-evento [date]="selectedDate" [userId]="currentUserId"></app-preview-evento>
-  
-</div>

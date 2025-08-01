@@ -1,0 +1,40 @@
+<div class="form-container">
+  <h2>Modifica Evento</h2>
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="titolo">Titolo:</label>
+      <input type="text" id="titolo" [(ngModel)]="modificaEvento.titolo" name="titolo" required>
+    </div>
+    <div class="form-group">
+      <label for="descrizione">Descrizione:</label>
+      <textarea id="descrizione" [(ngModel)]="modificaEvento.descrizione" name="descrizione"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="luogo">Luogo:</label>
+      <input type="text" id="luogo" [(ngModel)]="modificaEvento.luogo" name="luogo">
+    </div>
+
+    <div class="form-group">
+      <label for="data-inizio">Data Inizio:</label>
+      <input type="date" id="data-inizio" [(ngModel)]="selectedDateInizio" name="data-inizio" required>
+    </div>
+    <div class="form-group">
+      <label for="ora-inizio">Ora Inizio:</label>
+      <input type="time" id="ora-inizio" [(ngModel)]="selectedTimeInizio" name="ora-inizio" required>
+    </div>
+
+    <div class="form-group">
+      <label for="data-fine">Data Fine:</label>
+      <input type="date" id="data-fine" [(ngModel)]="selectedDateFine" name="data-fine">
+    </div>
+    <div class="form-group">
+      <label for="ora-fine">Ora Fine:</label>
+      <input type="time" id="ora-fine" [(ngModel)]="selectedTimeFine" name="ora-fine">
+    </div>
+
+    <div class="button-group">
+      <button type="submit" class="save-button">Salva Modifiche</button>
+      <button type="button" class="cancel-button" (click)="goBack()">Annulla</button>
+    </div>
+  </form>
+</div>
