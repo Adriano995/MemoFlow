@@ -172,7 +172,7 @@ public class EventoController {
             LocalDateTime inizio = LocalDateTime.parse(inizioStr, formatter);
             LocalDateTime fine = LocalDateTime.parse(fineStr, formatter);
 
-            List<EventoDTO> eventi = eventoService.findAllByDataInizioAfterAndDataFineBeforeAndUtenteId(inizio, fine, userId);
+            List<EventoDTO> eventi = eventoService.getEventiInDateRange(inizio, fine, userId);
             return ResponseEntity.ok(eventi);
         } catch (Exception e) {
             System.err.println("Errore nel recupero eventi tra due date: " + e.getMessage());

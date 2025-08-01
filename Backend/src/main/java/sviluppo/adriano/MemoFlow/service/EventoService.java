@@ -157,9 +157,17 @@ public class EventoService extends AbstractCrudService<
             .toList();
     }
 
-    @Transactional(readOnly = true)
+   /*@Transactional(readOnly = true)
     public List<EventoDTO> findAllByDataInizioAfterAndDataFineBeforeAndUtenteId(LocalDateTime dataInizio, LocalDateTime dataFine, Long utenteId) {
-        return repository.findAllByDataInizioAfterAndDataFineBeforeAndUtenteId(dataInizio, dataFine, utenteId)
+        return repository.findAllByDataInizioBetweenAndDataFineBetweenAndUtenteId(dataInizio, dataFine, utenteId)
+            .stream()
+            .map(this::toDto)
+            .toList();
+    }*/
+
+    @Transactional(readOnly = true)
+    public List<EventoDTO> getEventiInDateRange(LocalDateTime dataInizio, LocalDateTime dataFine, Long utenteId) {
+        return repository.findEventsInDateRange(dataInizio, dataFine, utenteId)
             .stream()
             .map(this::toDto)
             .toList();
