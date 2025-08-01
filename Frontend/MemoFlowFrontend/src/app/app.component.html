@@ -3,8 +3,7 @@
   <a routerLink="/crea-nota">Crea Nota</a>
   <a *ngIf="userId" [routerLink]="['/modifica-utente', userId]">Modifica Profilo</a> <a *ngIf="userId" (click)="logout()" style="cursor: pointer;">Logout</a>
 </nav>
-<router-outlet></router-outlet>
-<a routerLink="/crea-evento" class="nav-item">Crea Nuovo Evento</a>
+
 
 <router-outlet></router-outlet>
 
