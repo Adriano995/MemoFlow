@@ -42,20 +42,26 @@ export class EventoCreazioneComponent implements OnInit {
     this.selectedTimeFine = format(now, 'HH:mm');
     this.minDate = format(now, 'yyyy-MM-dd');
   }
+
   async onSubmit(): Promise<void> {
     const dataInizioCombined = `${this.selectedDateInizio}T${this.selectedTimeInizio}:00`;
     const dataFineCombined = `${this.selectedDateFine}T${this.selectedTimeFine}:00`;
+
+    if (new Date(dataFineCombined) < new Date(dataInizioCombined)) {
+        alert('La data di fine non può essere precedente alla data di inizio.');
+        return;
+    }
 
     this.newEvent.dataInizio = dataInizioCombined;
     this.newEvent.dataFine = dataFineCombined;
 
     try {
-      await this.eventoService.createEvento(this.newEvent).toPromise();
-      alert('Evento creato con successo!');
-      this.router.navigate(['/dashboard']);
+        await this.eventoService.createEvento(this.newEvent).toPromise();
+        alert('Evento creato con successo!');
+        this.router.navigate(['/dashboard']);
     } catch (error) {
-      console.error('Errore durante la creazione dell\'evento:', error);
-      alert('Si è verificato un errore durante la creazione dell\'evento.');
+        console.error('Errore durante la creazione dell\'evento:', error);
+        alert('Si è verificato un errore durante la creazione dell\'evento.');
     }
   }
 

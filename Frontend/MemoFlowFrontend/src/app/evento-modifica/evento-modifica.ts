@@ -44,7 +44,6 @@ export class EventoModificaComponent implements OnInit {
         this.evento = evento;
         this.modificaEvento = { ...evento };
         
-        // Formatta i dati per i campi del form
         if (evento.dataInizio) {
           const dataInizio = parseISO(evento.dataInizio);
           this.selectedDateInizio = format(dataInizio, 'yyyy-MM-dd');
@@ -69,17 +68,22 @@ export class EventoModificaComponent implements OnInit {
       return;
     }
 
-    const dataInizioCombined = `${this.selectedDateInizio}T${this.selectedTimeInizio}:00`;
-    const dataFineCombined = `${this.selectedDateFine}T${this.selectedTimeFine}:00`;
+      const dataInizioCombined = `${this.selectedDateInizio}T${this.selectedTimeInizio}:00`;
+      const dataFineCombined = `${this.selectedDateFine}T${this.selectedTimeFine}:00`;
+
+    if (new Date(dataFineCombined) < new Date(dataInizioCombined)) {
+      alert('La data di fine non può essere precedente alla data di inizio.');
+      return;
+    }
 
     this.modificaEvento.dataInizio = dataInizioCombined;
     this.modificaEvento.dataFine = dataFineCombined;
-
     try {
       await this.eventoService.updateEvento(this.eventoId, this.modificaEvento).toPromise();
       alert('Evento aggiornato con successo!');
       this.router.navigate(['/dashboard']);
-    } catch (error) {
+    } 
+    catch (error) {
       console.error('Errore durante l\'aggiornamento dell\'evento:', error);
       alert('Si è verificato un errore durante l\'aggiornamento dell\'evento.');
     }

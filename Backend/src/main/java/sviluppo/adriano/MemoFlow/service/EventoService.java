@@ -51,6 +51,10 @@ public class EventoService extends AbstractCrudService<
 
     @Override
     public EventoDTO create(EventoCreateDTO createDto) {
+        if (createDto.getDataFine() != null && createDto.getDataFine().isBefore(createDto.getDataInizio())) {
+            throw new IllegalArgumentException("La data di fine non può essere precedente alla data di inizio.");
+        }
+        
         Evento evento = toEntity(createDto);
         Utente utente = new Utente();
         utente.setId(getCurrentUserId());
@@ -61,6 +65,20 @@ public class EventoService extends AbstractCrudService<
 
     @Override
     protected void updateEntity(Evento entity, EventoCambiaDTO updateDto) {
+        LocalDateTime dataInizio = entity.getDataInizio();
+        LocalDateTime dataFine = entity.getDataFine();
+
+        if (updateDto.getDataInizio() != null) {
+            dataInizio = updateDto.getDataInizio();
+        }
+        if (updateDto.getDataFine() != null) {
+            dataFine = updateDto.getDataFine();
+        }
+
+        if (dataFine != null && dataFine.isBefore(dataInizio)) {
+            throw new IllegalArgumentException("La data di fine non può essere precedente alla data di inizio.");
+        }
+        
         if (updateDto.getTitolo() != null) {
             entity.setTitolo(updateDto.getTitolo());
         }
@@ -73,12 +91,6 @@ public class EventoService extends AbstractCrudService<
         if (updateDto.getDataFine() != null) {
             entity.setDataFine(updateDto.getDataFine());
         }
-        /*if (updateDto.getOraInizio() != null) {
-            entity.setOraInizio(updateDto.getOraInizio());
-        }
-        if (updateDto.getOraFine() != null) {
-            entity.setOraFine(updateDto.getOraFine());
-        }*/
         if (updateDto.getLuogo() != null) {
             entity.setLuogo(updateDto.getLuogo());
         }
