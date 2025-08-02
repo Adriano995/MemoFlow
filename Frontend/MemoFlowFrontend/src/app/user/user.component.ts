@@ -1,13 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core'; // Importa OnDestroy
+import { Component, OnInit, OnDestroy } from '@angular/core'; 
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from './user.service';
 import { User } from './user.model';
-import { Subject, take } from 'rxjs'; // Importa Subject e take
-import { catchError } from 'rxjs/operators'; // Importa catchError
-import { of } from 'rxjs'; // Importa of
-import { Router } from '@angular/router';
-import { AuthService } from '../auth/auth.service';
+import { Subject, take } from 'rxjs'; 
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs'; 
 
 
 @Component({

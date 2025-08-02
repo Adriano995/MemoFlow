@@ -157,14 +157,6 @@ public class EventoService extends AbstractCrudService<
             .toList();
     }
 
-   /*@Transactional(readOnly = true)
-    public List<EventoDTO> findAllByDataInizioAfterAndDataFineBeforeAndUtenteId(LocalDateTime dataInizio, LocalDateTime dataFine, Long utenteId) {
-        return repository.findAllByDataInizioBetweenAndDataFineBetweenAndUtenteId(dataInizio, dataFine, utenteId)
-            .stream()
-            .map(this::toDto)
-            .toList();
-    }*/
-
     @Transactional(readOnly = true)
     public List<EventoDTO> getEventiInDateRange(LocalDateTime dataInizio, LocalDateTime dataFine, Long utenteId) {
         return repository.findEventsInDateRange(dataInizio, dataFine, utenteId)
@@ -173,13 +165,10 @@ public class EventoService extends AbstractCrudService<
             .toList();
     }
 
-    /*public List<EventoDTO> getEventoByDataCreazioneAndUtenteId(LocalDate data, Long utenteId) {
-        LocalDateTime startOfDay = data.atStartOfDay();
-        LocalDateTime endOfDay = data.atTime(23, 59, 59, 999_999_999);
-
-        List<Evento> eventi = repository.findAllByDataInizioAfterAndDataFineBeforeAndUtenteId(startOfDay, endOfDay, utenteId);
-        return eventi.stream()
+    @Transactional(readOnly = true)
+    public List<EventoDTO> getMonthlyEvents(LocalDateTime inizioMese, LocalDateTime fineMese, Long utenteId) {
+        return repository.findMonthlyEvents(inizioMese, fineMese, utenteId).stream()
                 .map(eventoMapper::toDto)
-                .collect(Collectors.toList());
-    }*/
+                .toList();
+    }
 }

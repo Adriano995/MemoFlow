@@ -34,5 +34,13 @@ public interface EventoRepository extends JpaRepository<Evento, Long>  {
            ")")
     List<Evento> findEventsInDateRange(@Param("dataInizio") LocalDateTime dataInizio, @Param("dataFine") LocalDateTime dataFine, @Param("userId") Long userId);
 
+    @Query("SELECT e FROM Evento e " +
+           "WHERE e.utente.id = :userId " +
+           "AND (" +
+           "    (e.dataFine IS NULL AND e.dataInizio >= :dataInizio AND e.dataInizio <= :dataFine) " +
+           "    OR " +
+           "    (e.dataInizio <= :dataFine AND e.dataFine >= :dataInizio)" +
+           ")")
+    List<Evento> findMonthlyEvents(@Param("dataInizio") LocalDateTime dataInizio, @Param("dataFine") LocalDateTime dataFine, @Param("userId") Long userId);
 
 }

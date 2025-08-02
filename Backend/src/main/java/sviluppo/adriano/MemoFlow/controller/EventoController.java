@@ -179,4 +179,19 @@ public class EventoController {
             return ResponseEntity.status(500).build();
         }
     }
+
+    @GetMapping("/eventi-del-mese")
+    public ResponseEntity<List<EventoDTO>> getMonthlyEvents(
+            @RequestParam("inizioMese") String inizioMeseStr,
+            @RequestParam("fineMese") String fineMeseStr) {
+
+        Long userId = eventoService.getCurrentUserId();
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+        
+        LocalDateTime inizioMese = LocalDateTime.parse(inizioMeseStr, formatter);
+        LocalDateTime fineMese = LocalDateTime.parse(fineMeseStr, formatter);
+
+        List<EventoDTO> eventi = eventoService.getMonthlyEvents(inizioMese, fineMese, userId);
+        return ResponseEntity.ok(eventi);
+    }
 }
