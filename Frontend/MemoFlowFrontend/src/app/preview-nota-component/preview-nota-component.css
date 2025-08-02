@@ -1,6 +1,15 @@
 /* preview-nota-component.css */
 
-/* Stili di base per il contenitore delle note, per centrarlo o dargli una dimensione massima */
+/* Titoli delle sezioni, usiamo la classe base */
+.section-title {
+  color: var(--title-color);
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 1.8rem;
+  letter-spacing: 1px;
+  text-shadow: 0 0 6px var(--shadow-orange-light);
+}
+
 .notes-container {
   background-color: var(--card-bg);
   padding: 20px 30px;
@@ -8,28 +17,14 @@
   box-shadow:
     0 8px 30px var(--shadow-orange-medium),
     0 0 0 1px var(--shadow-orange-light);
-  width: 100%;
-  max-width: 1200px; /* Larghezza massima aumentata per desktop */
-  margin: 50px auto 20px auto; /* MODIFICATO: AUMENTATO MARGINE SUPERIORE per desktop */
   box-sizing: border-box;
   color: var(--text-color);
   min-height: 300px;
   display: block;
 }
 
-/* Titoli delle sezioni */
-.notes-container h3 {
-  color: var(--title-color); /* Usa la variabile globale */
-  text-align: center;
-  margin-bottom: 25px;
-  font-size: 1.8rem;
-  letter-spacing: 1px;
-  text-shadow: 0 0 6px var(--shadow-orange-light); /* Usa la variabile globale */
-}
-
-/* Stile per singola nota */
 .note-item {
-  background-color: var(--secondary-bg-dark); /* Usa la variabile globale */
+  background-color: var(--secondary-bg-dark);
   padding: 15px;
   border-radius: 10px;
   margin-bottom: 15px;
@@ -46,170 +41,53 @@
   color: var(--text-color);
   font-size: 1.2rem;
   margin-bottom: 10px;
-  word-break: break-word; /* Rompi le parole lunghe */
+  word-break: break-word;
 }
 
 .note-item .text-secondary {
-  color: var(--text-light); /* Colore testo secondario */
+  color: var(--text-light);
   font-size: 0.9em;
   margin-bottom: 5px;
-  word-break: break-word; /* Rompi le parole lunghe */
+  word-break: break-word;
 }
 
 .note-item .note-preview {
   font-style: italic;
   font-size: 0.95em;
-  max-height: 60px; /* Limita l'altezza della preview */
-  overflow: hidden; /* Nasconde il testo in eccesso */
-  text-overflow: ellipsis; /* Aggiunge i puntini di sospensione */
-  white-space: normal; /* Permette il wrap del testo */
+  max-height: 60px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
   line-height: 1.4;
   margin-bottom: 15px;
 }
 
-/* Azioni per la singola nota (modifica, elimina) */
 .note-actions {
   display: flex;
-  gap: 10px; /* Spazio tra i bottoni */
+  gap: 10px;
   margin-top: 15px;
-}
-
-.note-actions .button-base {
-  flex-grow: 1; /* Permette ai bottoni di espandersi */
-  padding: 8px 12px;
-  font-size: 0.95rem;
-  width: auto; /* Lascia che flex-grow gestisca la larghezza */
 }
 
 .note-separator {
   border: none;
-  border-top: 1px dashed var(--border-dark); /* Linea tratteggiata */
+  border-top: 1px dashed var(--border-dark);
   margin: 20px 0;
 }
 
-/* Bottone Crea Nuova Nota */
 .create-new-note-button {
-  margin: 0 auto 30px auto; /* Centra e aggiunge margine */
-  display: block; /* Necessario per margin: auto */
-  max-width: 300px; /* Limita la larghezza del bottone */
-}
-
-/* Messaggi (loading, no notes, error) */
-.message-base {
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  text-align: center;
-  font-size: 1rem;
-  font-weight: 500;
-  border: 1px solid var(--border-light);
-  background-color: var(--secondary-bg-light);
-  color: var(--text-color);
+  margin: 0 auto 30px auto;
+  display: block;
+  max-width: 300px;
 }
 
 .no-notes-message {
-  margin-top: 30px;
-  color: var(--text-lighter);
-  /* Aggiunte per centrare e spaziare il bottone */
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 30px;
 }
 
 .no-notes-message .create-new-note-button {
-  margin-top: 20px; /* Aggiunge spazio sopra il bottone "Crea Nuova Nota" */
-  margin-bottom: 0; /* Assicura che non ci sia margine inferiore in più */
-}
-
-.loading-message {
-  color: var(--text-lighter);
-}
-.error-message {
-  color: var(--error-color);
-  background-color: var(--message-bg-error);
-  border: 1px solid var(--message-border-error);
-}
-
-
-/* Media Queries per layout responsivo */
-@media (max-width: 1250px) { /* Larghezza adattiva per schermi grandi */
-  .notes-container {
-    max-width: calc(100% - 40px);
-  }
-}
-
-@media (max-width: 768px) {
-  .notes-container {
-    padding: 10px 15px;
-    margin: 20px 10px 10px 10px; /* Margine superiore ridotto per mobile */
-  }
-
-  .notes-container h3 {
-    font-size: 1.5rem;
-    margin-bottom: 15px;
-  }
-
-  .action-button.primary-button {
-      width: 100%; /* Rendi il bottone "Crea Nuova Nota" full width */
-      margin-bottom: 15px; /* Aggiungi un margine sotto il bottone */
-  }
-
-  .note-item {
-    padding: 12px; /* Riduci il padding della singola nota */
-    border-radius: 8px;
-  }
-
-  .note-item h4 {
-    font-size: 1.1rem; /* Riduci la dimensione del titolo della nota */
-    margin-bottom: 8px;
-  }
-
-  .note-actions {
-    flex-direction: column; /* I bottoni di modifica/elimina su mobile si stackano */
-  }
-
-  .note-actions .button-base {
-    width: 100%; /* I bottoni si espandono a tutta larghezza */
-  }
-}
-
-@media (max-width: 480px) {
-  .notes-container {
-    padding: 10px 15px;
-    margin: 20px 10px 10px 10px; /* Margine superiore ridotto per mobile */
-  }
-
-  .notes-container h3 {
-    font-size: 1.3rem;
-    margin-bottom: 10px;
-  }
-
-  .note-item {
-    padding: 10px;
-  }
-
-  .note-item h4 {
-    font-size: 1rem;
-  }
-
-  .note-item .text-secondary {
-    font-size: 0.85em;
-  }
-
-  .note-item .note-preview {
-    font-size: 0.9em;
-    max-height: 50px;
-  }
-
-  .note-actions .button-base {
-    font-size: 0.9rem;
-    padding: 6px 10px;
-  }
-}
-
-@media (max-width: 1250px) { /* Larghezza adattiva per schermi grandi */
-  .notes-container {
-    max-width: calc(100% - 40px);
-    margin: 40px auto 20px auto; /* Leggermente ridotto per schermi tra 1250px e 768px */
-  }
+  margin-top: 20px;
+  margin-bottom: 0;
 }
