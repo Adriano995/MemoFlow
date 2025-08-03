@@ -1,14 +1,15 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { PreviewNotaComponent } from "../preview-nota-component/preview-nota-component";
 import { AuthService } from '../auth/auth.service';
 import { PreviewNotaService } from '../services/preview-nota.service';
 import { FormsModule } from '@angular/forms';
 import { UserComponent } from "../user/user.component";
 import { PreviewEventoComponent } from '../preview-evento/preview-evento';
-import { EventoService } from '../services/evento.service'; // Importa il servizio eventi
-import { EventoDTO } from '../models/evento.model'; // Importa il modello EventoDTO
-import { parseISO, add, format } from 'date-fns'; // Importa le funzioni di data
+import { EventoService } from '../services/evento.service';
+import { EventoDTO, EventoStato } from '../models/evento.model';
+import { parseISO, add, format, isAfter, isBefore, isEqual } from 'date-fns';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard-calendario',
@@ -20,7 +21,7 @@ import { parseISO, add, format } from 'date-fns'; // Importa le funzioni di data
     UserComponent,
     PreviewEventoComponent
   ],
-  providers: [],
+  providers: [DatePipe],
   templateUrl: './dashboard-calendario.component.html',
   styleUrls: ['./dashboard-calendario.component.css']
 })
@@ -29,31 +30,29 @@ export class DashboardCalendarioComponent implements OnInit {
   daysInCalendar: Date[] = [];
   selectedDate: Date | null = null;
   giorniConNote: Set<string> = new Set();
-  giorniConEventi: Set<string> = new Set(); // Nuovo Set per gli eventi
+  giorniConEventi: Map<string, string> = new Map();
   currentUserId: number | null = null;
   weekdays: string[] = ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'];
+
+  eventiDelMese: EventoDTO[] = [];
 
   constructor(
     private authService: AuthService,
     private previewNotaService: PreviewNotaService,
-    private eventoService: EventoService, // Inietta il servizio eventi
-    private cdr: ChangeDetectorRef
+    private eventoService: EventoService,
+    private cdr: ChangeDetectorRef,
+    private datePipe: DatePipe
   ) {}
 
   async ngOnInit(): Promise<void> {
-    console.log("DashboardCalendarioComponent ngOnInit start");
     this.currentUserId = this.authService.getUserId();
-    console.log("currentUserId", this.currentUserId);
-
     if (this.currentUserId === null) {
       console.error("User ID not available. Cannot load data.");
       return;
     }
-
     this.calculateDaysInMonth();
     await this.fetchNotesForMonth();
-    await this.fetchEventsForMonth(); // Chiama il nuovo metodo per gli eventi
-    console.log("DashboardCalendarioComponent ngOnInit end");
+    await this.fetchEventsForMonth();
   }
 
   previousMonth(): void {
@@ -69,21 +68,18 @@ export class DashboardCalendarioComponent implements OnInit {
   private async updateCalendarAndData(): Promise<void> {
     this.calculateDaysInMonth();
     await this.fetchNotesForMonth();
-    await this.fetchEventsForMonth(); // Aggiorna gli eventi
+    await this.fetchEventsForMonth();
     this.selectedDate = null;
   }
 
   async fetchNotesForMonth(): Promise<void> {
     this.giorniConNote.clear();
-
     if (this.currentUserId === null) {
       console.error("User ID is null, cannot fetch notes.");
       return;
     }
-
     try {
       const allNotes = await this.previewNotaService.getNoteByUser(this.currentUserId);
-
       const currentMonth = this.viewDate.getMonth();
       const currentYear = this.viewDate.getFullYear();
       if (allNotes && Array.isArray(allNotes)) {
@@ -105,7 +101,6 @@ export class DashboardCalendarioComponent implements OnInit {
     }
   }
 
-  // Nuovo metodo per caricare gli eventi del mese
   async fetchEventsForMonth(): Promise<void> {
     this.giorniConEventi.clear();
 
@@ -114,43 +109,76 @@ export class DashboardCalendarioComponent implements OnInit {
       return;
     }
 
-    // Calcola l'inizio e la fine del mese per l'API
     const inizioMese = new Date(this.viewDate.getFullYear(), this.viewDate.getMonth(), 1);
     const fineMese = new Date(this.viewDate.getFullYear(), this.viewDate.getMonth() + 1, 0, 23, 59, 59);
 
-    const inizioMeseISO = format(inizioMese, "yyyy-MM-dd'T'HH:mm:ss");
-    const fineMeseISO = format(fineMese, "yyyy-MM-dd'T'HH:mm:ss");
+    const inizioMeseISO = this.datePipe.transform(inizioMese, "yyyy-MM-dd'T'HH:mm:ss", 'UTC') || '';
+    const fineMeseISO = this.datePipe.transform(fineMese, "yyyy-MM-dd'T'HH:mm:ss", 'UTC') || '';
+    
+    console.log(`Chiamo il backend per gli eventi tra ${inizioMeseISO} e ${fineMeseISO}`);
 
     try {
-        const eventi = await this.eventoService.getEventiBetweenDates(inizioMeseISO, fineMeseISO, this.currentUserId).toPromise();
-        if (eventi && Array.isArray(eventi)) {
-            eventi.forEach(evento => {
+        const eventi = await firstValueFrom(this.eventoService.getEventiBetweenDates(inizioMeseISO, fineMeseISO, this.currentUserId));
+        
+        console.log('Eventi ricevuti dal backend:', eventi);
+        
+        this.eventiDelMese = eventi;
+        if (this.eventiDelMese && this.eventiDelMese.length > 0) {
+            this.updateEventStates(); 
+            this.giorniConEventi.clear(); 
+            this.eventiDelMese.forEach(evento => {
                 const dataInizio = parseISO(evento.dataInizio);
                 const dataFine = evento.dataFine ? parseISO(evento.dataFine) : null;
-
-                // Aggiungiamo i giorni al set, gestendo gli eventi multi-giorno
+                const stato = evento.stato;
                 if (dataFine === null || dataFine.getTime() === dataInizio.getTime()) {
-                    // Evento di un giorno (con o senza dataFine)
-                    this.giorniConEventi.add(format(dataInizio, 'yyyy-MM-dd'));
+                  this.giorniConEventi.set(format(dataInizio, 'yyyy-MM-dd'), stato);
                 } else {
-                    // Evento di più giorni
-                    let dataCorrente = dataInizio;
-                    while (dataCorrente <= dataFine) {
-                        this.giorniConEventi.add(format(dataCorrente, 'yyyy-MM-dd'));
-                        dataCorrente = add(dataCorrente, { days: 1 });
-                    }
+                  let dataCorrente = dataInizio;
+                  while (dataCorrente <= dataFine) {
+                    this.giorniConEventi.set(format(dataCorrente, 'yyyy-MM-dd'), stato);
+                    dataCorrente = add(dataCorrente, { days: 1 });
+                  }
                 }
             });
+        } else {
+             this.giorniConEventi.clear();
         }
+
+        console.log('Mappa giorniConEventi dopo il fetch:', this.giorniConEventi);
         this.cdr.detectChanges();
     } catch (error) {
-        console.error("Errore nel caricamento degli eventi del mese:", error);
+      console.error("Errore nel caricamento degli eventi del mese:", error);
+      this.giorniConEventi.clear();
+      this.cdr.detectChanges();
     }
   }
 
+  updateEventStates(): void {
+    const now = new Date();
+    this.eventiDelMese.forEach(evento => {
+        if (evento.stato === EventoStato.STATO_ANNULLATO) {
+            return;
+        }
+        const dataInizio = evento.dataInizio ? parseISO(evento.dataInizio) : null;
+        const dataFine = evento.dataFine ? parseISO(evento.dataFine) : null;
+
+        if (!dataInizio) {
+            return;
+        }
+        
+        if (dataFine && isAfter(now, dataFine)) {
+            evento.stato = EventoStato.STATO_CONCLUSO;
+        } else if (isAfter(now, dataInizio) && (!dataFine || isBefore(now, dataFine))) {
+            evento.stato = EventoStato.STATO_IN_CORSO;
+        } else if (isBefore(now, dataInizio)) {
+            evento.stato = EventoStato.STATO_PROGRAMMATO;
+        } else if (isEqual(now, dataInizio) || (dataFine && isEqual(now, dataFine))) {
+            evento.stato = EventoStato.STATO_IN_CORSO;
+        }
+    });
+  }
 
   private calculateDaysInMonth(): void {
-    // ... (metodo esistente) ...
     const year = this.viewDate.getFullYear();
     const month = this.viewDate.getMonth();
     const days: Date[] = [];
@@ -160,11 +188,9 @@ export class DashboardCalendarioComponent implements OnInit {
     for (let i = firstDayOfWeek; i > 0; i--) {
       days.unshift(new Date(year, month, 1 - i));
     }
-
     for (let i = 1; i <= lastDayOfMonth.getDate(); i++) {
       days.push(new Date(year, month, i));
     }
-
     const totalDaysToShow = 42;
     if (days.length < totalDaysToShow) {
       for (let i = 1; days.length < totalDaysToShow; i++) {
@@ -182,14 +208,14 @@ export class DashboardCalendarioComponent implements OnInit {
   isToday(date: Date): boolean {
     const today = new Date();
     return date.getDate() === today.getDate() &&
-           today.getMonth() === date.getMonth() &&
-           today.getFullYear() === today.getFullYear();
+             today.getMonth() === date.getMonth() &&
+             today.getFullYear() === today.getFullYear();
   }
 
   isSameDay(date1: Date, date2: Date): boolean {
     return date1.getDate() === date2.getDate() &&
-           date1.getMonth() === date2.getMonth() &&
-           date1.getFullYear() === date2.getFullYear();
+             date1.getMonth() === date2.getMonth() &&
+             date1.getFullYear() === date2.getFullYear();
   }
 
   isWeekend(date: Date): boolean {
@@ -204,12 +230,15 @@ export class DashboardCalendarioComponent implements OnInit {
     return this.giorniConNote.has(`${yyyy}-${mm}-${dd}`);
   }
 
-  // Nuovo metodo per verificare se un giorno ha un evento
   hasEvent(date: Date): boolean {
-    const yyyy = date.getFullYear();
-    const mm = (date.getMonth() + 1).toString().padStart(2, '0');
-    const dd = date.getDate().toString().padStart(2, '0');
-    return this.giorniConEventi.has(`${yyyy}-${mm}-${dd}`);
+    const dateKey = format(date, 'yyyy-MM-dd');
+    return this.giorniConEventi.has(dateKey);
+  }
+
+  getEventStatus(date: Date): string {
+    const dateKey = format(date, 'yyyy-MM-dd');
+    const status = this.giorniConEventi.get(dateKey);
+    return status ? status.toLowerCase() : 'sconosciuto';
   }
 
   trackByDate(index: number, day: Date): number {

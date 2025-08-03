@@ -1,32 +1,17 @@
 /* app.component.css */
 .theme-toggle-button {
+  /* Regole di posizionamento fisse, non modificabili dalle classi base */
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background-color: var(--accent-color);
-  color: var(--primary-bg);
-  border: none;
-  padding: 10px 15px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
   z-index: 1000;
-  /* Aggiunte per la responsività */
-  max-width: 150px; /* Limita la larghezza */
-  text-overflow: ellipsis; /* Aggiunge "..." se il testo è troppo lungo */
-  overflow: hidden; /* Nasconde il testo che sfora */
-  white-space: nowrap; /* Impedisce al testo di andare a capo */
-}
 
-.theme-toggle-button:hover {
-  background-color: var(--button-hover-bg);
-  transform: translateY(-2px);
-}
-
-.theme-toggle-button:active {
-  transform: translateY(0);
+  /* Sovrascrivi le regole del bottone base se necessario */
+  font-size: 0.9rem;
+  max-width: 150px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 /* Media query per schermi più piccoli */
@@ -36,6 +21,6 @@
     right: 10px;
     padding: 8px 12px;
     font-size: 0.8rem;
-    max-width: 120px; /* Ulteriore riduzione per schermi molto piccoli */
+    max-width: 120px;
   }
 }
