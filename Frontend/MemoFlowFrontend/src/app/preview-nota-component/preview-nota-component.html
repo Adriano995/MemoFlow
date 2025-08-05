@@ -12,14 +12,14 @@
         <h4 class="h4 item-title">{{ n.titolo }}</h4>
         <p class="text-secondary"><strong>Tipo:</strong> {{ n.tipoNota }}</p>
         <p class="text-secondary note-preview">{{ getPreviewText(n.contenutoTesto) }}</p>
-        <div class="note-actions flex-row gap-10">
-          <button class="button-base button-secondary" (click)="onViewOrEditNota(n.id)">
-            Vedi Dettagli / Modifica
-          </button>
-          <button class="button-base button-danger" (click)="onDeleteNota(n.id)">
-            Elimina
-          </button>
-        </div>
+          <div class="note-actions flex-row gap-10">
+            <button class="button-base button-danger" (click)="onDeleteNota(n.id)">
+              Elimina
+            </button>
+            <button class="button-base button-secondary" (click)="onViewOrEditNota(n.id)">
+              Vedi Dettagli / Modifica
+            </button>
+          </div>
         <hr class="note-separator">
       </div>
     </div>

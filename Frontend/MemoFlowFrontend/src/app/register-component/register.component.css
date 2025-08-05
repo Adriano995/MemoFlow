@@ -1,0 +1,24 @@
+/* Stili per il contenitore del campo password e l'icona */
+.password-container {
+  position: relative;
+  width: 100%;
+}
+
+.password-toggle-icon {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--text-placeholder);
+  transition: color var(--transition-speed);
+}
+
+.password-toggle-icon:hover {
+  color: var(--accent-orange);
+}
+
+/* Regolazione del padding destro per l'input password per fare spazio all'icona */
+.password-container .form-input-base {
+  padding-right: 40px;
+}

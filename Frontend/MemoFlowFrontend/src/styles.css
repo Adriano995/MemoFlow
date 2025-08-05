@@ -1,8 +1,8 @@
-/* src/styles.css */
+/* src/styles.css - Versione migliorata e responsive */
 
 /* Stili Globali e Variabili */
 :root {
-  /* Variabili Tema SCURO (Default) */
+  /* Variabili Tema SCURO (Default) - Palette professionale */
   --primary-bg-dark: #121212;
   --secondary-bg-dark: #1c1c1c;
   --accent-orange: #ff6f00;
@@ -11,9 +11,15 @@
   --text-lighter: #ddd;
   --text-placeholder: #666;
   --border-dark: #333;
+
+  /* Variabili per ombre e transizioni, standardizzate */
+  --shadow-base: 0 2px 8px rgba(0, 0, 0, 0.2);
+  --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.3);
   --shadow-orange-light: rgba(255, 111, 0, 0.4);
   --shadow-orange-medium: rgba(255, 111, 0, 0.6);
   --shadow-orange-strong: rgba(255, 111, 0, 0.8);
+  --transition-speed: 0.3s;
+
   --page-bg: #222;
   --card-bg: var(--primary-bg-dark);
   --input-bg: var(--secondary-bg-dark);
@@ -21,17 +27,24 @@
   --text-color: var(--text-light);
   --text-secondary-color: var(--text-lighter);
   --title-color: var(--accent-orange);
+
+  /* Bottone primario (arancione) */
   --button-primary-bg: var(--accent-orange);
   --button-primary-text: var(--primary-bg-dark);
   --button-primary-hover-bg: #e65c00;
+  /* Bottone secondario (scuro) */
   --button-secondary-bg: var(--secondary-bg-dark);
   --button-secondary-text: var(--light-orange);
   --button-secondary-hover-bg: #333;
-  --button-danger-bg: #dc3545;
-  --button-danger-text: white;
-  --button-danger-hover-bg: #c82333;
+  /* Bottone danger (rosso) */
+  --button-danger-bg: #c8434d;
+  --button-danger-text: #fff;
+  --button-danger-hover-bg: #b0383f;
+  
   --link-color: var(--accent-orange);
   --link-hover-color: #ff8c00;
+
+  /* Variabili per messaggi di stato */
   --success-color: #4CAF50;
   --error-color: #ff3b3b;
   --message-bg-success: rgba(76, 175, 80, 0.1);
@@ -41,36 +54,44 @@
 }
 
 body.light-theme {
-  /* Variabili Tema CHIARO */
-  --primary-bg-dark: #fdfdfd; /* quasi bianco */
-  --secondary-bg-dark: #ffffff; /* puro bianco */
-  --accent-orange: #ff7a00; /* più vivo e solare */
+  /* Variabili Tema CHIARO - Palette raffinata */
+  --primary-bg-dark: #fdfdfd; 
+  --secondary-bg-dark: #ffffff;
+  --accent-orange: #ff7a00;
   --light-orange: #ffa94d;
-  --text-light: #2c2c2c; /* testo primario */
-  --text-lighter: #555; /* testo secondario */
+  --text-light: #2c2c2c;
+  --text-lighter: #555;
   --text-placeholder: #999;
   --border-dark: #ddd;
+  
+  --shadow-base: 0 2px 8px rgba(0, 0, 0, 0.05); /* Ombra più leggera per il tema chiaro */
+  --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.1);
   --shadow-orange-light: rgba(255, 122, 0, 0.1);
   --shadow-orange-medium: rgba(255, 122, 0, 0.25);
   --shadow-orange-strong: rgba(255, 122, 0, 0.4);
-  --page-bg: #f4f6f8; /* leggerissimo azzurro-grigio */
+
+  --page-bg: #f4f6f8;
   --card-bg: var(--secondary-bg-dark);
   --input-bg: #ffffff;
   --input-border: #dcdcdc;
   --text-color: var(--text-light);
   --text-secondary-color: var(--text-lighter);
   --title-color: var(--accent-orange);
+  
   --button-primary-bg: var(--accent-orange);
   --button-primary-text: white;
   --button-primary-hover-bg: #e66a00;
   --button-secondary-bg: #f1f1f1;
   --button-secondary-text: var(--accent-orange);
   --button-secondary-hover-bg: #e2e2e2;
-  --button-danger-bg: #e03131;
-  --button-danger-text: white;
-  --button-danger-hover-bg: #c92a2a;
+  
+  --button-danger-bg: #d9534f;
+  --button-danger-text: #fff;
+  --button-danger-hover-bg: #c1423f;
+  
   --link-color: var(--accent-orange);
   --link-hover-color: #ff8c1a;
+  
   --success-color: #2b8a3e;
   --error-color: #e03131;
   --message-bg-success: rgba(43, 138, 62, 0.1);
@@ -78,7 +99,6 @@ body.light-theme {
   --message-bg-error: rgba(224, 49, 49, 0.1);
   --message-border-error: #e03131;
 }
-
 
 /* Stili Base per il body e elementi principali */
 *, *::before, *::after {
@@ -90,8 +110,8 @@ body {
   padding: 0;
   background-color: var(--page-bg);
   color: var(--text-color);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: 'Roboto', sans-serif;
+  transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
   overflow-x: hidden;
 }
 
@@ -115,20 +135,35 @@ body {
               0 0 0 1px var(--shadow-orange-light);
   box-sizing: border-box;
   color: var(--text-color);
+  transition: box-shadow var(--transition-speed) ease; /* Aggiunto per un'interazione più fluida */
 }
 
+/* Titoli dei form - Resi responsive con clamp() */
 .form-title-base {
   color: var(--title-color);
   text-align: center;
   margin-bottom: 30px;
-  font-size: 2.2rem;
+  font-size: clamp(1.8rem, 5vw, 2.2rem); /* Reso responsive */
   letter-spacing: 1px;
   text-shadow: 0 0 8px var(--shadow-orange-light);
 }
 
+/* Stili aggiunti per l'omogeneizzazione */
+
+/* Aggiunge margine superiore alle card per separarle dalla navbar */
+.form-margin-top {
+  margin-top: 50px; /* Regola il valore a tuo piacimento */
+}
+
+/* Modifica il comportamento del gruppo di bottoni per invertirli e allinearli a destra */
+.reverse-flex {
+  justify-content: flex-end; /* Allinea il contenuto a destra */
+  flex-direction: row-reverse; /* Inverte l'ordine degli elementi */
+}
+
 .form-card {
-  max-width: 480px; /* Larghezza massima specifica per i form */
-  margin: auto; /* Centra la card */
+  max-width: 480px;
+  margin: auto;
 }
 
 /* Gruppo di input (label + input) */
@@ -144,6 +179,7 @@ body {
   font-weight: 600;
   font-size: 0.95rem;
   color: var(--light-orange);
+
 }
 
 /* Input dei form */
@@ -155,7 +191,7 @@ body {
   background-color: var(--input-bg);
   color: var(--text-color);
   font-size: 1rem;
-  transition: border-color 0.3s, background-color 0.3s, box-shadow 0.3s;
+  transition: border-color var(--transition-speed), background-color var(--transition-speed), box-shadow var(--transition-speed);
 }
 
 .form-input-base::placeholder {
@@ -168,6 +204,7 @@ body {
   box-shadow: 0 0 10px var(--shadow-orange-medium);
 }
 
+/* Contenitori per la dashboard - Flessibilità migliorata */
 .dashboard-container {
   display: flex;
   flex-direction: column;
@@ -191,7 +228,7 @@ body {
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  transition: background-color var(--transition-speed) ease, transform 0.2s ease, box-shadow var(--transition-speed) ease;
   white-space: nowrap;
   text-align: center;
   display: inline-flex;
@@ -238,7 +275,6 @@ body {
   background-color: var(--button-danger-hover-bg);
 }
 
-/* Gruppi di bottoni affiancati */
 .flex-row {
   display: flex;
   flex-wrap: wrap;
@@ -251,6 +287,34 @@ body {
   min-width: 150px;
   width: auto;
 }
+
+/* Esempio di personalizzazione per Flatpickr */
+.flatpickr-calendar {
+  border-radius: 8px; /* Bordi più arrotondati */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Aggiunge un'ombra */
+  background-color: var(--secondary-bg); /* Sfondo della card */
+  border-color: var(--border-light); /* Bordo chiaro */
+}
+
+/* Colore del testo e delle date */
+.flatpickr-day,
+.flatpickr-month,
+.flatpickr-weekdays,
+.flatpickr-time {
+  color: var(--text-color); /* Colore del testo standard */
+}
+
+/* Colore delle date selezionate */
+.flatpickr-day.selected {
+  background-color: var(--accent-orange);
+  border-color: var(--accent-orange);
+}
+
+/* Colore al passaggio del mouse */
+.flatpickr-day:hover {
+  background-color: rgba(255, 165, 0, 0.2);
+}
+
 @media (max-width: 600px) {
   .flex-row > .button-base {
     width: 100%;
@@ -258,18 +322,16 @@ body {
   }
 }
 
-/* Link */
 a {
   color: var(--link-color);
   text-decoration: none;
-  transition: color 0.3s ease;
+  transition: color var(--transition-speed) ease;
 }
 a:hover {
   color: var(--link-hover-color);
   text-decoration: underline;
 }
 
-/* Messaggi di stato */
 .message-base {
   font-weight: 600;
   text-align: center;
@@ -288,7 +350,6 @@ a:hover {
   border: 1px solid var(--message-border-error);
 }
 
-/* Testo con link */
 .link-paragraph {
   text-align: center;
   margin-top: 25px;
@@ -300,11 +361,24 @@ a:hover {
   font-weight: 600;
 }
 
-/* Media Queries per la responsività generale delle card */
+
+@media (max-width: 600px) {
+  .reverse-flex {
+    flex-direction: column-reverse; 
+  }
+}
+
 @media (min-width: 992px) {
   .dashboard-container {
-    flex-direction: row; /* Su desktop, mostra gli elementi in riga */
+    flex-direction: row;
     align-items: flex-start;
+  }
+}
+
+@media (min-width: 992px) {
+  .form-card-large {
+    max-width: 650px; 
+    padding: 50px 60px; 
   }
 }
 

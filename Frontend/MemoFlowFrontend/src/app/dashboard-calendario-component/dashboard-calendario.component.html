@@ -1,4 +1,4 @@
-<div class="dashboard-content-wrapper">
+<div class="dashboard-content-wrapper" [ngClass]="{'is-expanded': isExpanded}">
   <div class="calendario-container card-base">
     <div class="calendar-header">
       <button class="header-button" (click)="previousMonth()">&#9664;</button>
@@ -32,7 +32,7 @@
     </div>
   </div>
 
-  <div class="previews-container">
+  <div class="previews-container" *ngIf="selectedDate">
     <app-nota-component [date]="selectedDate" [userId]="currentUserId"></app-nota-component>
     <app-preview-evento [date]="selectedDate" [userId]="currentUserId"></app-preview-evento>
   </div>

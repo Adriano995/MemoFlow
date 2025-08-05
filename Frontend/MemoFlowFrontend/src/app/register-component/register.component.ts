@@ -14,6 +14,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 export class RegisterComponent {
 
   registerForm: FormGroup;
+  passwordType: string = 'password'; // Nuova proprietà per il tipo di input
 
   constructor(
     private fb: FormBuilder,
@@ -21,8 +22,8 @@ export class RegisterComponent {
     private router: Router
   ){
     this.registerForm = this.fb.group({
-      nome: ['', Validators.required], 
-      cognome: ['', Validators.required], 
+      nome: ['', Validators.required],
+      cognome: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     })
@@ -31,10 +32,10 @@ export class RegisterComponent {
   async onSubmit(){
     if (this.registerForm.valid) {
       const { nome, cognome, email, password } = this.registerForm.value;
-      if (!email || !password) return; 
+      if (!email || !password) return;
 
       try {
-        await this.authService.register(nome, cognome, email, password); 
+        await this.authService.register(nome, cognome, email, password);
         console.log('Registrazione riuscita!');
         this.router.navigate(['/login']);
       } catch (error) {
@@ -43,5 +44,9 @@ export class RegisterComponent {
     } else {
         console.warn('Form non valido!');
     }
+  }
+
+  togglePasswordVisibility(): void {
+    this.passwordType = this.passwordType === 'password' ? 'text' : 'password';
   }
 }
