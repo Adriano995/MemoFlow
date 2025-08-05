@@ -36,6 +36,8 @@ export class DashboardCalendarioComponent implements OnInit {
 
   eventiDelMese: EventoDTO[] = [];
 
+  isExpanded: boolean = false; 
+
   constructor(
     private authService: AuthService,
     private previewNotaService: PreviewNotaService,
@@ -201,7 +203,13 @@ export class DashboardCalendarioComponent implements OnInit {
   }
 
   dayClicked(date: Date): void {
-    this.selectedDate = new Date(date);
+    if (this.selectedDate && this.isSameDay(date, this.selectedDate)) {
+      this.selectedDate = null; 
+      this.isExpanded = false; 
+    } else {
+      this.selectedDate = new Date(date);
+      this.isExpanded = true; 
+    }
     this.cdr.detectChanges();
   }
 
@@ -235,11 +243,21 @@ export class DashboardCalendarioComponent implements OnInit {
     return this.giorniConEventi.has(dateKey);
   }
 
-  getEventStatus(date: Date): string {
-    const dateKey = format(date, 'yyyy-MM-dd');
-    const status = this.giorniConEventi.get(dateKey);
-    return status ? status.toLowerCase() : 'sconosciuto';
+// ... (il resto del tuo codice)
+
+getEventStatus(date: Date): string {
+  const dateKey = format(date, 'yyyy-MM-dd');
+  const status = this.giorniConEventi.get(dateKey);
+  if (!status) {
+    return 'sconosciuto';
   }
+  
+  // Questa riga corregge il problema
+  // Rimuove 'STATO_' e converte il resto in minuscolo
+  return status.replace('STATO_', '').toLowerCase();
+}
+
+// ... (il resto del tuo codice)
 
   trackByDate(index: number, day: Date): number {
     return day.getTime();

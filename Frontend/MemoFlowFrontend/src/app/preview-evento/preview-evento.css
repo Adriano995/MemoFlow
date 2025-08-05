@@ -1,5 +1,13 @@
-/* preview-evento.css */
-/* Rimosso tutti gli stili duplicati e usate le classi base */
+/* preview-evento.css - Versione allineata a preview-nota e responsive */
+
+.section-title {
+  color: var(--title-color);
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: clamp(1.4rem, 4vw, 1.8rem);
+  letter-spacing: 1px;
+  text-shadow: 0 0 6px var(--shadow-orange-light);
+}
 
 /* Stili per i tag di stato degli eventi */
 .status-tag {
@@ -27,18 +35,47 @@
   background-color: #dc3545;
 }
 
-/* Stili per la lista eventi e la singola card */
+/* Contenitore principale della card, allineato con .notes-container */
+.events-container {
+  background-color: var(--card-bg);
+  padding: 20px 30px;
+  border-radius: 14px;
+  box-shadow: 0 8px 30px var(--shadow-orange-medium),
+              0 0 0 1px var(--shadow-orange-light);
+  box-sizing: border-box;
+  color: var(--text-color);
+  min-height: 300px;
+  /* Utilizziamo Flexbox per centrare il contenuto in caso di assenza di eventi */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* Usa :has() per centrare il contenuto solo quando ci sono i messaggi iniziali */
+.events-container:has(.no-events.message-base, .no-date-message.message-base) {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* Stile per la lista eventi e la singola card */
 .event-list {
   margin-top: 20px;
 }
 
+/* La singola card evento, allineata a .note-item */
 .event-card {
   background-color: var(--secondary-bg-dark);
-  border: 1px solid var(--border-dark);
-  border-radius: 8px;
   padding: 15px;
-  margin-bottom: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  margin-bottom: 15px;
+  box-shadow: var(--shadow-base); /* Utilizza la variabile globale */
+  transition: transform var(--transition-speed) ease-in-out, box-shadow var(--transition-speed) ease-in-out;
+}
+
+.event-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover); /* Utilizza la variabile globale */
 }
 
 .event-header {
@@ -51,11 +88,26 @@
 .event-card h4 {
   margin: 0;
   color: var(--text-color);
+  font-size: clamp(1rem, 3vw, 1.2rem); /* Scala il font del titolo dell'evento */
 }
 
 .event-card p {
   margin: 5px 0;
   color: var(--text-secondary-color);
+  font-size: 0.9em;
+  word-break: break-word; /* Previene overflow di parole lunghe */
+}
+
+/* Azioni (Bottoni) dell'evento, usa la classe globale .flex-row */
+.event-actions {
+  margin-top: 15px;
+}
+
+/* Contenitore per il bottone di creazione evento */
+.create-event-button-container {
+  margin: 0 auto 30px auto;
+  display: block;
+  max-width: 300px;
 }
 
 /* Media Queries per layout responsivo */

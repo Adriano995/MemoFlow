@@ -13,6 +13,7 @@ import { Router, RouterLink } from '@angular/router';
 })
 export class LoginComponent {
   loginForm: FormGroup;
+  passwordType: string = 'password';
 
   constructor(
     private fb: FormBuilder,
@@ -38,5 +39,9 @@ export class LoginComponent {
         console.log('Login fallito');
       }
     }
+  }
+
+  togglePasswordVisibility(): void {
+    this.passwordType = this.passwordType === 'password' ? 'text' : 'password';
   }
 }

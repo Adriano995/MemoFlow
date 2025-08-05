@@ -1,20 +1,27 @@
 <div class="events-container card-base">
-  <h3 class="section-title">Eventi per il {{ date | date:'dd/MM/yyyy' }}</h3>
+  <!-- Il titolo viene mostrato solo se una data è selezionata, per coerenza -->
+  <h3 *ngIf="date" class="section-title">Eventi per il giorno: {{ date | date:'fullDate' }}</h3>
 
-  <div *ngIf="isLoading" class="loading-indicator">
+  <!-- Messaggio iniziale più amichevole mostrato prima della selezione di una data -->
+  <div *ngIf="!isLoading && !date" class="no-date-message message-base">
+    Seleziona un giorno dal calendario per vedere o creare gli eventi.
+  </div>
+
+  <div *ngIf="isLoading" class="loading-indicator message-base">
     Caricamento eventi...
   </div>
-
-  <div *ngIf="errorMessage" class="error-message message-base">
-    {{ errorMessage }}
-  </div>
-
-  <div *ngIf="!isLoading && eventi.length === 0 && !errorMessage" class="no-events message-base">
+  
+  <div *ngIf="!isLoading && eventi.length === 0 && date" class="no-events message-base">
     <p>Nessun evento per questa data.</p>
   </div>
-  
-  <button (click)="goToCreateEvento()" class="button-base button-primary">Crea un Evento per questo giorno</button>
 
+  <!-- Il bottone "Crea evento" visibile solo se una data è selezionata -->
+  <div *ngIf="date" class="create-event-button-container">
+    <button (click)="goToCreateEvento()" class="button-base button-primary">
+      Crea un Evento per questo giorno
+    </button>
+  </div>
+  
   <div *ngIf="eventi.length > 0" class="event-list">
     <div *ngFor="let evento of eventi" class="event-card">
       <div class="event-header">
@@ -25,9 +32,9 @@
       <p>Inizio: {{ evento.dataInizio | date:'short' }}</p>
       <p>Fine: {{ evento.dataFine | date:'short' }}</p>
       <p *ngIf="evento.luogo"><strong>Luogo:</strong> {{ evento.luogo }}</p>
-      <div class="event-actions">
-        <button (click)="editEvento(evento.id!)" class="button-base button-secondary">Modifica</button>
+      <div class="event-actions flex-row">
         <button (click)="deleteEvento(evento.id!)" class="button-base button-danger">Elimina</button>
+        <button (click)="editEvento(evento.id!)" class="button-base button-secondary">Modifica</button>
       </div>
     </div>
   </div>

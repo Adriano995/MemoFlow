@@ -1,15 +1,16 @@
-/* preview-nota-component.css */
+/* preview-nota-component.css - Versione Corretta e Completa */
 
-/* Titoli delle sezioni, usiamo la classe base */
+/* Utilizza una classe per il titolo che si adatta alle dimensioni dello schermo */
 .section-title {
   color: var(--title-color);
   text-align: center;
   margin-bottom: 25px;
-  font-size: 1.8rem;
+  font-size: clamp(1.4rem, 4vw, 1.8rem);
   letter-spacing: 1px;
   text-shadow: 0 0 6px var(--shadow-orange-light);
 }
 
+/* Contenitore principale della card */
 .notes-container {
   background-color: var(--card-bg);
   padding: 20px 30px;
@@ -20,9 +21,20 @@
   box-sizing: border-box;
   color: var(--text-color);
   min-height: 300px;
-  display: block;
+  /* Utilizziamo Flexbox per centrare il contenuto in caso di assenza di note */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
+/* Usa :has() per centrare il contenuto solo quando ci sono i messaggi */
+.notes-container:has(.no-notes-message, .no-date-selected-message) {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* Stile per il singolo item (nota) */
 .note-item {
   background-color: var(--secondary-bg-dark);
   padding: 15px;
@@ -39,13 +51,13 @@
 
 .note-item h4 {
   color: var(--text-color);
-  font-size: 1.2rem;
+  font-size: clamp(1rem, 3vw, 1.2rem); /* Scala il font del titolo della nota */
   margin-bottom: 10px;
-  word-break: break-word;
+  word-break: break-word; /* Previene overflow di parole lunghe */
 }
 
 .note-item .text-secondary {
-  color: var(--text-light);
+  color: var(--text-lighter); /* Usiamo la variabile più chiara per un miglior contrasto */
   font-size: 0.9em;
   margin-bottom: 5px;
   word-break: break-word;
@@ -62,32 +74,49 @@
   margin-bottom: 15px;
 }
 
+/* Azioni (Bottoni) della nota */
 .note-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
   margin-top: 15px;
 }
 
+.note-actions > .button-base {
+  flex-grow: 1;
+  min-width: 120px;
+}
+
+/* Stile per la separazione tra le note */
 .note-separator {
   border: none;
   border-top: 1px dashed var(--border-dark);
   margin: 20px 0;
 }
 
+/* Bottone per creare una nuova nota */
 .create-new-note-button {
   margin: 0 auto 30px auto;
   display: block;
   max-width: 300px;
 }
 
-.no-notes-message {
+/* Messaggi di stato */
+.no-notes-message, .no-date-selected-message {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 30px;
 }
 
-.no-notes-message .create-new-note-button {
+.no-notes-message .create-new-note-button, .no-date-selected-message .create-new-note-button {
   margin-top: 20px;
   margin-bottom: 0;
+}
+
+/* Media Query per schermi molto piccoli */
+@media (max-width: 400px) {
+  .notes-container {
+    padding: 15px 20px;
+  }
 }
