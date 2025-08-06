@@ -2,6 +2,7 @@ package sviluppo.adriano.MemoFlow.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -95,22 +96,22 @@ public class EventoService extends AbstractCrudService<
             entity.setLuogo(updateDto.getLuogo());
         }
         if (updateDto.getStato() != null) {
-                entity.setStato(Enum.valueOf(EventoStato.class, updateDto.getStato()));
+            entity.setStato(Enum.valueOf(EventoStato.class, updateDto.getStato()));
         }
     }
 
     @Override
     public void delete(Long id) {
-    Long currentUserId = getCurrentUserId();
+        Long currentUserId = getCurrentUserId();
 
-    Evento evento = repository.findById(id)
-        .orElseThrow(() -> new EntityNotFoundException("Evento con ID " + id + " non trovato per l'eliminazione."));
+        Evento evento = repository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Evento con ID " + id + " non trovato per l'eliminazione."));
 
-    if (!evento.getUtente().getId().equals(currentUserId)) {
-         throw new SecurityException("Non sei autorizzato a eliminare questo evento.");
-    }
+        if (!evento.getUtente().getId().equals(currentUserId)) {
+            throw new SecurityException("Non sei autorizzato a eliminare questo evento.");
+        }
 
-    repository.deleteById(id);
+        repository.deleteById(id);
     }
 
     public Long getCurrentUserId() {
@@ -169,6 +170,16 @@ public class EventoService extends AbstractCrudService<
             .toList();
     }
 
+
+    /*@Transactional(readOnly = true)
+    public List<EventoDTO> findAllByDataInizioAfterAndDataFineBeforeAndUtenteId(LocalDateTime dataInizio, LocalDateTime dataFine, Long utenteId) {
+        return repository.findAllByDataInizioBetweenAndDataFineBetweenAndUtenteId(dataInizio, dataFine, utenteId)
+            .stream()
+            .map(this::toDto)
+            .toList();
+    }*/
+
+
     @Transactional(readOnly = true)
     public List<EventoDTO> getEventiInDateRange(LocalDateTime dataInizio, LocalDateTime dataFine, Long utenteId) {
         return repository.findEventsInDateRange(dataInizio, dataFine, utenteId)
@@ -176,6 +187,47 @@ public class EventoService extends AbstractCrudService<
             .map(this::toDto)
             .toList();
     }
+
+
+    /*public List<EventoDTO> getEventoByDataCreazioneAndUtenteId(LocalDate data, Long utenteId) {
+        LocalDateTime startOfDay = data.atStartOfDay();
+        LocalDateTime endOfDay = data.atTime(23, 59, 59, 999_999_999);
+
+        List<Evento> eventi = repository.findAllByDataInizioAfterAndDataFineBeforeAndUtenteId(startOfDay, endOfDay, utenteId);
+        return eventi.stream()
+            .map(eventoMapper::toDto)
+            .collect(Collectors.toList());
+    }*/
+
+    // --- NUOVO METODO PER LA RICERCA AVANZATA ---
+    @Transactional(readOnly = true)
+    public List<EventoDTO> ricercaEventiAvanzata(String titolo, String keywords) {
+        Long currentUserId = getCurrentUserId();
+        List<Evento> eventi;
+
+        // Logica per determinare quale metodo del repository chiamare, includendo l'ID utente
+        boolean hasTitolo = titolo != null && !titolo.trim().isEmpty();
+        boolean hasKeywords = keywords != null && !keywords.trim().isEmpty();
+
+        if (hasTitolo && hasKeywords) {
+            // Ricerca per titolo E parole chiave
+            eventi = repository.findByTitoloContainingIgnoreCaseAndDescrizioneContainingIgnoreCaseAndUtenteId(titolo, keywords, currentUserId);
+        } else if (hasTitolo) {
+            // Ricerca solo per titolo
+            eventi = repository.findByTitoloContainingIgnoreCaseAndUtenteId(titolo, currentUserId);
+        } else if (hasKeywords) {
+            // Ricerca solo per parole chiave
+            eventi = repository.findByDescrizioneContainingIgnoreCaseAndUtenteId(keywords, currentUserId);
+        } else {
+            // Se nessun parametro di ricerca, restituisci tutti gli eventi dell'utente
+            eventi = repository.findAllByUtenteId(currentUserId);
+        }
+
+        return eventi.stream()
+                     .map(eventoMapper::toDto)
+                     .collect(Collectors.toList());
+    }
+}
 
     @Transactional(readOnly = true)
     public List<EventoDTO> getMonthlyEvents(LocalDateTime inizioMese, LocalDateTime fineMese, Long utenteId) {
