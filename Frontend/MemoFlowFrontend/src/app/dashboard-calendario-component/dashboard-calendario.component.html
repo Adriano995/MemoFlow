@@ -1,5 +1,10 @@
+
 <div class="page-container">
   <div class="card-base calendario-container">
+
+<div class="dashboard-content-wrapper" [ngClass]="{'is-expanded': isExpanded}">
+  <div class="calendario-container card-base">
+n
     <div class="calendar-header">
       <button class="header-button" (click)="previousMonth()">&#9664;</button>
       <h2 class="current-month-year">{{ viewDate | date:'MMMM yyyy' }}</h2>
@@ -14,7 +19,6 @@
       <div
         *ngFor="let day of daysInCalendar; trackBy: trackByDate"
         (click)="dayClicked(day)"
-        [attr.data-day-number]="day.getDate()"
         [ngClass]="{
           'calendar-day': true,
           'today': isToday(day),
@@ -25,9 +29,14 @@
       >
         <span class="day-number">{{ day.getDate() }}</span>
         <span *ngIf="hasNote(day)" class="nota-indicatore"></span>
+        <span
+          *ngIf="hasEvent(day)"
+          [ngClass]="['evento-indicatore', 'status-' + getEventStatus(day)]"
+        ></span>
       </div>
     </div>
   </div>
+
 
   <app-nota-creazione [date]="selectedDate" [userId]="currentUserId"></app-nota-creazione>
   <app-preview-evento [date]="selectedDate" [userId]="currentUserId"></app-preview-evento>
@@ -65,6 +74,8 @@
         <span *ngIf="searchTermTitolo || searchTermKeywords; else initialSearchPrompt">Nessun evento trovato con i criteri specificati.</span>
         <ng-template #initialSearchPrompt>Digita nel campo di ricerca per trovare i tuoi eventi.</ng-template>
       </p>
-    </ng-template>
+    </ng-template>  <div class="previews-container" *ngIf="selectedDate">
+    <app-nota-component [date]="selectedDate" [userId]="currentUserId"></app-nota-component>
+    <app-preview-evento [date]="selectedDate" [userId]="currentUserId"></app-preview-evento>
   </div>
 </div>

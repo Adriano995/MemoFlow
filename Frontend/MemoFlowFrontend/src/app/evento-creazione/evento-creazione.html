@@ -1,57 +1,41 @@
 <div class="page-container">
-  <div class="card-base form-container">
-    <h2>Crea Nuovo Evento</h2>
+  <div class="card-base form-card-large form-margin-top">
+    <h2 class="form-title-base">Crea Nuovo Evento</h2>
 
     <form (ngSubmit)="onSubmit()" #eventoForm="ngForm">
       <div class="form-group">
-        <label for="titolo">Titolo:</label>
-        <input type="text" id="titolo" name="titolo" [(ngModel)]="newEvent.titolo" required maxlength="100">
-        <div *ngIf="eventoForm.controls['titolo']?.invalid && eventoForm.controls['titolo']?.touched" class="error-message">
+        <label for="titolo" class="form-label-base">Titolo:</label>
+        <input type="text" id="titolo" name="titolo" [(ngModel)]="newEvent.titolo" required maxlength="100" class="form-input-base">
+        <div *ngIf="eventoForm.controls['titolo']?.invalid && eventoForm.controls['titolo']?.touched" class="error-message message-base">
           Il titolo è obbligatorio (max 100 caratteri).
         </div>
       </div>
 
-      <div class="form-group">
-        <label for="descrizione">Descrizione (Opzionale):</label>
-        <textarea id="descrizione" name="descrizione" [(ngModel)]="newEvent.descrizione" rows="4" maxlength="500"></textarea>
-        <div *ngIf="eventoForm.controls['descrizione']?.invalid && eventoForm.controls['descrizione']?.touched" class="error-message">
-          La descrizione non può superare i 500 caratteri.
-        </div>
+      <div class="form-group checkbox-group">
+        <input type="checkbox" id="allDay" name="allDay" [(ngModel)]="isAllDay" (change)="onAllDayChange()" class="form-checkbox">
+        <label for="allDay" class="form-label-base">Giorno intero</label>
       </div>
 
       <div class="form-group date-time-group">
-        <label for="dataInizio">Data e Ora Inizio:</label>
-        <div class="input-group">
-          <input type="date" id="dataInizio" name="dataInizio" [(ngModel)]="selectedDateInizio" [min]="minDate" required>
-          <input type="time" id="oraInizio" name="oraInizio" [(ngModel)]="selectedTimeInizio" required>
-        </div>
-        <div *ngIf="(eventoForm.controls['dataInizio']?.invalid && eventoForm.controls['dataInizio']?.touched) || (eventoForm.controls['oraInizio']?.invalid && eventoForm.controls['oraInizio']?.touched)" class="error-message">
-          Data e ora di inizio sono obbligatorie.
-        </div>
+        <label class="form-label-base">Data e Ora Inizio:</label>
+        <input type="text" #dataInizioInput class="form-input-base" placeholder="Seleziona Data e Ora" [disabled]="isAllDay" />
       </div>
 
       <div class="form-group date-time-group">
-        <label for="dataFine">Data e Ora Fine:</label>
-        <div class="input-group">
-          <input type="date" id="dataFine" name="dataFine" [(ngModel)]="selectedDateFine" [min]="minDate" required>
-          <input type="time" id="oraFine" name="oraFine" [(ngModel)]="selectedTimeFine" required>
-        </div>
-        <div *ngIf="(eventoForm.controls['dataFine']?.invalid && eventoForm.controls['dataFine']?.touched) || (eventoForm.controls['oraFine']?.invalid && eventoForm.controls['oraFine']?.touched)" class="error-message">
-          Data e ora di fine sono obbligatorie.
-        </div>
-        </div>
-
+        <label class="form-label-base">Data e Ora Fine:</label>
+        <input type="text" #dataFineInput class="form-input-base" placeholder="Seleziona Data e Ora" [disabled]="isAllDay" />
+      </div>
       <div class="form-group">
-        <label for="luogo">Luogo (Opzionale):</label>
-        <input type="text" id="luogo" name="luogo" [(ngModel)]="newEvent.luogo" maxlength="100">
-        <div *ngIf="eventoForm.controls['luogo']?.invalid && eventoForm.controls['luogo']?.touched" class="error-message">
+        <label for="luogo" class="form-label-base">Luogo (Opzionale):</label>
+        <input type="text" id="luogo" name="luogo" [(ngModel)]="newEvent.luogo" maxlength="100" class="form-input-base">
+        <div *ngIf="eventoForm.controls['luogo']?.invalid && eventoForm.controls['luogo']?.touched" class="error-message message-base">
           Il luogo non può superare i 100 caratteri.
         </div>
       </div>
-
-      <div class="form-actions">
-        <button type="submit" [disabled]="!eventoForm.valid" class="btn btn-primary">Crea Evento</button>
-        <button type="button" (click)="goBack()" class="btn btn-secondary">Annulla</button>
+      
+      <div class="form-actions flex-row reverse-flex">
+        <button type="submit" [disabled]="!eventoForm.valid" class="button-base button-primary">Crea Evento</button>
+        <button type="button" (click)="goBack()" class="button-base button-secondary">Annulla</button>
       </div>
     </form>
   </div>

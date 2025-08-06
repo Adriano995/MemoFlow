@@ -52,6 +52,10 @@ public class EventoService extends AbstractCrudService<
 
     @Override
     public EventoDTO create(EventoCreateDTO createDto) {
+        if (createDto.getDataFine() != null && createDto.getDataFine().isBefore(createDto.getDataInizio())) {
+            throw new IllegalArgumentException("La data di fine non può essere precedente alla data di inizio.");
+        }
+        
         Evento evento = toEntity(createDto);
         Utente utente = new Utente();
         utente.setId(getCurrentUserId());
@@ -62,6 +66,20 @@ public class EventoService extends AbstractCrudService<
 
     @Override
     protected void updateEntity(Evento entity, EventoCambiaDTO updateDto) {
+        LocalDateTime dataInizio = entity.getDataInizio();
+        LocalDateTime dataFine = entity.getDataFine();
+
+        if (updateDto.getDataInizio() != null) {
+            dataInizio = updateDto.getDataInizio();
+        }
+        if (updateDto.getDataFine() != null) {
+            dataFine = updateDto.getDataFine();
+        }
+
+        if (dataFine != null && dataFine.isBefore(dataInizio)) {
+            throw new IllegalArgumentException("La data di fine non può essere precedente alla data di inizio.");
+        }
+        
         if (updateDto.getTitolo() != null) {
             entity.setTitolo(updateDto.getTitolo());
         }
@@ -74,12 +92,6 @@ public class EventoService extends AbstractCrudService<
         if (updateDto.getDataFine() != null) {
             entity.setDataFine(updateDto.getDataFine());
         }
-        /*if (updateDto.getOraInizio() != null) {
-            entity.setOraInizio(updateDto.getOraInizio());
-        }
-        if (updateDto.getOraFine() != null) {
-            entity.setOraFine(updateDto.getOraFine());
-        }*/
         if (updateDto.getLuogo() != null) {
             entity.setLuogo(updateDto.getLuogo());
         }
@@ -158,6 +170,7 @@ public class EventoService extends AbstractCrudService<
             .toList();
     }
 
+
     /*@Transactional(readOnly = true)
     public List<EventoDTO> findAllByDataInizioAfterAndDataFineBeforeAndUtenteId(LocalDateTime dataInizio, LocalDateTime dataFine, Long utenteId) {
         return repository.findAllByDataInizioBetweenAndDataFineBetweenAndUtenteId(dataInizio, dataFine, utenteId)
@@ -166,6 +179,7 @@ public class EventoService extends AbstractCrudService<
             .toList();
     }*/
 
+
     @Transactional(readOnly = true)
     public List<EventoDTO> getEventiInDateRange(LocalDateTime dataInizio, LocalDateTime dataFine, Long utenteId) {
         return repository.findEventsInDateRange(dataInizio, dataFine, utenteId)
@@ -173,6 +187,7 @@ public class EventoService extends AbstractCrudService<
             .map(this::toDto)
             .toList();
     }
+
 
     /*public List<EventoDTO> getEventoByDataCreazioneAndUtenteId(LocalDate data, Long utenteId) {
         LocalDateTime startOfDay = data.atStartOfDay();
@@ -211,5 +226,13 @@ public class EventoService extends AbstractCrudService<
         return eventi.stream()
                      .map(eventoMapper::toDto)
                      .collect(Collectors.toList());
+    }
+}
+
+    @Transactional(readOnly = true)
+    public List<EventoDTO> getMonthlyEvents(LocalDateTime inizioMese, LocalDateTime fineMese, Long utenteId) {
+        return repository.findMonthlyEvents(inizioMese, fineMese, utenteId).stream()
+                .map(eventoMapper::toDto)
+                .toList();
     }
 }

@@ -1,10 +1,10 @@
-<div class="card-base notes-container container-lg">
+<div class="notes-container card-base">
   <div *ngIf="loading" class="message-base">Caricamento note...</div>
   <div *ngIf="error" class="error-message message-base">{{ error }}</div>
 
   <div *ngIf="!loading && !error">
     <div *ngIf="nota && nota.length > 0">
-      <h3 class="h3 section-title">Note per il giorno: {{ date | date:'fullDate' }}</h3>
+      <h3 class="section-title">Note per il giorno: {{ date | date:'fullDate' }}</h3>
       <button class="button-base button-primary create-new-note-button" (click)="onCreateNewNota()">
         Crea Nuova Nota
       </button>
@@ -12,22 +12,23 @@
         <h4 class="h4 item-title">{{ n.titolo }}</h4>
         <p class="text-secondary"><strong>Tipo:</strong> {{ n.tipoNota }}</p>
         <p class="text-secondary note-preview">{{ getPreviewText(n.contenutoTesto) }}</p>
-        <div class="note-actions flex-row gap-10">
-          <button class="button-base button-secondary flex-grow-1" (click)="onViewOrEditNota(n.id)">
-            Vedi Dettagli / Modifica
-          </button>
-          <button class="button-base button-danger flex-grow-1" (click)="onDeleteNota(n.id)">
-            Elimina
-          </button>
-        </div>
+          <div class="note-actions flex-row gap-10">
+            <button class="button-base button-danger" (click)="onDeleteNota(n.id)">
+              Elimina
+            </button>
+            <button class="button-base button-secondary" (click)="onViewOrEditNota(n.id)">
+              Vedi Dettagli / Modifica
+            </button>
+          </div>
         <hr class="note-separator">
       </div>
     </div>
-      <div *ngIf="!loading && nota && nota.length === 0 && date" class="no-notes-message message-base">
-        {{ noNotesMessage }} <button class="button-base button-primary create-new-note-button" (click)="onCreateNewNota()">
-          Crea Nuova Nota
-        </button>
-      </div>
+    <div *ngIf="!loading && nota && nota.length === 0 && date" class="no-notes-message message-base">
+      {{ noNotesMessage }}
+      <button class="button-base button-primary create-new-note-button" (click)="onCreateNewNota()">
+        Crea Nuova Nota
+      </button>
+    </div>
     <div *ngIf="!date" class="no-date-selected-message message-base">
       Seleziona un giorno dal calendario per vedere o creare note.
     </div>

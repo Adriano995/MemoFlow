@@ -1,0 +1,39 @@
+<div class="page-container">
+  <div class="card-base form-card-large form-margin-top">
+    <h2 class="form-title-base">Modifica Evento</h2>
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="titolo" class="form-label-base">Titolo:</label>
+        <input type="text" id="titolo" [(ngModel)]="modificaEvento.titolo" name="titolo" required class="form-input-base">
+      </div>
+      <div class="form-group">
+        <label for="descrizione" class="form-label-base">Descrizione:</label>
+        <textarea id="descrizione" [(ngModel)]="modificaEvento.descrizione" name="descrizione" class="form-input-base"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="luogo" class="form-label-base">Luogo:</label>
+        <input type="text" id="luogo" [(ngModel)]="modificaEvento.luogo" name="luogo" class="form-input-base">
+      </div>
+
+      <div class="form-group checkbox-group">
+        <input type="checkbox" id="allDay" name="allDay" [(ngModel)]="isAllDay" (change)="onAllDayChange()" class="form-checkbox">
+        <label for="allDay" class="form-label-base">Giorno intero</label>
+      </div>
+
+      <div class="form-group date-time-group">
+        <label for="dataInizio" class="form-label-base">Data e Ora Inizio:</label>
+        <input type="text" #dataInizioInput class="form-input-base" name="dataInizio" [(ngModel)]="modificaEvento.dataInizio" placeholder="Seleziona Data e Ora" />
+      </div>
+
+      <div class="form-group date-time-group">
+        <label for="dataFine" class="form-label-base">Data e Ora Fine:</label>
+        <input type="text" #dataFineInput class="form-input-base" name="dataFine" [(ngModel)]="modificaEvento.dataFine" placeholder="Seleziona Data e Ora" />
+      </div>
+
+      <div class="form-actions flex-row reverse-flex">
+        <button type="submit" class="button-base button-primary">Salva Modifiche</button>
+        <button type="button" class="button-base button-secondary" (click)="goBack()">Annulla</button>
+      </div>
+    </form>
+  </div>
+</div>

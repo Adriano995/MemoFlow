@@ -6,6 +6,9 @@ import { Observable, from, throwError } from 'rxjs';
 import { EventoDTO, EventoCreateDTO, EventoCambiaDTO, EventoStato } from '../models/evento.model';
 import { AuthService } from '../auth/auth.service';
 import { HttpParams } from '@angular/common/http'; 
+import { EventoDTO, EventoCreateDTO, EventoCambiaDTO, EventoStato } from '../models/evento.model'; 
+import { AuthService } from '../auth/auth.service'; 
+import { AxiosRequestConfig } from 'axios';
 
 
 @Injectable({
@@ -47,6 +50,10 @@ export class EventoService {
 
     const inizioGiorno = `${data}T00:00:00`;
     const fineGiorno = `${data}T23:59:59`;
+
+    const inizioGiorno = `${data}T00:00:00`; 
+    const fineGiorno = `${data}T23:59:59`; 
+
 
     console.log(`Chiamata a getEventiBetweenDates con inizio: ${inizioGiorno}, fine: ${fineGiorno}, userId: ${userId}`);
     // Nota: L'endpoint /tra-due-date nel tuo controller Spring Boot non usa più il userId dal frontend,
@@ -95,7 +102,6 @@ export class EventoService {
     return from(this.axiosService.get<EventoDTO[]>(`${this.BASE_URL}/tra-due-date`, { params: { inizio, fine, userId } }));
   }
 
-
   ricercaEventiAvanzata(titolo?: string, keywords?: string): Observable<EventoDTO[]> {
     const params: any = {};
     if (titolo) {
@@ -108,4 +114,21 @@ export class EventoService {
     // Passa un oggetto JavaScript a Axios
     return from(this.axiosService.get<EventoDTO[]>(`${this.BASE_URL}/ricercaAvanzata`, { params: params }));
  }
+}
+    getEventsBetweenDates(inizio: string, fine: string, currentUserId: number): Observable<EventoDTO[]> {
+    const userId = this.authService.getUserId();
+    if (userId === null || userId !== currentUserId) {
+        console.error('Errore: User ID non corrispondente o nullo.');
+        return throwError(() => new Error('User ID is null or mismatch. Cannot fetch events.'));
+    }
+
+    const config: AxiosRequestConfig = {
+        params: {
+            inizioMese: inizio,
+            fineMese: fine
+        }
+    };
+    
+    return from(this.axiosService.get<EventoDTO[]>(`${this.BASE_URL}/eventi-del-mese`, config));
+  }
 }

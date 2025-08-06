@@ -1,6 +1,6 @@
 <div class="page-container">
-  <div class="card-base container-md">
-    <h2 class="h2 form-title">Crea Nuova Nota</h2>
+  <div class="card-base nota-form-card" [ngClass]="{'expanded-card': isDrawingMode}">
+    <h2 class="form-title">Crea Nuova Nota</h2>
 
     <div *ngIf="successMessage" class="success-message message-base">{{ successMessage }}</div>
     <div *ngIf="errorMessage" class="error-message message-base">{{ errorMessage }}</div>
@@ -18,20 +18,30 @@
         </select>
       </div>
 
-      <div class="form-group" *ngIf="newNota.tipoNota === 'TESTO'">
+      <div class="form-group content-container" *ngIf="newNota.tipoNota === 'TESTO'">
         <label for="contenutoTesto" class="form-label">Contenuto Testo:</label>
         <textarea id="contenutoTesto" [(ngModel)]="newNota.contenutoTesto" name="contenutoTesto" rows="5" class="form-input"></textarea>
       </div>
 
-      <div class="form-group" *ngIf="newNota.tipoNota === 'DISEGNO'">
+      <div class="form-group content-container drawing-container" *ngIf="newNota.tipoNota === 'DISEGNO'">
         <label class="form-label">Area di Disegno:</label>
-        <div #drawingCanvas class="drawing-area" style="border: 1px solid black; background-color: white; width: 100%; min-height: 300px; cursor: crosshair;"></div>
-        <button type="button" class="button-base button-secondary" (click)="clearDrawing()">Pulisci Disegno</button>
+        <div #drawingCanvas 
+            class="drawing-area" 
+            [ngClass]="{'eraser-mode': isEraserMode}"> </div>
+        <div class="drawing-actions">
+            <button type="button" class="button-base button-secondary" (click)="clearDrawing()">Pulisci Disegno</button>
+            <button 
+              type="button" 
+              class="button-base button-secondary" 
+              [ngClass]="{'button-active': isEraserMode}"  (click)="toggleEraserMode()">
+              {{ isEraserMode ? 'Disattiva Gomma' : 'Attiva Gomma' }}
+            </button>
+        </div>
       </div>
-
-      <div class="form-actions flex-row gap-10">
-        <button type="submit" class="button-base button-primary">Salva Nota</button>
+      
+      <div class="form-actions">
         <button type="button" class="button-base button-secondary" (click)="onCancel()">Annulla</button>
+        <button type="submit" class="button-base button-primary">Salva Nota</button>
       </div>
     </form>
   </div>

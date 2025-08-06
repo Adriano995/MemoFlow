@@ -11,21 +11,89 @@
   background-color: var(--page-bg);
 }
 
-/* Form */
-.nota-form {
-  background-color: var(--card-bg);
-  padding: 40px 50px;
-  border-radius: 14px;
-  box-shadow:
-    0 8px 30px var(--shadow-orange-medium),
-    0 0 0 1px var(--shadow-orange-light);
+/* Stili per la card quando è in modalità disegno (modalità espansa) */
+.card-base.expanded-card {
+  display: flex;
+  flex-direction: column;
+  max-width: 90vw;
+  max-height: 90vh;
   width: 100%;
-  max-width: 1200px; /* Larghezza massima aumentata per desktop */
-  margin: 20px auto; /* Centra orizzontalmente e aggiunge margine */
-  position: relative;
-  z-index: 1;
+  height: 100%;
+  margin: 20px auto;
+  padding: 20px;
   box-sizing: border-box;
-  color: var(--text-color);
+  transition: all 1s ease-in-out;
+}
+
+/* Modifiche per il form in modalità espansa */
+.expanded-card .nota-form,
+.expanded-card form {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Regole per l'espansione dei contenitori interni */
+.expanded-card .content-container,
+.drawing-container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Stili per l'area di disegno */
+.drawing-area {
+  width: 100%;
+  flex-grow: 1;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  touch-action: none;
+  user-select: none;
+  position: relative;
+  min-height: 200px;
+}
+
+/* Stile per la modalità gomma */
+.eraser-mode {
+  cursor: crosshair;
+  background-color: #f9f9f9;
+}
+
+/* Stile per l'area di disegno in modalità gomma */
+.drawing-area.eraser-mode {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="rgba(0,0,0,0.5)" d="M14 18.01L14 22L10 22L10 18.01C7.8 18.25 6 20.08 6 22H5C5 19.34 8.35 17.5 12 17.5C15.65 17.5 19 19.34 19 22H18C18 20.08 16.2 18.25 14 18.01Z"/></svg>') 12 12, crosshair;
+}
+
+/* Stile per il pulsante attivo */
+.button-active {
+  background-color: #ff9900;
+  color: white;
+  box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.4);
+}
+
+/* Stili per i pulsanti di controllo del disegno */
+.drawing-actions {
+  margin-top: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-start;
+}
+
+/* Stili per i pulsanti di base all'interno di drawing-actions */
+.drawing-actions .button-base {
+  flex-grow: 1;
+  max-width: 200px;
+  min-width: 150px;
+}
+
+/* SVG disegno dentro il contenitore */
+.drawing-area svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
 }
 
 /* Intestazione */
@@ -75,8 +143,8 @@
 /* Azioni del form (bottoni) */
 .form-actions {
   display: flex;
-  justify-content: flex-end; /* Allinea i bottoni a destra */
-  gap: 10px; /* Spazio tra i bottoni */
+  justify-content: flex-end;
+  gap: 10px;
   margin-top: 30px;
 }
 
@@ -142,17 +210,21 @@
 }
 
 /* Media Queries per layout responsivo */
-@media (max-width: 1250px) { /* Larghezza adattiva per schermi grandi */
-  .nota-form {
-    max-width: calc(100% - 40px);
+
+/* Per schermi fino a 1024px (tablet in modalità landscape) */
+@media (max-width: 1024px) {
+  .drawing-area {
+    min-height: 250px;
+    max-height: 500px;
   }
 }
 
+/* Per schermi fino a 768px (tablet in modalità portrait e schermi piccoli) */
 @media (max-width: 768px) {
   .nota-form {
-    padding: 30px 20px; /* Riduci il padding su schermi più piccoli */
-    margin: 15px; /* Aggiungi un margine esterno per non attaccarsi ai bordi */
-    max-width: calc(100% - 30px); /* Assicura che non fuoriesca */
+    padding: 30px 20px;
+    margin: 15px;
+    max-width: calc(100% - 30px);
   }
 
   .form-title {
@@ -163,24 +235,31 @@
   .form-group {
     margin-bottom: 20px;
   }
-
-  .form-actions {
-    flex-direction: column; /* I bottoni si stackano su mobile */
+  
+  .drawing-actions {
+    flex-direction: column;
     gap: 15px;
   }
 
-  .form-actions .button-base {
-    width: 100%; /* I bottoni occupano tutta la larghezza */
+  .drawing-actions .button-base {
+    width: 100%;
+    max-width: none;
   }
-
+  
   .back-button {
-    position: static; /* Rimuovi il posizionamento assoluto su mobile */
-    margin-bottom: 20px; /* Aggiungi spazio sotto il bottone */
+    position: static;
+    margin-bottom: 20px;
     width: 100%;
     text-align: center;
   }
+
+  .drawing-area {
+    min-height: 200px;
+    max-height: 300px;
+  }
 }
 
+/* Per schermi fino a 480px (telefoni) */
 @media (max-width: 480px) {
   .nota-form {
     padding: 25px 15px;

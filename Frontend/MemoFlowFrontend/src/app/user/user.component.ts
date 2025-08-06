@@ -8,6 +8,8 @@ import { User } from './user.model';
 import { Subject, take } from 'rxjs'; 
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs'; 
+import { AuthService } from '../auth/auth.service';
+import { Router } from '@angular/router'; 
 
 
 @Component({

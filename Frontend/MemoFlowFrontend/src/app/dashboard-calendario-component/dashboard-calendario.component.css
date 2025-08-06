@@ -1,230 +1,208 @@
 /* dashboard-calendario.component.css */
 
-/* Contenitore principale del calendario e dei controlli */
-.calendario-container {
-  background-color: var(--card-bg);
-  padding: 20px 30px;
-  border-radius: 14px;
-  box-shadow:
-    0 8px 30px var(--shadow-orange-medium),
-    0 0 0 1px var(--shadow-orange-light);
+/* Contenitore principale della dashboard, gestisce il layout su tutti gli schermi */
+.dashboard-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
   width: 100%;
-  max-width: 1200px; /* Larghezza massima aumentata per desktop */
-  margin: 30px auto 40px auto; /* MODIFICATO: AUMENTATO MARGINE SUPERIORE E INFERIORE per desktop */
-  box-sizing: border-box;
-  color: var(--text-color);
+  max-width: 1920px;
+  margin: auto; 
+  transition: all 0.5s ease-in-out; 
 }
 
-/* Intestazione del calendario (Mese Anno e Bottoni) */
+/* Stili per il contenitore del calendario */
+.card-base.calendario-container {
+  background-color: var(--secondary-bg-dark);
+  padding: 20px;
+  width: 100%;
+  max-width: 100%; /* Rimuove il limite di larghezza su mobile */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  transition: max-width 0.5s ease-in-out, flex-grow 1s ease-in-out;
+}
+
+/* Resto del tuo CSS... */
 .calendar-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-  padding: 0 10px;
+  border-bottom: 1px solid var(--border-dark);
+  padding-bottom: 10px;
+}
+
+.calendar-header h2 {
+  margin: 0;
+  text-align: center;
+  flex-grow: 1;
+  font-size: 1.8rem;
+  color: var(--accent-orange);
 }
 
 .header-button {
   background: none;
   border: none;
-  color: var(--accent-orange);
-  font-size: 1.8rem;
+  color: var(--light-orange);
+  font-size: 2rem;
   cursor: pointer;
-  transition: color 0.3s;
+  transition: color 0.3s ease-in-out;
 }
 
 .header-button:hover {
-  color: var(--accent-orange-dark); /* Scuro al passaggio del mouse */
+  color: var(--accent-orange);
+  transform: scale(1.1);
 }
 
-.current-month-year {
-  color: var(--title-color); /* Colore del titolo */
-  font-size: 2rem;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Griglia dei giorni della settimana (Lun, Mar, ...) */
 .weekdays-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 8px;
   text-align: center;
-  font-weight: 600;
-  color: var(--accent-orange); /* Colore per i nomi dei giorni */
-  margin-bottom: 15px;
-  font-size: 1em;
+  font-weight: bold;
+  color: var(--light-orange);
+  margin-bottom: 10px;
 }
 
-/* Griglia principale del calendario */
+
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 8px; /* Spazio tra i giorni */
-  border-radius: 10px; /* Bordo arrotondato per la griglia */
-  overflow: hidden; /* Assicura che i bordi arrotondati funzionino */
+  gap: 10px;
 }
 
-/* Stile per la singola cella del giorno del calendario */
 .calendar-day {
-  background-color: var(--field-bg); /* Sfondo per i giorni */
-  border-radius: 8px; /* Bordo arrotondato per le celle */
-  min-height: 90px; /* Altezza minima per le celle */
+  height: 85px;
   display: flex;
   flex-direction: column;
-  align-items: flex-end; /* Allinea il contenuto in basso a destra */
-  padding: 8px;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 5px;
+  border: 1px solid var(--border-dark);
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.2s ease;
-  position: relative; /* Per posizionamento dell'indicatore nota */
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Leggera ombra per profondità */
-  border: 1px solid var(--border-color); /* Bordo sottile */
+  background-color: var(--primary-bg-dark);
+  position: relative;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.2s ease;
 }
 
 .calendar-day:hover {
-  background-color: var(--field-hover-bg); /* Cambia colore al passaggio del mouse */
-  transform: translateY(-2px); /* Effetto di sollevamento */
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  background-color: var(--secondary-bg-dark);
 }
 
-/* Stile per il numero del giorno AGGIUNTO */
-.calendar-day .day-number {
-  font-size: 1.2em; /* Dimensione del testo del giorno */
-  font-weight: 600; /* Grassetto */
-  color: var(--text-color); /* Colore del testo */
+.day-number {
+  font-size: 1.2em;
+  color: var(--text-lighter);
+}
+
+.not-current-month {
+  background-color: var(--secondary-bg-dark);
+  border-color: transparent;
+  color: var(--text-placeholder);
+  opacity: 0.5;
+}
+
+.weekend {
+  background-color: var(--secondary-bg-dark);
+}
+
+.selected {
+  border: 2px solid var(--accent-orange);
+  background-color: var(--primary-bg-dark);
+  box-shadow: 0 0 8px rgba(255, 111, 0, 0.4);
+}
+
+.today {
+  border: 2px solid var(--light-orange);
+  background-color: var(--primary-bg-dark);
+}
+
+.today.selected {
+  border: 2px solid var(--accent-orange);
+}
+
+.nota-indicatore, .evento-indicatore {
   position: absolute;
-  top: 8px; /* Posiziona in alto */
-  right: 8px; /* Posiziona a destra */
-  /* Potresti voler centrare o posizionare diversamente a seconda del design */
-}
-
-
-/* Stili per il giorno corrente */
-.calendar-day.today {
-  border: 2px solid var(--accent-orange); /* Bordo accentato per oggi */
-  background-color: var(--today-bg); /* Sfondo diverso per oggi */
-  box-shadow: 0 0 0 2px var(--accent-orange), 0 4px 10px rgba(0,0,0,0.1);
-}
-
-/* Stili per il giorno selezionato */
-.calendar-day.selected {
-  background-color: var(--selected-bg); /* Sfondo per il giorno selezionato */
-  border: 2px solid var(--primary-color);
-  color: var(--primary-bg); /* Colore testo invertito */
-}
-
-/* Stili per i weekend */
-.calendar-day.weekend {
-  color: var(--secondary-text-color); /* Colore testo leggermente diverso per i weekend */
-  background-color: var(--weekend-bg);
-}
-
-/* Stili per i giorni non del mese corrente (opzionale) */
-.calendar-day.not-current-month {
-  opacity: 0.6; /* Rendi i giorni del mese precedente/successivo meno visibili */
-  background-color: var(--not-current-month-bg);
-}
-
-/* Stili per il giorno selezionato */
-.calendar-day.selected {
-  background-color: var(--accent-orange); /* Sfondo arancione per il giorno selezionato */
-  color: var(--text-color-inverted); /* Testo bianco */
-  box-shadow: 0 0 12px rgba(255, 165, 0, 0.6);
-  border: 2px solid var(--text-color-inverted); /* AGGIUNTO: Bordo bianco per indicare la selezione */
-}
-
-.calendar-day.selected::before { /* Assicurati che anche il numero del giorno cambi colore */
-  color: var(--text-color-inverted);
-}
-
-/* Indicatore di nota */
-.nota-indicatore {
-  position: absolute;
-  bottom: 8px;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 5px;
   width: 8px;
   height: 8px;
-  background-color: var(--accent-orange);
   border-radius: 50%;
-  border: 1px solid var(--card-bg);
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 3px rgba(0,0,0,0.5);
 }
 
-/* Media Queries per responsività */
-@media (max-width: 1250px) { /* Adatta la larghezza su schermi grandi */
+.nota-indicatore {
+  background-color: #fcf302;
+  left: 5px;
+}
+
+.evento-indicatore {
+  right: 5px;
+}
+
+.evento-indicatore.status-programmato { background-color: #007bff; }
+.evento-indicatore.status-in-corso { background-color: #28a745; }
+.evento-indicatore.status-concluso { background-color: #6c757d; }
+.evento-indicatore.status-annullato { background-color: #dc3545; }
+
+.previews-container {
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+@media (min-width: 768px) {
+  .dashboard-content-wrapper {
+    flex-direction: row; /* Layout a riga */
+    align-items: flex-start;
+    justify-content: space-between; /* Spazia gli elementi */
+  }
+
   .calendario-container {
-    max-width: calc(100% - 40px); /* Occupa quasi tutta la larghezza con un margine */
+    flex-grow: 1; /* Permette al calendario di occupare lo spazio rimanente */
+    max-width: none; /* Rimuove la larghezza massima per espanderlo */
+  }
+
+}
+
+/* Media query per schermi grandi, ripristina lo stile originale per le animazioni */
+@media (min-width: 768px) {
+  .previews-container {
+    opacity: 0;
+    transform: translateX(10px);
+    pointer-events: none;
+  }
+
+  .dashboard-content-wrapper.is-expanded .previews-container {
+    opacity: 1; /* Rende visibile il contenitore */
+    transform: translateX(0); /* Lo riporta nella sua posizione */
+    pointer-events: auto;
   }
 }
 
-@media (max-width: 768px) {
-  .calendario-container {
-    padding: 15px;
-    margin: 15px auto 30px auto; /* Margine inferiore per spaziatura su tablet */
-    max-width: calc(100% - 30px);
+@media (min-width: 1600px) {
+  .calendar-day {
+    height: 95px; 
   }
 
-  .calendar-header {
-    flex-direction: column;
-    margin-bottom: 15px;
+  .day-number {
+    font-size: 1.5em;
   }
 
-  .current-month-year {
-    font-size: 1.8rem;
-    margin-bottom: 10px;
+  .calendar-header h2 {
+    font-size: 2.2rem; 
   }
 
   .header-button {
-    font-size: 1.5rem;
+    font-size: 2.5rem;
   }
 
-  .weekdays-grid {
-    font-size: 0.9em;
-  }
-
-  .calendar-day {
-    min-height: 60px; /* Riduci l'altezza minima su tablet */
-    padding-top: 8px;
-    padding-bottom: 8px;
-  }
-  .calendar-day::before {
-    font-size: 1.1em;
-  }
-  .nota-indicatore {
-    bottom: 5px;
-    width: 6px;
-    height: 6px;
-  }
-}
-
-@media (max-width: 480px) {
-  .calendario-container {
-    padding: 10px;
-    margin: 10px auto 20px auto; /* Margine inferiore per spaziatura su mobile */
-    max-width: calc(100% - 20px);
-  }
-  .current-month-year {
-    font-size: 1.6rem;
-  }
-  .header-button {
-    font-size: 1.3rem;
-  }
-  .weekdays-grid {
-    font-size: 0.8em;
-  }
-  .calendar-day {
-    min-height: 50px; /* Riduci ulteriormente su mobile */
-    padding: 5px;
-  }
-  .calendar-day::before {
-    font-size: 1em;
-  }
-}
-
-@media (max-width: 1250px) { /* Adatta la larghezza su schermi grandi */
-  .calendario-container {
-    max-width: calc(100% - 40px); /* Occupa quasi tutta la larghezza con un margine */
-    margin: 25px auto 35px auto; /* Leggermente ridotto per schermi tra 1250px e 768px */
+  .previews-container {
+    max-width: 600px; 
   }
 }
