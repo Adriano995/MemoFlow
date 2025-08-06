@@ -3,19 +3,21 @@
 import { Injectable } from '@angular/core';
 import { AxiosService } from '../core/axios.service';
 import { Observable, from, throwError } from 'rxjs';
-import { EventoDTO, EventoCreateDTO, EventoCambiaDTO, EventoStato } from '../models/evento.model'; 
-import { AuthService } from '../auth/auth.service'; 
+import { EventoDTO, EventoCreateDTO, EventoCambiaDTO, EventoStato } from '../models/evento.model';
+import { AuthService } from '../auth/auth.service';
+import { HttpParams } from '@angular/common/http'; 
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class EventoService {
-  private readonly BASE_URL = '/eventi'; 
+  private readonly BASE_URL = '/eventi';
 
   constructor(
-    private axiosService: AxiosService, 
+    private axiosService: AxiosService,
     private authService: AuthService
-  ) { } 
+  ) { }
 
   getAllEventi(): Observable<EventoDTO[]> {
     return from(this.axiosService.get<EventoDTO[]>(`${this.BASE_URL}/listaTutti`));
@@ -30,28 +32,27 @@ export class EventoService {
   }
 
   updateEvento(id: number, evento: EventoCambiaDTO): Observable<EventoDTO> {
-    return from(this.axiosService.put<EventoDTO>(`${this.BASE_URL}/modificaEvento/${id}`, evento)); // Modificato qui: modificato /modifica a /modificaEvento
+    return from(this.axiosService.put<EventoDTO>(`${this.BASE_URL}/modificaEvento/${id}`, evento));
   }
 
   deleteEvento(id: number): Observable<void> {
-    return from(this.axiosService.delete<void>(`${this.BASE_URL}/eliminaEvento/${id}`)); // Modificato qui: modificato /elimina a /eliminaEvento
+    return from(this.axiosService.delete<void>(`${this.BASE_URL}/eliminaEvento/${id}`));
   }
 
-  // **** MODIFICA QUI ****
   getEventiByDate(data: string, userId: number | null): Observable<EventoDTO[]> {
     if (userId === null) {
       console.error('Errore: User ID è null. Impossibile recuperare eventi per data.');
       return throwError(() => new Error('User ID is null. Cannot fetch events by date.'));
     }
 
-    // Formatta la data per coprire l'intero giorno
-    const inizioGiorno = `${data}T00:00:00`; // Esempio: "2025-07-29T00:00:00"
-    const fineGiorno = `${data}T23:59:59`;   // Esempio: "2025-07-29T23:59:59"
+    const inizioGiorno = `${data}T00:00:00`;
+    const fineGiorno = `${data}T23:59:59`;
 
     console.log(`Chiamata a getEventiBetweenDates con inizio: ${inizioGiorno}, fine: ${fineGiorno}, userId: ${userId}`);
+    // Nota: L'endpoint /tra-due-date nel tuo controller Spring Boot non usa più il userId dal frontend,
+    // ma lo ottiene internamente. Qui lo passiamo lo stesso, ma il backend lo ignorerà se autenticato.
     return from(this.axiosService.get<EventoDTO[]>(`${this.BASE_URL}/tra-due-date`, { params: { inizio: inizioGiorno, fine: fineGiorno, userId: userId } }));
   }
-  // **** FINE MODIFICA ****
 
   getEventiByStatoAndUtente(stato: EventoStato): Observable<EventoDTO[]> {
     const userId = this.authService.getUserId();
@@ -59,7 +60,8 @@ export class EventoService {
       console.error('Errore: User ID è null. Impossibile recuperare eventi per stato.');
       return throwError(() => new Error('User ID is null. Cannot fetch events by status.'));
     }
-    return from(this.axiosService.get<EventoDTO[]>(`${this.BASE_URL}/stato/utente`, { params: { stato: stato.toString(), userId } }));
+    // Nota: Anche qui, il backend ottiene userId internamente per questo endpoint.
+    return from(this.axiosService.get<EventoDTO[]>(`${this.BASE_URL}/stato/utente`, { params: { stato: stato.toString() } }));
   }
 
   getEventiAfterDataInizio(dataInizio: string): Observable<EventoDTO[]> {
@@ -68,7 +70,8 @@ export class EventoService {
       console.error('Errore: User ID è null. Impossibile recuperare eventi dopo la data di inizio.');
       return throwError(() => new Error('User ID is null. Cannot fetch events after start date.'));
     }
-    return from(this.axiosService.get<EventoDTO[]>(`${this.BASE_URL}/dopo-inizio`, { params: { dataInizio, userId } }));
+    // Nota: Anche qui, il backend ottiene userId internamente per questo endpoint.
+    return from(this.axiosService.get<EventoDTO[]>(`${this.BASE_URL}/dopo-inizio`, { params: { dataInizio } }));
   }
 
   getEventiBeforeDataFine(dataFine: string): Observable<EventoDTO[]> {
@@ -77,7 +80,8 @@ export class EventoService {
       console.error('Errore: User ID è null. Impossibile recuperare eventi prima della data di fine.');
       return throwError(() => new Error('User ID is null. Cannot fetch events before end date.'));
     }
-    return from(this.axiosService.get<EventoDTO[]>(`${this.BASE_URL}/prima-fine`, { params: { dataFine, userId } }));
+    // Nota: Anche qui, il backend ottiene userId internamente per questo endpoint.
+    return from(this.axiosService.get<EventoDTO[]>(`${this.BASE_URL}/prima-fine`, { params: { dataFine } }));
   }
 
   getEventiBetweenDates(inizio: string, fine: string, currentUserId: number): Observable<EventoDTO[]> {
@@ -86,6 +90,22 @@ export class EventoService {
       console.error('Errore: User ID è null. Impossibile recuperare eventi tra due date.');
       return throwError(() => new Error('User ID is null. Cannot fetch events between dates.'));
     }
+    // Nota: Questo metodo potrebbe essere duplicato con getEventiByDate, considera di unificarli.
+    // L'endpoint /tra-due-date nel backend ora prende userId dal token JWT e lo ignora se passato come param.
     return from(this.axiosService.get<EventoDTO[]>(`${this.BASE_URL}/tra-due-date`, { params: { inizio, fine, userId } }));
+  }
+
+  // --- AGGIUNGI QUESTO NUOVO METODO PER LA RICERCA AVANZATA ---
+  ricercaEventiAvanzata(titolo?: string, keywords?: string): Observable<EventoDTO[]> {
+    let params = new HttpParams();
+    if (titolo) {
+      params = params.set('titolo', titolo);
+    }
+    if (keywords) {
+      params = params.set('keywords', keywords);
+    }
+    // L'URL deve corrispondere all'endpoint GET /eventi/ricercaAvanzata del tuo controller Spring Boot
+    // HttpParams gestirà automaticamente l'aggiunta di '?' e '&' per i parametri
+    return from(this.axiosService.get<EventoDTO[]>(`${this.BASE_URL}/ricercaAvanzata`, { params: params }));
   }
 }

@@ -1,4 +1,3 @@
-
 <div class="page-container">
   <div class="card-base calendario-container">
     <div class="calendar-header">
@@ -30,8 +29,42 @@
     </div>
   </div>
 
-  <app-nota-component [date]="selectedDate" [userId]="currentUserId"></app-nota-component>
-
+  <app-nota-creazione [date]="selectedDate" [userId]="currentUserId"></app-nota-creazione>
   <app-preview-evento [date]="selectedDate" [userId]="currentUserId"></app-preview-evento>
-  
+
+  <hr> <div class="card-base search-section">
+    <h3>Cerca Eventi per Titolo o Descrizione</h3>
+    <div class="search-inputs">
+      <input type="text" [(ngModel)]="searchTermTitolo" placeholder="Cerca per titolo..." class="search-input">
+      <input type="text" [(ngModel)]="searchTermKeywords" placeholder="Cerca per parole chiave (descrizione)..." class="search-input">
+      <button (click)="eseguiRicerca()" [disabled]="isLoadingSearch" class="search-button">
+        {{ isLoadingSearch ? 'Cercando...' : 'Cerca' }}
+      </button>
+      <button (click)="resetRicerca()" class="reset-button">Reset</button>
+    </div>
+
+    <div *ngIf="isLoadingSearch" class="loading-indicator">
+      Caricamento risultati...
+    </div>
+
+    <h4>Risultati della Ricerca ({{ searchResults.length }} eventi)</h4>
+    <div *ngIf="searchResults.length > 0; else noSearchResults" class="search-results">
+      <ul class="event-list">
+        <li *ngFor="let evento of searchResults">
+          <strong>{{ evento.titolo }}</strong>
+          <p>{{ evento.descrizione }}</p>
+          <p>Luogo: {{ evento.luogo || 'N/D' }}</p>
+          <p>Inizio: {{ evento.dataInizio | date:'short' }}</p>
+          <p>Fine: {{ (evento.dataFine ? (evento.dataFine | date:'short') : 'N/D') }}</p>
+          <p>Stato: {{ evento.stato }}</p>
+          </li>
+      </ul>
+    </div>
+    <ng-template #noSearchResults>
+      <p *ngIf="!isLoadingSearch">
+        <span *ngIf="searchTermTitolo || searchTermKeywords; else initialSearchPrompt">Nessun evento trovato con i criteri specificati.</span>
+        <ng-template #initialSearchPrompt>Digita nel campo di ricerca per trovare i tuoi eventi.</ng-template>
+      </p>
+    </ng-template>
+  </div>
 </div>

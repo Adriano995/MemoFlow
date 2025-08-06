@@ -242,6 +242,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/nota/{id}").hasAnyRole("DEVELOPER", "USER")
                         .requestMatchers(HttpMethod.GET, "/nota/perDataEUtente").hasAnyRole("DEVELOPER", "USER")
                         .requestMatchers(HttpMethod.GET, "/nota/perUtente").hasAnyRole("DEVELOPER", "USER")
+                        .requestMatchers(HttpMethod.GET, "/ricercaAvanzata").hasAnyRole("DEVELOPER", "USER")
                         .requestMatchers("/nota/**").hasAnyRole("DEVELOPER", "USER")
                         .requestMatchers("/eventi/**").hasAnyRole("DEVELOPER", "USER")
                         .anyRequest().authenticated()
