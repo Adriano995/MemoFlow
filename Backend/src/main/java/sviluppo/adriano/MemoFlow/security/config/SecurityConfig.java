@@ -245,6 +245,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/ricercaAvanzata").hasAnyRole("DEVELOPER", "USER")
                         .requestMatchers("/nota/**").hasAnyRole("DEVELOPER", "USER")
                         .requestMatchers("/eventi/**").hasAnyRole("DEVELOPER", "USER")
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 // Aggiungi questa parte per disabilitare X-Frame-Options per H2 Console

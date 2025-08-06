@@ -95,17 +95,17 @@ export class EventoService {
     return from(this.axiosService.get<EventoDTO[]>(`${this.BASE_URL}/tra-due-date`, { params: { inizio, fine, userId } }));
   }
 
-  // --- AGGIUNGI QUESTO NUOVO METODO PER LA RICERCA AVANZATA ---
+
   ricercaEventiAvanzata(titolo?: string, keywords?: string): Observable<EventoDTO[]> {
-    let params = new HttpParams();
+    const params: any = {};
     if (titolo) {
-      params = params.set('titolo', titolo);
-    }
+      params.titolo = titolo;
+   }
     if (keywords) {
-      params = params.set('keywords', keywords);
+      params.keywords = keywords;
     }
-    // L'URL deve corrispondere all'endpoint GET /eventi/ricercaAvanzata del tuo controller Spring Boot
-    // HttpParams gestirà automaticamente l'aggiunta di '?' e '&' per i parametri
+
+    // Passa un oggetto JavaScript a Axios
     return from(this.axiosService.get<EventoDTO[]>(`${this.BASE_URL}/ricercaAvanzata`, { params: params }));
-  }
+ }
 }
