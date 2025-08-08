@@ -10,6 +10,7 @@ import { EventoService } from '../services/evento.service';
 import { EventoDTO, EventoStato } from '../models/evento.model';
 import { parseISO, add, format, isAfter, isBefore, isEqual } from 'date-fns';
 import { firstValueFrom } from 'rxjs';
+import { BarraRicerca } from '../barra-ricerca/barra-ricerca';
 
 @Component({
   selector: 'app-dashboard-calendario',
@@ -19,7 +20,8 @@ import { firstValueFrom } from 'rxjs';
     PreviewNotaComponent,
     FormsModule,
     UserComponent,
-    PreviewEventoComponent
+    PreviewEventoComponent,
+    BarraRicerca
   ],
   providers: [DatePipe],
   templateUrl: './dashboard-calendario.component.html',
@@ -243,8 +245,6 @@ export class DashboardCalendarioComponent implements OnInit {
     return this.giorniConEventi.has(dateKey);
   }
 
-// ... (il resto del tuo codice)
-
 getEventStatus(date: Date): string {
   const dateKey = format(date, 'yyyy-MM-dd');
   const status = this.giorniConEventi.get(dateKey);
@@ -252,12 +252,9 @@ getEventStatus(date: Date): string {
     return 'sconosciuto';
   }
   
-  // Questa riga corregge il problema
-  // Rimuove 'STATO_' e converte il resto in minuscolo
   return status.replace('STATO_', '').toLowerCase();
 }
 
-// ... (il resto del tuo codice)
 
   trackByDate(index: number, day: Date): number {
     return day.getTime();

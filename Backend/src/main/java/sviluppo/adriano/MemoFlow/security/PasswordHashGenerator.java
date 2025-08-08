@@ -6,7 +6,7 @@ public class PasswordHashGenerator {
 
     public static void main(String[] args) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String rawPassword = "banana123"; // <-- Inserire password in chiaro da usare per il test
+        String rawPassword = "Cocomero123"; // <-- Inserire password in chiaro da usare per il test
         String encodedPassword = passwordEncoder.encode(rawPassword);
 
         System.out.println("--------------------------------------------------");

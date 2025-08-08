@@ -103,4 +103,17 @@ export class EventoService {
     
     return from(this.axiosService.get<EventoDTO[]>(`${this.BASE_URL}/eventi-del-mese`, config));
   }
+
+    ricercaEventiAvanzata(titolo?: string, keywords?: string): Observable<EventoDTO[]> {
+      const params: any = {};
+      if (titolo) {
+      params.titolo = titolo;
+      }
+      if (keywords) {
+      params.keywords = keywords;
+      }
+
+    // Passa un oggetto JavaScript a Axios
+    return from(this.axiosService.get<EventoDTO[]>(`${this.BASE_URL}/ricercaAvanzata`, { params: params }));
+  }
 }
