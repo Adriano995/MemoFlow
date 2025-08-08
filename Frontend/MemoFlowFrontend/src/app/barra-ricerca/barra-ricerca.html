@@ -1,0 +1,38 @@
+<div class="search-bar-container">
+  <form (ngSubmit)="eseguiRicerca()">
+    <input type="text" [(ngModel)]="searchTermTitolo" name="searchTermTitolo" placeholder="Cerca per titolo">
+    <input type="text" [(ngModel)]="searchTermKeywords" name="searchTermKeywords" placeholder="Cerca per parole chiave">
+    <button type="submit" [disabled]="isLoadingSearch">Cerca</button>
+    <button type="button" (click)="resetRicerca()">Reset</button>
+  </form>
+
+  <div *ngIf="!isLoadingSearch && searchResults.length > 0">
+    <h3>Risultati della ricerca:</h3>
+    <ul>
+      <li *ngFor="let evento of searchResults">
+        <h4>{{ evento.titolo }}</h4>
+        <p>Descrizione: {{ evento.descrizione }}</p>
+        </li>
+    </ul>
+  </div>
+
+  <ng-container *ngIf="!isLoadingSearch && (searchResults.length === 0 || (!searchTermTitolo && !searchTermKeywords))">
+    <ng-template #noSearchResults>
+      <p *ngIf="!isLoadingSearch">
+        <span *ngIf="searchTermTitolo || searchTermKeywords; else initialSearchPrompt">Nessun evento trovato con i criteri specificati.</span>
+        <ng-template #initialSearchPrompt>Digita nel campo di ricerca per trovare i tuoi eventi.</ng-template>
+      </p>
+    </ng-template>
+    
+    <ng-container *ngIf="searchResults.length === 0 && (searchTermTitolo || searchTermKeywords); else noResultsTemplate">
+      <p>Nessun evento trovato con i criteri specificati.</p>
+    </ng-container>
+    <ng-template #noResultsTemplate>
+      <p>Digita nel campo di ricerca per trovare i tuoi eventi.</p>
+    </ng-template>
+  </ng-container>
+
+  <div *ngIf="isLoadingSearch">
+    <p>Caricamento risultati...</p>
+  </div>
+</div>

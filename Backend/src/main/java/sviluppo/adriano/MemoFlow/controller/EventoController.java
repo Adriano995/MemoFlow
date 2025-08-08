@@ -180,6 +180,33 @@ public class EventoController {
         }
     }
 
+    @Operation(
+            summary = "Ricerca avanzata eventi per utente corrente",
+            description = "Cerca eventi per titolo o parole chiave (descrizione) per l'utente autenticato. I parametri sono opzionali."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Eventi trovati con successo"),
+            @ApiResponse(responseCode = "204", description = "Nessun evento trovato con i criteri specificati"),
+            @ApiResponse(responseCode = "403", description = "Utente non autenticato o non autorizzato")
+    })
+    @GetMapping("/ricercaAvanzata")
+    public ResponseEntity<List<EventoDTO>> ricercaAvanzata(
+            @RequestParam(required = false) String titolo,
+            @RequestParam(required = false) String keywords) {
+        try {
+            List<EventoDTO> risultati = eventoService.ricercaEventiAvanzata(titolo, keywords);
+            if (risultati.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(risultati);
+        } catch (SecurityException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // Gestisce il caso di utente non autenticato
+        } catch (Exception e) {
+            System.err.println("Errore durante la ricerca avanzata: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
+}
     @GetMapping("/eventi-del-mese")
     public ResponseEntity<List<EventoDTO>> getMonthlyEvents(
             @RequestParam("inizioMese") String inizioMeseStr,
@@ -193,5 +220,6 @@ public class EventoController {
 
         List<EventoDTO> eventi = eventoService.getMonthlyEvents(inizioMese, fineMese, userId);
         return ResponseEntity.ok(eventi);
+
     }
 }

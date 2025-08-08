@@ -1,3 +1,7 @@
+<div class="search-bar-container">
+    <app-barra-ricerca></app-barra-ricerca>
+</div>
+
 <div class="dashboard-content-wrapper" [ngClass]="{'is-expanded': isExpanded}">
   <div class="calendario-container card-base">
     <div class="calendar-header">
@@ -6,6 +10,7 @@
       <button class="header-button" (click)="nextMonth()">&#9654;</button>
     </div>
 
+    
     <div class="weekdays-grid">
       <div *ngFor="let dayName of weekdays">{{ dayName }}</div>
     </div>
