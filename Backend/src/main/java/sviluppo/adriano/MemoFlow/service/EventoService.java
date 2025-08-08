@@ -3,7 +3,6 @@ package sviluppo.adriano.MemoFlow.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -199,36 +198,6 @@ public class EventoService extends AbstractCrudService<
             .map(eventoMapper::toDto)
             .collect(Collectors.toList());
     }*/
-
-    // --- NUOVO METODO PER LA RICERCA AVANZATA ---
-    @Transactional(readOnly = true)
-    public List<EventoDTO> ricercaEventiAvanzata(String titolo, String keywords) {
-        Long currentUserId = getCurrentUserId();
-        List<Evento> eventi;
-
-        // Logica per determinare quale metodo del repository chiamare, includendo l'ID utente
-        boolean hasTitolo = titolo != null && !titolo.trim().isEmpty();
-        boolean hasKeywords = keywords != null && !keywords.trim().isEmpty();
-
-        if (hasTitolo && hasKeywords) {
-            // Ricerca per titolo E parole chiave
-            eventi = repository.findByTitoloContainingIgnoreCaseAndDescrizioneContainingIgnoreCaseAndUtenteId(titolo, keywords, currentUserId);
-        } else if (hasTitolo) {
-            // Ricerca solo per titolo
-            eventi = repository.findByTitoloContainingIgnoreCaseAndUtenteId(titolo, currentUserId);
-        } else if (hasKeywords) {
-            // Ricerca solo per parole chiave
-            eventi = repository.findByDescrizioneContainingIgnoreCaseAndUtenteId(keywords, currentUserId);
-        } else {
-            // Se nessun parametro di ricerca, restituisci tutti gli eventi dell'utente
-            eventi = repository.findAllByUtenteId(currentUserId);
-        }
-
-        return eventi.stream()
-                     .map(eventoMapper::toDto)
-                     .collect(Collectors.toList());
-    }
-}
 
     @Transactional(readOnly = true)
     public List<EventoDTO> getMonthlyEvents(LocalDateTime inizioMese, LocalDateTime fineMese, Long utenteId) {
