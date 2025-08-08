@@ -102,8 +102,9 @@ export class AuthService {
     }
   }
 
-  logout() {
-    this.tokenService.clearToken(); // Assicurati che TokenService gestisca anch'esso localStorage con isBrowser
+  logout(): void {
+    localStorage.removeItem('user_id')
+    this.tokenService.clearToken();
     this.clearUserId();
   }
 

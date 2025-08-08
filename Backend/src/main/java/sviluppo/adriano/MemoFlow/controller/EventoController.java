@@ -37,7 +37,7 @@ public class EventoController {
     }
 
     @Operation(
-        summary = "Lista di tutti gli eventi", 
+        summary = "Lista di tutti gli eventi",
         description = "Restituisce la lista completa degli eventi salvati."
         )
     @ApiResponses(value = {
@@ -51,7 +51,7 @@ public class EventoController {
     }
 
     @Operation(
-        summary = "Singolo evento", 
+        summary = "Singolo evento",
         description = "Restituisce un evento dato il suo ID."
         )
     @ApiResponses(value = {
@@ -64,7 +64,7 @@ public class EventoController {
     }
 
     @Operation(
-        summary = "Crea nuovo evento", 
+        summary = "Crea nuovo evento",
         description = "Crea un nuovo evento a partire dai dati forniti."
         )
     @ApiResponses(value = {
@@ -78,7 +78,7 @@ public class EventoController {
     }
 
     @Operation(
-        summary = "Aggiorna un evento", 
+        summary = "Aggiorna un evento",
         description = "Aggiorna un evento esistente a partire dal suo ID."
         )
     @ApiResponses(value = {
@@ -91,7 +91,7 @@ public class EventoController {
     }
 
     @Operation(
-        summary = "Elimina un evento", 
+        summary = "Elimina un evento",
         description = "Elimina un evento dato il suo ID."
         )
     @ApiResponses(value = {
@@ -120,7 +120,7 @@ public class EventoController {
     })
     @GetMapping("/stato/utente")
     public ResponseEntity<List<EventoDTO>> findByStatoAndUtente(@RequestParam String stato) {
-        Long utenteId = eventoService.getCurrentUserId(); 
+        Long utenteId = eventoService.getCurrentUserId();
         List<EventoDTO> eventi = eventoService.findAllByStatoAndUtenteId(stato, utenteId);
         return ResponseEntity.ok(eventi);
     }
@@ -144,7 +144,7 @@ public class EventoController {
     @GetMapping("/dopo-inizio")
     public ResponseEntity<List<EventoDTO>> findByInizioAfter(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataInizio) {
-        Long utenteId = eventoService.getCurrentUserId(); 
+        Long utenteId = eventoService.getCurrentUserId();
         List<EventoDTO> eventi = eventoService.findAllByDataInizioAfterAndUtenteId(dataInizio, utenteId);
         return ResponseEntity.ok(eventi);
     }
@@ -156,7 +156,7 @@ public class EventoController {
     @GetMapping("/prima-fine")
     public ResponseEntity<List<EventoDTO>> findByFineBefore(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataFine) {
-        Long utenteId = eventoService.getCurrentUserId(); 
+        Long utenteId = eventoService.getCurrentUserId();
         List<EventoDTO> eventi = eventoService.findAllByDataFineBeforeAndUtenteId(dataFine, utenteId);
         return ResponseEntity.ok(eventi);
     }

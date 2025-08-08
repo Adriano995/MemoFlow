@@ -1,0 +1,165 @@
+.page-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: var(--page-bg);
+}
+
+.nota-detail-card {
+  background-color: var(--card-bg);
+  padding: 40px 50px;
+  border-radius: 14px;
+  box-shadow: 0 8px 30px var(--shadow-orange-medium), 0 0 0 1px var(--shadow-orange-light);
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto;
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  color: var(--text-color);
+}
+
+.form-title {
+  color: var(--title-color);
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2.2rem;
+  letter-spacing: 1px;
+  text-shadow: 0 0 8px var(--shadow-orange-light);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--text-lighter);
+  font-size: 0.95rem;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid var(--border-dark);
+  border-radius: 8px;
+  background-color: var(--secondary-bg-dark);
+  color: var(--text-light);
+  font-size: 1rem;
+  transition: border-color 0.3s, background-color 0.3s, box-shadow 0.3s;
+  box-sizing: border-box;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--accent-orange);
+  background-color: var(--secondary-bg-hover);
+  box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.2);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.button-base {
+  padding: 12px 20px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.button-primary {
+  background-color: var(--button-primary-bg);
+  color: var(--button-primary-text);
+}
+
+.button-primary:hover {
+  background-color: var(--button-primary-hover-bg);
+  box-shadow: 0 4px 15px var(--shadow-orange-strong);
+}
+
+.button-danger {
+  background-color: var(--button-danger-bg);
+  color: var(--button-danger-text);
+}
+
+.button-danger:hover {
+  background-color: var(--button-danger-hover-bg);
+}
+
+.message-base {
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.loading-message {
+  color: var(--text-lighter);
+}
+
+.success-message {
+  background-color: var(--message-bg-success);
+  color: var(--message-text-success);
+  border: 1px solid var(--message-border-success);
+}
+
+.error-message {
+  background-color: var(--message-bg-error);
+  color: var(--message-text-error);
+  border: 1px solid var(--message-border-error);
+}
+
+@media (max-width: 768px) {
+  .nota-detail-card {
+    padding: 30px 20px;
+    margin: 20px;
+    max-width: calc(100% - 30px);
+  }
+
+  .form-title {
+    font-size: 1.8rem;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .form-actions .button-base {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .nota-detail-card {
+    padding: 25px 15px;
+    margin: 10px;
+  }
+
+  .form-title {
+    font-size: 1.6rem;
+  }
+
+  .form-input {
+    padding: 10px 12px;
+    font-size: 0.95rem;
+  }
+
+  .button-base {
+    padding: 10px 15px;
+    font-size: 1rem;
+  }
+}

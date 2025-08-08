@@ -100,12 +100,12 @@ export class EventoCreazioneComponent implements OnInit, AfterViewInit {
 
   async onSubmit(): Promise<void> {
     try {
-      await this.eventoService.createEvento(this.newEvent).toPromise();
-      alert('Evento creato con successo!');
-      this.router.navigate(['/dashboard']);
+        await this.eventoService.createEvento(this.newEvent).toPromise();
+        alert('Evento creato con successo!');
+        this.router.navigate(['/dashboard']);
     } catch (error) {
-      console.error('Errore durante la creazione dell\'evento:', error);
-      alert('Si è verificato un errore durante la creazione dell\'evento.');
+        console.error('Errore durante la creazione dell\'evento:', error);
+        alert('Si è verificato un errore durante la creazione dell\'evento.');
     }
   }
 

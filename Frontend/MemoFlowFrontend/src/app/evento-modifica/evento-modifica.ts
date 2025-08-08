@@ -138,7 +138,8 @@ export class EventoModificaComponent implements OnInit, AfterViewInit {
       await this.eventoService.updateEvento(this.eventoId, this.modificaEvento).toPromise();
       alert('Evento aggiornato con successo!');
       this.router.navigate(['/dashboard']);
-    } catch (error) {
+    } 
+    catch (error) {
       console.error('Errore durante l\'aggiornamento dell\'evento:', error);
       alert('Si è verificato un errore durante l\'aggiornamento dell\'evento.');
     }

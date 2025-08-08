@@ -1,10 +1,15 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
-import { PreviewNotaComponent } from "../preview-nota-component/preview-nota-component";
-import { AuthService } from '../auth/auth.service';
-import { PreviewNotaService } from '../services/preview-nota.service';
+// src/app/dashboard-calendario-component/dashboard-calendario.component.ts
+
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { UserComponent } from "../user/user.component";
+import { EventoService } from '../services/evento.service';
+import { EventoDTO } from '../models/evento.model';
+import { AuthService } from '../auth/auth.service';
+
+// --- MODIFICHE QUI: Percorso e nome della classe per 'preview-evento' ---
+// Il percorso è '../preview-evento/preview-evento' perché il file si chiama preview-evento.ts.
+// Il nome della classe è 'PreviewEventoComponent' come indicato nel tuo file.
 import { PreviewEventoComponent } from '../preview-evento/preview-evento';
 import { EventoService } from '../services/evento.service';
 import { EventoDTO, EventoStato } from '../models/evento.model';
@@ -13,11 +18,12 @@ import { firstValueFrom } from 'rxjs';
 import { BarraRicerca } from '../barra-ricerca/barra-ricerca';
 
 @Component({
-  selector: 'app-dashboard-calendario',
+  selector: 'app-dashboard-calendario-component',
+  templateUrl: './dashboard-calendario.component.html',
+  styleUrls: ['./dashboard-calendario.component.css'],
   standalone: true,
   imports: [
     CommonModule,
-    PreviewNotaComponent,
     FormsModule,
     UserComponent,
     PreviewEventoComponent,
@@ -28,209 +34,82 @@ import { BarraRicerca } from '../barra-ricerca/barra-ricerca';
   styleUrls: ['./dashboard-calendario.component.css']
 })
 export class DashboardCalendarioComponent implements OnInit {
+
   viewDate: Date = new Date();
   daysInCalendar: Date[] = [];
+  weekdays: string[] = ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'];
   selectedDate: Date | null = null;
-  giorniConNote: Set<string> = new Set();
-  giorniConEventi: Map<string, string> = new Map();
   currentUserId: number | null = null;
-  weekdays: string[] = ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'];
 
-  eventiDelMese: EventoDTO[] = [];
-
-  isExpanded: boolean = false; 
+  searchTermTitolo: string = '';
+  searchTermKeywords: string = '';
+  searchResults: EventoDTO[] = [];
+  isLoadingSearch: boolean = false;
 
   constructor(
-    private authService: AuthService,
-    private previewNotaService: PreviewNotaService,
     private eventoService: EventoService,
-    private cdr: ChangeDetectorRef,
-    private datePipe: DatePipe
-  ) {}
+    private authService: AuthService
+  ) { }
 
-  async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
     this.currentUserId = this.authService.getUserId();
-    if (this.currentUserId === null) {
-      console.error("User ID not available. Cannot load data.");
-      return;
+    this.generateCalendar();
+  }
+
+  // --- Metodi del calendario ---
+  generateCalendar(): void {
+    this.daysInCalendar = [];
+    const firstDayOfMonth = new Date(this.viewDate.getFullYear(), this.viewDate.getMonth(), 1);
+    const lastDayOfMonth = new Date(this.viewDate.getFullYear(), this.viewDate.getMonth() + 1, 0);
+    const startDayOfWeek = firstDayOfMonth.getDay();
+    for (let i = 0; i < startDayOfWeek; i++) {
+        const prevDay = new Date(firstDayOfMonth);
+        prevDay.setDate(firstDayOfMonth.getDate() - (startDayOfWeek - i));
+        this.daysInCalendar.push(prevDay);
     }
-    this.calculateDaysInMonth();
-    await this.fetchNotesForMonth();
-    await this.fetchEventsForMonth();
+    for (let i = 1; i <= lastDayOfMonth.getDate(); i++) {
+        this.daysInCalendar.push(new Date(this.viewDate.getFullYear(), this.viewDate.getMonth(), i));
+    }
+    const totalDaysInGrid = 42;
+    let currentDay = 1;
+    while (this.daysInCalendar.length < totalDaysInGrid) {
+        const nextDay = new Date(lastDayOfMonth);
+        nextDay.setDate(lastDayOfMonth.getDate() + currentDay);
+        this.daysInCalendar.push(nextDay);
+        currentDay++;
+    }
   }
 
   previousMonth(): void {
-    this.viewDate = new Date(this.viewDate.getFullYear(), this.viewDate.getMonth() - 1, 1);
-    this.updateCalendarAndData();
+    this.viewDate.setMonth(this.viewDate.getMonth() - 1);
+    this.generateCalendar();
   }
 
   nextMonth(): void {
-    this.viewDate = new Date(this.viewDate.getFullYear(), this.viewDate.getMonth() + 1, 1);
-    this.updateCalendarAndData();
+    this.viewDate.setMonth(this.viewDate.getMonth() + 1);
+    this.generateCalendar();
   }
 
-  private async updateCalendarAndData(): Promise<void> {
-    this.calculateDaysInMonth();
-    await this.fetchNotesForMonth();
-    await this.fetchEventsForMonth();
-    this.selectedDate = null;
-  }
-
-  async fetchNotesForMonth(): Promise<void> {
-    this.giorniConNote.clear();
-    if (this.currentUserId === null) {
-      console.error("User ID is null, cannot fetch notes.");
-      return;
-    }
-    try {
-      const allNotes = await this.previewNotaService.getNoteByUser(this.currentUserId);
-      const currentMonth = this.viewDate.getMonth();
-      const currentYear = this.viewDate.getFullYear();
-      if (allNotes && Array.isArray(allNotes)) {
-        allNotes.forEach((nota: any) => {
-          const notaDate = new Date(nota.dataCreazione);
-          if (notaDate.getMonth() === currentMonth && notaDate.getFullYear() === currentYear) {
-            const yyyy = notaDate.getFullYear();
-            const mm = (notaDate.getMonth() + 1).toString().padStart(2, '0');
-            const dd = notaDate.getDate().toString().padStart(2, '0');
-            this.giorniConNote.add(`${yyyy}-${mm}-${dd}`);
-          }
-        });
-      } else {
-        console.warn("Struttura di risposta inaspettata per tutte le note dell'utente:", allNotes);
-      }
-      this.cdr.detectChanges();
-    } catch (error) {
-      console.error("Errore nel caricamento di tutte le note dell'utente:", error);
-    }
-  }
-
-  async fetchEventsForMonth(): Promise<void> {
-    this.giorniConEventi.clear();
-
-    if (this.currentUserId === null) {
-      console.error('User ID non disponibile. Impossibile caricare gli eventi.');
-      return;
-    }
-
-    const inizioMese = new Date(this.viewDate.getFullYear(), this.viewDate.getMonth(), 1);
-    const fineMese = new Date(this.viewDate.getFullYear(), this.viewDate.getMonth() + 1, 0, 23, 59, 59);
-
-    const inizioMeseISO = this.datePipe.transform(inizioMese, "yyyy-MM-dd'T'HH:mm:ss", 'UTC') || '';
-    const fineMeseISO = this.datePipe.transform(fineMese, "yyyy-MM-dd'T'HH:mm:ss", 'UTC') || '';
-    
-    console.log(`Chiamo il backend per gli eventi tra ${inizioMeseISO} e ${fineMeseISO}`);
-
-    try {
-        const eventi = await firstValueFrom(this.eventoService.getEventiBetweenDates(inizioMeseISO, fineMeseISO, this.currentUserId));
-        
-        console.log('Eventi ricevuti dal backend:', eventi);
-        
-        this.eventiDelMese = eventi;
-        if (this.eventiDelMese && this.eventiDelMese.length > 0) {
-            this.updateEventStates(); 
-            this.giorniConEventi.clear(); 
-            this.eventiDelMese.forEach(evento => {
-                const dataInizio = parseISO(evento.dataInizio);
-                const dataFine = evento.dataFine ? parseISO(evento.dataFine) : null;
-                const stato = evento.stato;
-                if (dataFine === null || dataFine.getTime() === dataInizio.getTime()) {
-                  this.giorniConEventi.set(format(dataInizio, 'yyyy-MM-dd'), stato);
-                } else {
-                  let dataCorrente = dataInizio;
-                  while (dataCorrente <= dataFine) {
-                    this.giorniConEventi.set(format(dataCorrente, 'yyyy-MM-dd'), stato);
-                    dataCorrente = add(dataCorrente, { days: 1 });
-                  }
-                }
-            });
-        } else {
-             this.giorniConEventi.clear();
-        }
-
-        console.log('Mappa giorniConEventi dopo il fetch:', this.giorniConEventi);
-        this.cdr.detectChanges();
-    } catch (error) {
-      console.error("Errore nel caricamento degli eventi del mese:", error);
-      this.giorniConEventi.clear();
-      this.cdr.detectChanges();
-    }
-  }
-
-  updateEventStates(): void {
-    const now = new Date();
-    this.eventiDelMese.forEach(evento => {
-        if (evento.stato === EventoStato.STATO_ANNULLATO) {
-            return;
-        }
-        const dataInizio = evento.dataInizio ? parseISO(evento.dataInizio) : null;
-        const dataFine = evento.dataFine ? parseISO(evento.dataFine) : null;
-
-        if (!dataInizio) {
-            return;
-        }
-        
-        if (dataFine && isAfter(now, dataFine)) {
-            evento.stato = EventoStato.STATO_CONCLUSO;
-        } else if (isAfter(now, dataInizio) && (!dataFine || isBefore(now, dataFine))) {
-            evento.stato = EventoStato.STATO_IN_CORSO;
-        } else if (isBefore(now, dataInizio)) {
-            evento.stato = EventoStato.STATO_PROGRAMMATO;
-        } else if (isEqual(now, dataInizio) || (dataFine && isEqual(now, dataFine))) {
-            evento.stato = EventoStato.STATO_IN_CORSO;
-        }
-    });
-  }
-
-  private calculateDaysInMonth(): void {
-    const year = this.viewDate.getFullYear();
-    const month = this.viewDate.getMonth();
-    const days: Date[] = [];
-    const firstDayOfMonth = new Date(year, month, 1);
-    const lastDayOfMonth = new Date(year, month + 1, 0);
-    const firstDayOfWeek = firstDayOfMonth.getDay() === 0 ? 6 : firstDayOfMonth.getDay() - 1;
-    for (let i = firstDayOfWeek; i > 0; i--) {
-      days.unshift(new Date(year, month, 1 - i));
-    }
-    for (let i = 1; i <= lastDayOfMonth.getDate(); i++) {
-      days.push(new Date(year, month, i));
-    }
-    const totalDaysToShow = 42;
-    if (days.length < totalDaysToShow) {
-      for (let i = 1; days.length < totalDaysToShow; i++) {
-        days.push(new Date(this.viewDate.getFullYear(), this.viewDate.getMonth() + 1, i));
-      }
-    }
-    this.daysInCalendar = days;
-  }
-
-  dayClicked(date: Date): void {
-    if (this.selectedDate && this.isSameDay(date, this.selectedDate)) {
-      this.selectedDate = null; 
-      this.isExpanded = false; 
-    } else {
-      this.selectedDate = new Date(date);
-      this.isExpanded = true; 
-    }
-    this.cdr.detectChanges();
+  dayClicked(day: Date): void {
+    this.selectedDate = day;
   }
 
   isToday(date: Date): boolean {
     const today = new Date();
-    return date.getDate() === today.getDate() &&
-             today.getMonth() === date.getMonth() &&
-             today.getFullYear() === today.getFullYear();
+    return date.getFullYear() === today.getFullYear() &&
+           date.getMonth() === today.getMonth() &&
+           date.getDate() === today.getDate();
   }
 
   isSameDay(date1: Date, date2: Date): boolean {
-    return date1.getDate() === date2.getDate() &&
-             date1.getMonth() === date2.getMonth() &&
-             date1.getFullYear() === date2.getFullYear();
+    return date1.getFullYear() === date2.getFullYear() &&
+           date1.getMonth() === date2.getMonth() &&
+           date1.getDate() === date2.getDate();
   }
 
   isWeekend(date: Date): boolean {
-    const day = date.getDay();
-    return day === 0 || day === 6;
+    const dayOfWeek = date.getDay();
+    return dayOfWeek === 0 || dayOfWeek === 6;
   }
 
   hasNote(date: Date): boolean {
@@ -258,5 +137,43 @@ getEventStatus(date: Date): string {
 
   trackByDate(index: number, day: Date): number {
     return day.getTime();
+  }
+
+  eseguiRicerca(): void {
+    this.isLoadingSearch = true;
+    const titolo = this.searchTermTitolo.trim();
+    const keywords = this.searchTermKeywords.trim();
+    if (!titolo && !keywords) {
+      this.searchResults = [];
+      this.isLoadingSearch = false;
+      console.warn("Nessun criterio di ricerca fornito.");
+      return;
+    }
+    this.eventoService.ricercaEventiAvanzata(titolo, keywords).subscribe(
+      (data: EventoDTO[]) => {
+        this.searchResults = data;
+        this.isLoadingSearch = false;
+        console.log('Risultati della ricerca:', this.searchResults);
+      },
+      (error) => {
+        this.isLoadingSearch = false;
+        console.error('Errore durante la ricerca:', error);
+        this.searchResults = [];
+        if (error.status === 204) {
+          console.log('Nessun evento trovato.');
+        } else if (error.status === 403) {
+            alert('Non sei autorizzato a effettuare questa ricerca. Effettua il login.');
+        } else {
+          alert('Si è verificato un errore durante la ricerca. Riprova più tardi.');
+        }
+      }
+    );
+  }
+
+  resetRicerca(): void {
+    this.searchTermTitolo = '';
+    this.searchTermKeywords = '';
+    this.searchResults = [];
+    console.log("Ricerca resettata.");
   }
 }

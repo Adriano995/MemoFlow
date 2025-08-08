@@ -8,6 +8,8 @@ import { User } from './user.model';
 import { Subject, take } from 'rxjs'; 
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs'; 
+import { AuthService } from '../auth/auth.service';
+import { Router } from '@angular/router'; 
 
 
 @Component({
@@ -66,8 +68,8 @@ export class UserComponent implements OnInit, OnDestroy { // Implementa OnDestro
         console.error('Errore nel caricamento dell\'utente:', error);
         this.errorMessage = 'Errore nel caricamento dei dati utente. Riprova.';
         this.loading = false;
-        // Ritorna un nuovo Observable (ad esempio, di `null`) per permettere al flusso di continuare
-        // senza bloccare il `subscribe`.
+        // Ritorna un nuovo Observable (ad esempio, di null) per permettere al flusso di continuare
+        // senza bloccare il subscribe.
         return of(null);
       })
     ).subscribe(user => {

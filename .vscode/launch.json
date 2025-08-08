@@ -2,13 +2,21 @@
     "configurations": [
         {
             "type": "java",
+            "name": "PasswordHashGenerator",
+            "request": "launch",
+            "mainClass": "sviluppo.adriano.MemoFlow.security.PasswordHashGenerator",
+            "projectName": "MemoFlow"
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-MemoFlowApplication<MemoFlow>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
             "mainClass": "sviluppo.adriano.MemoFlow.MemoFlowApplication",
             "projectName": "MemoFlow",
             "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=55888 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=MemoFlow"
         }
     ]
 }
