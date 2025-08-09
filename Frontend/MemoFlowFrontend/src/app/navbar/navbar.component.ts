@@ -1,31 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../auth/auth.service';
-import { Observable, of } from 'rxjs';
-import { User } from '../user/user.model';
-import { UserService } from '../user/user.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterModule],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
-  user$: Observable<User | null> = of(null);
-
-  constructor(
-    private authService: AuthService,
-    private userService: UserService,
-    private router: Router
-  ) {
-    this.user$ = this.userService.getCurrentUser();
-  }
+  @Input() isLoggedIn!: boolean;
+  @Input() userId!: number | null;
+  @Output() logoutEvent = new EventEmitter<void>();
 
   logout(): void {
-    this.authService.logout();
-    this.router.navigate(['/login']);
+    this.logoutEvent.emit();
   }
 }

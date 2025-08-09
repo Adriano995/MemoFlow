@@ -115,6 +115,11 @@ body {
   overflow-x: hidden;
 }
 
+app-root {
+  display: block;
+  padding-top: 60px; /* stessa altezza navbar */
+}
+
 /* Container di pagina - Centra il contenuto e aggiunge padding */
 .page-container {
   min-height: 100vh;
