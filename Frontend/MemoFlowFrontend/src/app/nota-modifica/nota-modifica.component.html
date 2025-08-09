@@ -1,56 +1,50 @@
-<div class="page-container">
-  <div class="card-base form-card-large form-margin-top">
-    <button class="button-base button-secondary back-button" (click)="goBack()">Torna Indietro</button>
-    <h2 class="form-title-base">Dettagli e Modifica Nota</h2>
+<div class="card-base card-full-page form-margin-top">
+  <div class="card-content-base">
+    <h2 class="form-title-base">Modifica Nota</h2>
 
-    <div *ngIf="loading" class="loading-message message-base">Caricamento dettagli nota...</div>
-    <div *ngIf="successMessage" class="success-message message-base">{{ successMessage }}</div>
-    <div *ngIf="error" class="error-message message-base">{{ error }}</div>
+    <div *ngIf="loading" class="message-base">Caricamento...</div>
+    <div *ngIf="error" class="message-base error-message">{{ error }}</div>
+    <div *ngIf="successMessage" class="message-base success-message">{{ successMessage }}</div>
 
-    <ng-container *ngIf="nota">
-      <div class="note-display">
-        <h3 class="section-title">Nota Selezionata:</h3>
-        <p><strong>Titolo:</strong> {{ nota?.titolo }}</p>
-        <p><strong>Tipo:</strong> {{ nota?.tipoNota }}</p>
-        <p><strong>Data Creazione:</strong> {{ nota?.dataCreazione | date:'dd/MM/yyyy HH:mm' }}</p>
-        <p *ngIf="nota?.ultimaModifica"><strong>Ultima Modifica:</strong> {{ nota?.ultimaModifica | date:'dd/MM/yyyy HH:mm' }}</p>
-
-        <div class="full-content-area">
-          <h4 class="h4 item-title">Contenuto Completo:</h4>
-          <p *ngIf="nota?.contenutoTesto">{{ nota?.contenutoTesto }}</p>
-          <div *ngIf="nota?.contenutoSVG" [innerHTML]="nota.contenutoSVG" class="drawing-preview"></div>
-        </div>
+    <div *ngIf="!loading && nota">
+      <div class="form-group">
+        <label class="form-label-base">Titolo</label>
+        <input class="form-input-base" [(ngModel)]="titoloModifica" />
       </div>
 
-      <h3 class="section-title">Modifica Nota:</h3>
-      <form (ngSubmit)="onUpdateNota()">
-        <div class="form-group">
-          <label for="titoloModifica" class="form-label-base">Titolo:</label>
-          <input type="text" id="titoloModifica" [(ngModel)]="titoloModifica" name="titoloModifica" class="form-input-base" required>
-        </div>
+      <div class="form-group">
+        <label class="form-label-base">Tipo Nota</label>
+        <select class="form-input-base" [(ngModel)]="tipoNotaModifica" (change)="onTipoNotaSelectChange()">
+          <option *ngFor="let t of tipiNota" [value]="t">{{ t }}</option>
+        </select>
+      </div>
 
-        <div class="form-group">
-          <label for="tipoNotaModifica" class="form-label-base">Tipo Nota:</label>
-          <select id="tipoNotaModifica" [(ngModel)]="tipoNotaModifica" name="tipoNotaModifica" class="form-input-base">
-            <option *ngFor="let tipo of tipiNota" [value]="tipo">{{ tipo }}</option>
-          </select>
-        </div>
+<div class="form-group" *ngIf="tipoNotaModifica === TipoNota.TESTO">
+  <label class="form-label-base">Contenuto (testo)</label>
+  <textarea rows="6" class="form-input-base" [(ngModel)]="contenutoTestoModifica"></textarea>
+  <button class="button-base button-primary" (click)="onUpdateNota()">Salva Testo</button>
+</div>
 
-        <div class="form-group" *ngIf="tipoNotaModifica === 'TESTO'">
-          <label for="contenutoTestoModifica" class="form-label-base">Contenuto Testo:</label>
-          <textarea id="contenutoTestoModifica" [(ngModel)]="contenutoTestoModifica" name="contenutoTestoModifica" rows="8" class="form-input-base"></textarea>
-        </div>
+<div class="form-group" *ngIf="tipoNotaModifica === TipoNota.DISEGNO">
+  <label class="form-label-base">Disegno</label>
 
-        <div class="form-group" *ngIf="tipoNotaModifica === 'DISEGNO'">
-          <label for="contenutoSVGModifica" class="form-label-base">Contenuto SVG (Codice):</label>
-          <textarea id="contenutoSVGModifica" [(ngModel)]="contenutoSVGModifica" name="contenutoSVGModifica" rows="8" class="form-input-base"></textarea>
-        </div>
+  <div class="svg-preview" *ngIf="contenutoSVGModifica && !isEditingDrawing" [innerHTML]="contenutoSVGModifica | safeHtml"></div>
 
-        <div class="form-actions flex-row reverse-flex">
-          <button type="submit" class="button-base button-primary">Salva Modifiche</button>
-          <button type="button" class="button-base button-danger" (click)="onDeleteNota()">Elimina Nota</button>
-        </div>
-      </form>
-    </ng-container>
+  <div class="flex-row" style="margin-top:12px;" *ngIf="!isEditingDrawing">
+    <button class="button-base button-secondary" (click)="startEditingDrawing()">Apri editor</button>
+    <button class="button-base button-secondary" (click)="downloadSvg()" *ngIf="contenutoSVGModifica">Scarica SVG</button>
+    <button class="button-base button-danger" (click)="deleteDrawing()" *ngIf="contenutoSVGModifica">Elimina Disegno</button>
+  </div>
+  
+  <button class="button-base button-primary" (click)="onUpdateNota()" *ngIf="!isEditingDrawing">Salva Disegno</button>
+
+  <div #drawingCanvas class="drawing-canvas" *ngIf="isEditingDrawing"></div>
+  <div *ngIf="isEditingDrawing" class="drawing-toolbar">
+    <button class="button-base button-secondary" (click)="toggleEraserMode()">
+      {{ isEraserMode ? 'Disattiva Gomma' : 'Attiva Gomma' }}
+    </button>
+    <button class="button-base button-secondary" (click)="clearDrawing()">Pulisci</button>
+    <button class="button-base button-primary" (click)="finishEditingDrawing()">Salva Disegno</button>
+    <button class="button-base" (click)="cancelEditingDrawing()">Annulla</button>
   </div>
 </div>
