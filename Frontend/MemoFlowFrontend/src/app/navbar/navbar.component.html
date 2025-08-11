@@ -1,16 +1,34 @@
 <nav class="navbar">
-  <div class="navbar-brand">App Note</div>
-  <div class="navbar-links">
-    <ng-container *ngIf="user$ | async as user">
-      <span class="user-greeting">Ciao, {{ user.nome }} {{ user.cognome }}</span>
-      <a routerLink="/dashboard" class="nav-link">Dashboard</a>
-      <a routerLink="/nota/crea" class="nav-link">Crea Nota</a>
-      <a routerLink="/user" class="nav-link">Modifica Profilo</a>
-      <button class="button-base button-secondary" (click)="logout()">Logout</button>
-    </ng-container>
-    <ng-container *ngIf="!(user$ | async)">
-      <a routerLink="/login" class="nav-link">Accedi</a>
-      <a routerLink="/register" class="nav-link">Registrati</a>
-    </ng-container>
+  <div class="navbar-brand">MemoFlow</div>
+
+  <!-- Bottone hamburger -->
+  <button class="burger-menu" (click)="toggleMenu()">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <div class="navbar-links" [class.open]="isMenuOpen">
+    <a class="nav-link" routerLink="/dashboard" (click)="closeMenu()">
+      <i class="fas fa-home"></i> Dashboard
+    </a>
+
+    <a *ngIf="isLoggedIn" class="nav-link" routerLink="/crea-evento" (click)="closeMenu()">
+      <i class="fas fa-plus"></i> Crea Evento
+    </a>
+
+    <a *ngIf="isLoggedIn" class="nav-link" [routerLink]="['/modifica-utente', userId]" (click)="closeMenu()">
+      <i class="fas fa-cog"></i> Modifica Profilo
+    </a>
+
+    <button *ngIf="isLoggedIn" class="logout-btn" (click)="logout(); closeMenu()">
+      <i class="fas fa-sign-out-alt"></i> Logout
+    </button>
+
+    <a *ngIf="!isLoggedIn" class="nav-link" routerLink="/login" (click)="closeMenu()">
+      <i class="fas fa-sign-in-alt"></i> Accedi
+    </a>
+
+    <a *ngIf="!isLoggedIn" class="nav-link" routerLink="/register" (click)="closeMenu()">
+      <i class="fas fa-user-plus"></i> Registrati
+    </a>
   </div>
 </nav>

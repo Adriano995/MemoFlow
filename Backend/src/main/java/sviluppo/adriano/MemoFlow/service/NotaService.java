@@ -79,6 +79,10 @@ public class NotaService {
         if (modifica.getContenutoTesto() != null) {
             nota.setContenutoTesto(modifica.getContenutoTesto());
         }
+        
+        if (modifica.getContenutoSVG() != null) {
+            nota.setContenutoSVG(modifica.getContenutoSVG());
+        }
 
         if (modifica.getTipoNota() != null) {
             nota.setTipoNota(modifica.getTipoNota());

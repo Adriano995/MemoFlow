@@ -11,6 +11,7 @@ import { EventoDTO, EventoStato } from '../models/evento.model';
 import { parseISO, add, format, isAfter, isBefore, isEqual } from 'date-fns';
 import { firstValueFrom } from 'rxjs';
 import { BarraRicerca } from '../barra-ricerca/barra-ricerca';
+import { NavbarComponent } from '../navbar/navbar.component';
 
 @Component({
   selector: 'app-dashboard-calendario',
@@ -21,7 +22,8 @@ import { BarraRicerca } from '../barra-ricerca/barra-ricerca';
     FormsModule,
     UserComponent,
     PreviewEventoComponent,
-    BarraRicerca
+    BarraRicerca,
+    NavbarComponent
   ],
   providers: [DatePipe],
   templateUrl: './dashboard-calendario.component.html',

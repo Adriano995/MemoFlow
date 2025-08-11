@@ -1,14 +1,15 @@
-<nav class="navbar" *ngIf="shouldShowNavbar()">
-  <a routerLink="/dashboard">Dashboard</a>
-  <a routerLink="/crea-nota">Crea Nota</a>
-  <a *ngIf="userId" [routerLink]="['/modifica-utente', userId]">Modifica Profilo</a> <a *ngIf="userId" (click)="logout()" style="cursor: pointer;">Logout</a>
-</nav>
+<!-- Navbar sempre presente, ma visibile solo se shouldShowNavbar() -->
+<app-navbar
+  *ngIf="shouldShowNavbar()"
+  [isLoggedIn]="isLoggedIn()"
+  [userId]="userId"
+  (logoutEvent)="logout()">
+</app-navbar>
 
+<!-- Contenuto delle pagine -->
 <router-outlet></router-outlet>
 
-<a routerLink="/crea-evento" class="nav-item">Crea Nuovo Evento</a>
-
+<!-- Pulsante tema sempre visibile -->
 <button class="button-base button-secondary theme-toggle-button" (click)="toggleTheme()">
   Cambia Tema: {{ isLightTheme() ? 'Scuro' : 'Chiaro' }}
 </button>
-

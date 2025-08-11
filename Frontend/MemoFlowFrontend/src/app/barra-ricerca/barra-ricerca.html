@@ -1,32 +1,41 @@
 <div class="search-bar-container">
-  <form (ngSubmit)="eseguiRicerca()">
-    <input type="text" [(ngModel)]="searchTermTitolo" name="searchTermTitolo" placeholder="Cerca tra gli eventi">
-    <button type="submit" [disabled]="isLoadingSearch">Cerca</button>
+
+  <p *ngIf="!isLoadingSearch && searchResults.length === 0 && !hasSearched">
+    Digita nel campo di ricerca per trovare i tuoi eventi.
+  </p>
+
+  <form class="search-form" (ngSubmit)="eseguiRicerca()">
+    <i class="fa fa-search search-icon" aria-hidden="true"></i>
+    <input type="text" [(ngModel)]="searchTermTitolo" name="searchTermTitolo" placeholder="Cerca tra gli eventi"
+      (ngModelChange)="onSearchTermChange($event)" />
+
     <button type="button" (click)="resetRicerca()">Reset</button>
   </form>
 
-  <div *ngIf="isLoadingSearch">
-    <p>Caricamento risultati...</p>
+  <div class="autocomplete-list" *ngIf="searchResults.length > 0">
+    <div *ngFor="let evento of searchResults" class="autocomplete-item" (click)="selectSuggestion(evento.titolo)">
+      {{ evento.titolo }}
+    </div>
   </div>
 
-  <div *ngIf="!isLoadingSearch && searchResults.length > 0">
-    <h3>Risultati della ricerca:</h3>
-    <ul>
-      <li *ngFor="let evento of searchResults">
-        <h4>{{ evento.titolo }}</h4>
-        <p>Descrizione: {{ evento.descrizione }}</p>
-        <p>Data di inizio: {{ evento.dataInizio | date:'short' }}</p>
-        <p *ngIf="evento.dataFine">Data di fine: {{ evento.dataFine | date:'short' }}</p>
-        <p>Stato: {{ evento.stato }}</p>
-      </li>
-    </ul>
+  <div *ngIf="isLoadingSearch" class="loading-text">
+    Caricamento risultati...
   </div>
 
-  <p *ngIf="!isLoadingSearch && searchResults.length === 0 && (searchTermTitolo || searchTermKeywords)">
+  <div class="results-container"
+    [ngClass]="{'expanded': searchResults.length > 0, 'collapsed': searchResults.length === 0}">
+    <div *ngFor="let evento of searchResults; let i = index; trackBy: trackById" class="result-card"
+      [style.--delay]="(i * 0.1) + 's'">
+      <h4>{{ evento.titolo }}</h4>
+      <p *ngIf="evento.descrizione">Descrizione: {{ evento.descrizione }}</p>
+      <p>Data di inizio: {{ evento.dataInizio | date:'short' }}</p>
+      <p *ngIf="evento.dataFine">Data di fine: {{ evento.dataFine | date:'short' }}</p>
+      <button class="open-event-btn" (click)="apriEvento(evento.id)">Apri Evento</button>
+    </div>
+  </div>
+
+  <p *ngIf="!isLoadingSearch && searchResults.length === 0 && hasSearched">
     Nessun evento trovato con i criteri specificati.
   </p>
 
-  <p *ngIf="!isLoadingSearch && searchResults.length === 0 && !searchTermTitolo && !searchTermKeywords">
-    Digita nel campo di ricerca per trovare i tuoi eventi.
-  </p>
 </div>

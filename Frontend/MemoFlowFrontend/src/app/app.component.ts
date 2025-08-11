@@ -6,6 +6,7 @@ import { RouterModule, Router } from '@angular/router';
 import { AuthService } from './auth/auth.service';
 import { EventoCreazioneComponent } from './evento-creazione/evento-creazione';
 import { UserComponent } from './user/user.component';
+import { NavbarComponent } from "./navbar/navbar.component";
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,8 @@ import { UserComponent } from './user/user.component';
     CommonModule,
     RouterModule,
     UserComponent,
-    EventoCreazioneComponent
+    EventoCreazioneComponent,
+    NavbarComponent
   ],
   providers: [ThemeService], 
   templateUrl: './app.component.html',
@@ -24,9 +26,11 @@ import { UserComponent } from './user/user.component';
 export class AppComponent implements OnInit {
   title = 'MemoFlowFrontend';
 
-  //utenteId = 1;
-
-  constructor(private themeService: ThemeService, private authService: AuthService, private router: Router) {}
+  constructor(
+    private themeService: ThemeService, 
+    private authService: AuthService, 
+    private router: Router
+  ) {}
 
   ngOnInit(): void {}
 
@@ -48,7 +52,7 @@ export class AppComponent implements OnInit {
 
   shouldShowNavbar(): boolean {
     const hiddenRoutes = ['/login', '/register'];
-    return this.isLoggedIn() && !hiddenRoutes.includes(this.router.url);
+    return !hiddenRoutes.includes(this.router.url);
   }
 
   logout(): void {

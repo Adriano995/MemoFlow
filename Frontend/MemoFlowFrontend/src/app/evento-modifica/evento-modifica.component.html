@@ -1,6 +1,12 @@
 <div class="page-container">
   <div class="card-base form-card-large form-margin-top">
-    <h2 class="form-title-base">Modifica Evento</h2>
+    <div class="card-header">
+      <button class="button-base button-secondary" (click)="goBack()">
+        Indietro
+      </button>
+          <h2 class="form-title">Crea Nuova Nota</h2>
+      <div class="header-spacer"></div>
+    </div>
     <form (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="titolo" class="form-label-base">Titolo:</label>

@@ -7,12 +7,14 @@ public class CambiaNotaDTO {
     private String titolo;
     private String contenutoTesto;
     private TipoNota tipoNota;
+    private String contenutoSVG;
 
     public CambiaNotaDTO(){}
 
-    public CambiaNotaDTO(String titolo, String contenutoTesto, TipoNota tipoNota) {
+    public CambiaNotaDTO(String titolo, String contenutoTesto, String contenutoSVG, TipoNota tipoNota) {
         this.titolo = titolo;
         this.contenutoTesto = contenutoTesto;
+        this.contenutoSVG = contenutoSVG;
         this.tipoNota = tipoNota;
     }
 
@@ -30,6 +32,14 @@ public class CambiaNotaDTO {
 
     public void setContenutoTesto(String contenutoTesto) {
         this.contenutoTesto = contenutoTesto;
+    }
+
+    public String getContenutoSVG() {
+        return contenutoSVG;
+    }
+    
+    public void setContenutoSVG(String contenutoSVG) {
+        this.contenutoSVG = contenutoSVG;
     }
 
     public TipoNota getTipoNota() {

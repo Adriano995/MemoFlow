@@ -1,7 +1,12 @@
 <div class="page-container">
   <div class="card-base nota-form-card" [ngClass]="{'expanded-card': isDrawingMode}">
-    <h2 class="form-title">Crea Nuova Nota</h2>
-
+    <div class="card-header">
+      <button class="button-base button-secondary" (click)="goBack()">
+        Indietro
+      </button>
+      <h2 class="form-title">Crea Nuova Nota</h2>
+      <div class="header-spacer"></div>
+    </div>
     <div *ngIf="successMessage" class="success-message message-base">{{ successMessage }}</div>
     <div *ngIf="errorMessage" class="error-message message-base">{{ errorMessage }}</div>
 
@@ -13,32 +18,30 @@
 
       <div class="form-group">
         <label for="tipoNota" class="form-label">Tipo Nota:</label>
-        <select id="tipoNota" [(ngModel)]="newNota.tipoNota" name="tipoNota" class="form-input" (change)="onTipoNotaChange()">
+        <select id="tipoNota" [(ngModel)]="newNota.tipoNota" name="tipoNota" class="form-input"
+          (change)="onTipoNotaChange()">
           <option *ngFor="let tipo of tipiNota" [value]="tipo">{{ tipo }}</option>
         </select>
       </div>
 
       <div class="form-group content-container" *ngIf="newNota.tipoNota === 'TESTO'">
         <label for="contenutoTesto" class="form-label">Contenuto Testo:</label>
-        <textarea id="contenutoTesto" [(ngModel)]="newNota.contenutoTesto" name="contenutoTesto" rows="5" class="form-input"></textarea>
+        <textarea id="contenutoTesto" [(ngModel)]="newNota.contenutoTesto" name="contenutoTesto" rows="5"
+          class="form-input"></textarea>
       </div>
 
       <div class="form-group content-container drawing-container" *ngIf="newNota.tipoNota === 'DISEGNO'">
         <label class="form-label">Area di Disegno:</label>
-        <div #drawingCanvas 
-            class="drawing-area" 
-            [ngClass]="{'eraser-mode': isEraserMode}"> </div>
+        <div #drawingCanvas class="drawing-area" [ngClass]="{'eraser-mode': isEraserMode}"> </div>
         <div class="drawing-actions">
-            <button type="button" class="button-base button-secondary" (click)="clearDrawing()">Pulisci Disegno</button>
-            <button 
-              type="button" 
-              class="button-base button-secondary" 
-              [ngClass]="{'button-active': isEraserMode}"  (click)="toggleEraserMode()">
-              {{ isEraserMode ? 'Disattiva Gomma' : 'Attiva Gomma' }}
-            </button>
+          <button type="button" class="button-base button-secondary" (click)="clearDrawing()">Pulisci Disegno</button>
+          <button type="button" class="button-base button-secondary" [ngClass]="{'button-active': isEraserMode}"
+            (click)="toggleEraserMode()">
+            {{ isEraserMode ? 'Disattiva Gomma' : 'Attiva Gomma' }}
+          </button>
         </div>
       </div>
-      
+
       <div class="form-actions">
         <button type="button" class="button-base button-secondary" (click)="onCancel()">Annulla</button>
         <button type="submit" class="button-base button-primary">Salva Nota</button>

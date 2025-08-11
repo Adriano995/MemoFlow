@@ -1,0 +1,264 @@
+.search-bar-container {
+  max-width: 700px;
+  margin: 20px auto;
+  font-family: 'Roboto', sans-serif;
+  color: var(--text-color);
+}
+
+form {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+input[type="text"] {
+  flex-grow: 1;
+  padding: 10px 15px;
+  border: 1.5px solid var(--input-border);
+  border-radius: 8px;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="text"]:focus {
+  border-color: var(--accent-orange);
+  box-shadow: 0 0 10px var(--shadow-orange-medium);
+  outline: none;
+}
+
+button[type="submit"], button[type="button"] {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button[type="submit"]:disabled {
+  background-color: var(--button-secondary-bg);
+  color: var(--text-placeholder);
+  cursor: not-allowed;
+}
+
+button[type="submit"]:not(:disabled) {
+  background-color: var(--button-primary-bg);
+  color: var(--button-primary-text);
+}
+
+button[type="submit"]:not(:disabled):hover {
+  background-color: var(--button-primary-hover-bg);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px var(--shadow-orange-strong);
+}
+
+button[type="button"] {
+  background-color: var(--button-secondary-bg);
+  color: var(--button-secondary-text);
+}
+
+button[type="button"]:hover {
+  background-color: var(--button-secondary-hover-bg);
+  transform: translateY(-2px);
+}
+
+.loading-text {
+  margin-top: 12px;
+  font-style: italic;
+  color: var(--text-lighter);
+  text-align: center;
+}
+
+.results-container {
+  margin: 15px auto 0 auto; /* centra */
+  max-width: 680px; /* un po' più stretto rispetto al container 700 */
+  padding: 0 15px;  /* spazio interno ai lati per il neon */
+  max-height: 400px;
+  overflow-y: auto;
+  transition: max-height 0.5s ease;
+  box-sizing: border-box; /* importantissimo per padding */
+  border-radius: 12px;
+  box-shadow: 0 0 15px var(--shadow-orange-medium);
+  background-color: var(--card-bg);
+}
+.results-container.collapsed {
+  max-height: 0;
+  overflow: hidden;
+  padding: 0 15px; /* mantieni il padding anche quando collassato */
+  box-shadow: none;
+}
+.results-container.expanded {
+  max-height: 400px;
+  overflow-y: auto;
+  box-shadow: 0 0 25px var(--shadow-orange-strong);
+}
+
+.result-card {
+  background-color: var(--card-bg);
+  border-radius: 10px;
+  box-shadow: 0 4px 15px var(--shadow-orange-light);
+  padding: 15px 20px;
+  margin-bottom: 15px; /* spazio tra le cards più ampio */
+  transition: box-shadow 0.3s ease;
+  overflow: hidden; /* taglia l’overflow */
+  word-wrap: break-word; /* spezza parole troppo lunghe */
+  max-width: 100%; /* assicurati che non escano dal contenitore */
+  display: block;
+}
+
+.result-card:hover {
+  box-shadow: 0 6px 25px var(--shadow-orange-medium);
+}
+
+.result-card h4 {
+  margin: 0 0 8px 0;
+  color: var(--title-color);
+  font-weight: 700;
+  white-space: nowrap; /* titolo su una riga */
+  overflow: hidden;
+  text-overflow: ellipsis; /* ... se troppo lungo */
+}
+
+.result-card p {
+  margin: 4px 0;
+  font-size: 0.9rem;
+  color: var(--text-secondary-color);
+  display: -webkit-box; /* per limitare righe di testo */
+  -webkit-line-clamp: 2; /* max 2 righe */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.result-card .open-event-btn {
+  margin-top: 8px;
+  background-color: var(--button-primary-bg);
+  color: var(--button-primary-text);
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  text-align: center;
+}
+
+.result-card .open-event-btn:hover {
+  background-color: var(--button-primary-hover-bg);
+  transform: translateY(-2px);
+}
+
+.result-card, .autocomplete-item {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  /* forza il browser a prepararsi all'animazione */
+  transform-style: preserve-3d;
+}
+
+.results-container {
+  margin-top: 15px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.7s ease;
+  /* Per far sparire tutto senza scroll improvvisi */
+}
+
+.results-container.expanded {
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-orange) var(--secondary-bg-dark);
+}
+
+.results-container.expanded::-webkit-scrollbar {
+  width: 8px;
+}
+
+.results-container.expanded::-webkit-scrollbar-track {
+  background: var(--secondary-bg-dark);
+  border-radius: 8px;
+}
+
+.results-container.expanded::-webkit-scrollbar-thumb {
+  background-color: var(--accent-orange);
+  border-radius: 8px;
+  border: 2px solid var(--secondary-bg-dark);
+}
+
+/* Animazione cards */
+.result-card {
+  background-color: var(--card-bg);
+  border-radius: 10px;
+  box-shadow: 0 4px 15px var(--shadow-orange-light);
+  padding: 15px 20px;
+  margin-bottom: 12px;
+
+  opacity: 0;
+  transform: translateY(15px);
+  animation-fill-mode: forwards; /* mantieni stato finale */
+  animation-name: fadeInUp;
+  animation-duration: 0.5s;
+  animation-timing-function: ease;
+  animation-delay: var(--delay, 0s); /* delay dinamico */
+  transition: box-shadow 0.3s ease;
+}
+
+.result-card:hover {
+  box-shadow: 0 6px 25px var(--shadow-orange-medium);
+}
+
+/* Definizione keyframes fadeInUp */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+.search-form {
+  position: relative;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--accent-orange);
+  font-size: 18px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.search-form input[type="text"] {
+  flex-grow: 1;
+  padding: 10px 15px 10px 40px; /* spazio per icona */
+  border: 1.5px solid var(--input-border);
+  border-radius: 8px;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.search-form input[type="text"]:focus {
+  border-color: var(--accent-orange);
+  box-shadow: 0 0 12px var(--shadow-orange-medium);
+  outline: none;
+}
+
+/* Nascondi bottone submit */
+.search-form > button[type="submit"] {
+  display: none;
+}
