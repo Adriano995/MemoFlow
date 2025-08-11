@@ -1,6 +1,12 @@
 <div class="card-base card-full-page form-margin-top">
   <div class="card-content-base">
-    <h2 class="form-title-base">Modifica Nota</h2>
+    <div class="card-header">
+      <button class="button-base button-secondary" (click)="goBack()">
+        Indietro
+      </button>
+      <h2 class="form-title">Crea Nuova Nota</h2>
+      <div class="header-spacer"></div>
+    </div>
 
     <div *ngIf="loading" class="message-base">Caricamento...</div>
     <div *ngIf="error" class="message-base error-message">{{ error }}</div>
@@ -19,32 +25,36 @@
         </select>
       </div>
 
-<div class="form-group" *ngIf="tipoNotaModifica === TipoNota.TESTO">
-  <label class="form-label-base">Contenuto (testo)</label>
-  <textarea rows="6" class="form-input-base" [(ngModel)]="contenutoTestoModifica"></textarea>
-  <button class="button-base button-primary" (click)="onUpdateNota()">Salva Testo</button>
-</div>
+      <div class="form-group" *ngIf="tipoNotaModifica === TipoNota.TESTO">
+        <label class="form-label-base">Contenuto (testo)</label>
+        <textarea rows="6" class="form-input-base" [(ngModel)]="contenutoTestoModifica"></textarea>
+        <button class="button-base button-primary" (click)="onUpdateNota()">Salva Testo</button>
+      </div>
 
-<div class="form-group" *ngIf="tipoNotaModifica === TipoNota.DISEGNO">
-  <label class="form-label-base">Disegno</label>
+      <div class="form-group" *ngIf="tipoNotaModifica === TipoNota.DISEGNO">
+        <label class="form-label-base">Disegno</label>
 
-  <div class="svg-preview" *ngIf="contenutoSVGModifica && !isEditingDrawing" [innerHTML]="contenutoSVGModifica | safeHtml"></div>
+        <div class="svg-preview" *ngIf="contenutoSVGModifica && !isEditingDrawing"
+          [innerHTML]="contenutoSVGModifica | safeHtml"></div>
 
-  <div class="flex-row" style="margin-top:12px;" *ngIf="!isEditingDrawing">
-    <button class="button-base button-secondary" (click)="startEditingDrawing()">Apri editor</button>
-    <button class="button-base button-secondary" (click)="downloadSvg()" *ngIf="contenutoSVGModifica">Scarica SVG</button>
-    <button class="button-base button-danger" (click)="deleteDrawing()" *ngIf="contenutoSVGModifica">Elimina Disegno</button>
-  </div>
-  
-  <button class="button-base button-primary" (click)="onUpdateNota()" *ngIf="!isEditingDrawing">Salva Disegno</button>
+        <div class="flex-row" style="margin-top:12px;" *ngIf="!isEditingDrawing">
+          <button class="button-base button-secondary" (click)="startEditingDrawing()">Apri editor</button>
+          <button class="button-base button-secondary" (click)="downloadSvg()" *ngIf="contenutoSVGModifica">Scarica
+            SVG</button>
+        </div>
 
-  <div #drawingCanvas class="drawing-canvas" *ngIf="isEditingDrawing"></div>
-  <div *ngIf="isEditingDrawing" class="drawing-toolbar">
-    <button class="button-base button-secondary" (click)="toggleEraserMode()">
-      {{ isEraserMode ? 'Disattiva Gomma' : 'Attiva Gomma' }}
-    </button>
-    <button class="button-base button-secondary" (click)="clearDrawing()">Pulisci</button>
-    <button class="button-base button-primary" (click)="finishEditingDrawing()">Salva Disegno</button>
-    <button class="button-base" (click)="cancelEditingDrawing()">Annulla</button>
-  </div>
-</div>
+        <button class="button-base button-primary" (click)="onUpdateNota()" *ngIf="!isEditingDrawing">Salva
+          Disegno</button>
+
+        <div #drawingCanvas class="drawing-canvas" *ngIf="isEditingDrawing"></div>
+        <div *ngIf="isEditingDrawing" class="drawing-toolbar">
+          <button class="button-base button-secondary" [class.active-eraser]="isEraserMode"
+            (click)="toggleEraserMode()">
+            {{ isEraserMode ? 'Disattiva Gomma' : 'Attiva Gomma' }}
+          </button>
+
+          <button class="button-base button-secondary" (click)="clearDrawing()">Pulisci</button>
+          <button class="button-base button-primary" (click)="finishEditingDrawing()">Salva Disegno</button>
+          <button class="button-base" (click)="cancelEditingDrawing()">Annulla</button>
+        </div>
+      </div>

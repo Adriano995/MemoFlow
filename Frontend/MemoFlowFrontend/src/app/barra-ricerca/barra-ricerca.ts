@@ -9,7 +9,7 @@ import { RicercaEventiService } from '../services/ricerca-eventi.service';
 import { of, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { ChangeDetectionStrategy } from '@angular/core';
-
+import { NgZone } from '@angular/core';
 
 @Component({
   selector: 'app-barra-ricerca',
@@ -32,11 +32,14 @@ export class BarraRicerca {
     private authService: AuthService,
     private ricercaService: RicercaEventiService,
     private router: Router,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private ngZone: NgZone, 
   ) {
     this.ricercaService.risultati$.subscribe(results => {
-      this.searchResults = results;
-      this.cd.detectChanges();
+      this.ngZone.run(() => {
+        this.searchResults = results;
+        this.cd.markForCheck();
+      });
     });
 
     this.searchTermSubject.pipe(

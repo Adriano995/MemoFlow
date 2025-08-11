@@ -322,4 +322,8 @@ export class NotaCreazioneComponent implements OnInit, AfterViewInit, OnDestroy 
   onCancel(): void {
     this.router.navigate(['/dashboard']);
   }
+
+  goBack(): void {
+    this.router.navigate(['/dashboard']);
+  }
 }

@@ -1,3 +1,4 @@
+// nota-modifica.component.ts
 import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -6,6 +7,7 @@ import { PreviewNotaService } from '../services/preview-nota.service';
 import { Nota } from '../models/preview-note.model';
 import { TipoNota } from '../preview-nota-component/tipo-nota.enum';
 import { SafeHtmlPipe } from './safe-html.pipe';
+import { NgZone } from '@angular/core';
 
 @Component({
   selector: 'app-nota-modifica',
@@ -43,6 +45,7 @@ export class NotaModificaComponent implements OnInit, OnDestroy {
     private router: Router,
     private previewNotaService: PreviewNotaService,
     private cdr: ChangeDetectorRef,
+    private ngZone: NgZone,
   ) {}
 
   async ngOnInit() {
@@ -75,20 +78,21 @@ export class NotaModificaComponent implements OnInit, OnDestroy {
         this.contenutoSVGModifica = this.nota.contenutoSVG || '';
         this.tipoNotaModifica = this.nota.tipoNota;
         
-  //      this.isEditingDrawing = this.tipoNotaModifica === TipoNota.DISEGNO;
-   //     if (this.isEditingDrawing) {
-   //        setTimeout(() => this.initializeDrawingCanvas(), 0);
-   //     }
+        this.isEditingDrawing = this.tipoNotaModifica === TipoNota.DISEGNO;
+        if (this.isEditingDrawing) {
+           setTimeout(() => this.initializeDrawingCanvas(), 0);
+        }
       }
      } catch (err: any) {
       console.error('Errore recupero nota:', err);
       this.error = 'Impossibile caricare i dettagli della nota. Riprova.';
     } finally {
       this.loading = false;
-      this.cdr.detectChanges();
+      this.ngZone.run(() => {
+        this.cdr.detectChanges();
+      });
     }
   }
-
 
   onTipoNotaSelectChange(): void {
     this.isEditingDrawing = this.tipoNotaModifica === TipoNota.DISEGNO;
@@ -108,6 +112,13 @@ export class NotaModificaComponent implements OnInit, OnDestroy {
     if (!this.notaId || !this.nota) {
       this.error = 'Dati nota mancanti per l\'aggiornamento.';
       return;
+    }
+
+    // Qui serializziamo il disegno prima di inviarlo al backend,
+    // senza modificare lo stato dell'editor.
+    if (this.tipoNotaModifica === TipoNota.DISEGNO) {
+      this._serializeDrawing(); // Nuovo metodo per serializzare il disegno
+      console.log('SVG serializzato prima dell\'invio:', this.contenutoSVGModifica);
     }
 
     this.loading = true;
@@ -130,6 +141,7 @@ export class NotaModificaComponent implements OnInit, OnDestroy {
 
       await this.previewNotaService.updateNota(this.notaId, updatedNotaData);
       this.successMessage = 'Nota aggiornata con successo!';
+      
       setTimeout(() => this.router.navigate(['/dashboard']), 800);
     } catch (err: any) {
       console.error('Errore aggiornamento nota:', err);
@@ -138,6 +150,7 @@ export class NotaModificaComponent implements OnInit, OnDestroy {
       this.loading = false;
     }
   }
+
 
   async onDeleteNota(): Promise<void> {
     if (!this.notaId) {
@@ -174,21 +187,25 @@ export class NotaModificaComponent implements OnInit, OnDestroy {
   }
 
   finishEditingDrawing(): void {
+    // Questo metodo serve solo per uscire dalla modalità di modifica
+    // e per informare l'utente che le modifiche sono state salvate localmente.
+    // La serializzazione viene ora gestita da _serializeDrawing().
+    this.isEditingDrawing = false;
+    this.removeDrawingListeners();
+    this.successMessage = 'Disegno aggiornato in locale. Salva la nota per inviare al server.';
+    // Lasciamo il canvas e svgElement in memoria per l'eventuale salvataggio,
+    // in modo da poterlo serializzare.
+  }
+  
+  // Nuovo metodo privato per serializzare l'SVG
+  private _serializeDrawing(): void {
     if (this.svgElement) {
       this.contenutoSVGModifica = new XMLSerializer().serializeToString(this.svgElement);
     } else {
       this.contenutoSVGModifica = '';
     }
-    this.isEditingDrawing = false;
-    this.removeDrawingListeners();
-    if (this.drawingCanvas?.nativeElement) {
-      while (this.drawingCanvas.nativeElement.firstChild) {
-        this.drawingCanvas.nativeElement.removeChild(this.drawingCanvas.nativeElement.firstChild);
-      }
-    }
-    this.svgElement = undefined;
-    this.successMessage = 'Disegno aggiornato in locale. Salva la nota per inviare al server.';
   }
+
 
   downloadSvg(): void {
     if (!this.contenutoSVGModifica) return;
@@ -213,13 +230,15 @@ export class NotaModificaComponent implements OnInit, OnDestroy {
     this.isEditingDrawing = true;
     this.isEraserMode = false;
 
-    // Assicura che il DOM sia aggiornato prima di inizializzare il canvas
-    this.cdr.detectChanges(); 
-    this.initializeDrawingCanvas();
+    this.ngZone.run(() => {
+      this.cdr.detectChanges();
+      setTimeout(() => this.initializeDrawingCanvas(), 0);
+    });
   }
 
   // Metodo per inizializzare il canvas
   initializeDrawingCanvas(): void {
+    console.log('Inizializzo canvas con SVG:', this.contenutoSVGModifica);
     if (!this.drawingCanvas) {
       console.warn('Canvas di disegno non disponibile.');
       return; 

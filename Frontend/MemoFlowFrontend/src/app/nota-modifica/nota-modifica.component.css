@@ -1,9 +1,14 @@
+/* Stile solo per il canvas nella preview */
+.svg-preview {
+  background-color: whitesmoke;
+}
+
 /* Drawing area */
 .drawing-section .svg-preview {
   border: 1px solid var(--input-border);
   border-radius: 8px;
   padding: 8px;
-  background: var(--card-bg);
+  background: whitesmoke;
   max-height: 360px;
   overflow: auto;
 }
@@ -37,6 +42,12 @@
 /* Small improvements for buttons in the area */
 .drawing-section .button-base {
   min-width: 120px;
+}
+
+.active-eraser {
+  border: 2px solid var(--accent-orange);
+  box-shadow: 0 0 8px var(--accent-orange);
+  color: var(--accent-orange);
 }
 
 /* Responsive */

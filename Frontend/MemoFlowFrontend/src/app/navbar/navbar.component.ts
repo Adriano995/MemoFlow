@@ -14,7 +14,17 @@ export class NavbarComponent {
   @Input() userId!: number | null;
   @Output() logoutEvent = new EventEmitter<void>();
 
+  isMenuOpen = false;
+
   logout(): void {
     this.logoutEvent.emit();
+  }
+
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  closeMenu() {
+    this.isMenuOpen = false;
   }
 }

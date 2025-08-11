@@ -82,7 +82,7 @@
 }
 
 /* Stili per i pulsanti di base all'interno di drawing-actions */
-.drawing-actions .button-base {
+.drawing-actions {
   flex-grow: 1;
   max-width: 200px;
   min-width: 150px;
@@ -148,44 +148,6 @@
   margin-top: 30px;
 }
 
-/* Pulsanti */
-.button-base {
-  padding: 12px 20px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s, box-shadow 0.3s;
-}
-
-.button-primary {
-  background-color: var(--button-primary-bg);
-  color: var(--button-primary-text);
-}
-
-.button-primary:hover {
-  background-color: var(--button-primary-hover-bg);
-  box-shadow: 0 4px 15px var(--shadow-orange-strong);
-}
-
-.button-secondary {
-  background-color: var(--button-secondary-bg);
-  color: var(--button-secondary-text);
-}
-
-.button-secondary:hover {
-  background-color: var(--button-secondary-hover-bg);
-}
-
-/* Pulsante "Torna alla Dashboard" */
-.back-button {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  z-index: 10;
-}
-
 /* Messaggi */
 .message-base {
   padding: 10px;
@@ -241,13 +203,13 @@
     gap: 15px;
   }
 
-  .drawing-actions .button-base {
+  .drawing-actions {
     width: 100%;
     max-width: none;
   }
   
   .back-button {
-    position: static;
+    position: absolute;
     margin-bottom: 20px;
     width: 100%;
     text-align: center;
@@ -280,6 +242,7 @@
   }
 
   .button-base {
+    position: relative;
     padding: 10px 15px;
     font-size: 1rem;
   }

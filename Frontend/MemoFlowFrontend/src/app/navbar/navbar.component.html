@@ -1,28 +1,33 @@
 <nav class="navbar">
   <div class="navbar-brand">MemoFlow</div>
 
-  <div class="navbar-links">
-    <a class="nav-link" routerLink="/dashboard">
+  <!-- Bottone hamburger -->
+  <button class="burger-menu" (click)="toggleMenu()">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <div class="navbar-links" [class.open]="isMenuOpen">
+    <a class="nav-link" routerLink="/dashboard" (click)="closeMenu()">
       <i class="fas fa-home"></i> Dashboard
     </a>
 
-    <a *ngIf="isLoggedIn" class="nav-link" routerLink="/crea-evento">
+    <a *ngIf="isLoggedIn" class="nav-link" routerLink="/crea-evento" (click)="closeMenu()">
       <i class="fas fa-plus"></i> Crea Evento
     </a>
 
-    <a *ngIf="isLoggedIn" class="nav-link" [routerLink]="['/modifica-utente', userId]">
+    <a *ngIf="isLoggedIn" class="nav-link" [routerLink]="['/modifica-utente', userId]" (click)="closeMenu()">
       <i class="fas fa-cog"></i> Modifica Profilo
     </a>
 
-    <button *ngIf="isLoggedIn" class="logout-btn" (click)="logout()">
+    <button *ngIf="isLoggedIn" class="logout-btn" (click)="logout(); closeMenu()">
       <i class="fas fa-sign-out-alt"></i> Logout
     </button>
 
-    <a *ngIf="!isLoggedIn" class="nav-link" routerLink="/login">
+    <a *ngIf="!isLoggedIn" class="nav-link" routerLink="/login" (click)="closeMenu()">
       <i class="fas fa-sign-in-alt"></i> Accedi
     </a>
 
-    <a *ngIf="!isLoggedIn" class="nav-link" routerLink="/register">
+    <a *ngIf="!isLoggedIn" class="nav-link" routerLink="/register" (click)="closeMenu()">
       <i class="fas fa-user-plus"></i> Registrati
     </a>
   </div>

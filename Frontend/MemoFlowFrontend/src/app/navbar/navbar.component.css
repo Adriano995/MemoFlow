@@ -4,7 +4,7 @@
   left: 0;
   width: 100%;
   height: 60px;
-  background-color: #121212;
+  background-color: var(--navbar-bg); /* Sostituisci qui */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -42,7 +42,7 @@
 
 .nav-link:hover,
 .logout-btn:hover {
-  background-color: rgba(255, 111, 0, 0.15);
+  background-color: var(--shadow-orange-light);
   border-color: var(--accent-orange);
   color: var(--accent-orange);
   transform: translateY(-1px);
@@ -54,14 +54,48 @@
   cursor: pointer;
 }
 
+.burger-menu {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  color: var(--text-lighter);
+  cursor: pointer;
+}
+
+/* --- Mobile --- */
 @media (max-width: 768px) {
-  .navbar {
-    flex-direction: column;
-    height: auto;
-    padding: 10px;
+  .burger-menu {
+    display: block;
   }
+
+  .navbar {
+    flex-wrap: nowrap;
+  }
+
   .navbar-links {
-    flex-wrap: wrap;
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    background-color: var(--navbar-bg);
+    padding: 10px 0;
+    border-top: 1px solid var(--accent-orange);
+  }
+
+  .navbar-links.open {
+    display: flex;
+    position: fixed;
+    top: 60px; 
+    left: 0;
+    width: 100%;
+  }
+
+  .nav-link, .logout-btn {
+    width: 100%;
     justify-content: center;
+  }
+
+  app-root {
+    margin-top: 60px;
   }
 }

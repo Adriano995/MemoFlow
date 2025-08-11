@@ -1,17 +1,16 @@
 <div class="search-bar-container">
+
+  <p *ngIf="!isLoadingSearch && searchResults.length === 0 && !hasSearched">
+    Digita nel campo di ricerca per trovare i tuoi eventi.
+  </p>
+
   <form class="search-form" (ngSubmit)="eseguiRicerca()">
     <i class="fa fa-search search-icon" aria-hidden="true"></i>
-<input type="text" [(ngModel)]="searchTermTitolo" name="searchTermTitolo" placeholder="Cerca tra gli eventi" (ngModelChange)="onSearchTermChange($event)" />
+    <input type="text" [(ngModel)]="searchTermTitolo" name="searchTermTitolo" placeholder="Cerca tra gli eventi"
+      (ngModelChange)="onSearchTermChange($event)" />
 
     <button type="button" (click)="resetRicerca()">Reset</button>
   </form>
-
-    
-    <div class="debug-info">
-      <p>isLoadingSearch: {{ isLoadingSearch }}</p>
-      <p>searchResults.length: {{ searchResults.length }}</p>
-      <pre>{{ searchResults | json }}</pre>
-    </div>
 
   <div class="autocomplete-list" *ngIf="searchResults.length > 0">
     <div *ngFor="let evento of searchResults" class="autocomplete-item" (click)="selectSuggestion(evento.titolo)">
@@ -19,14 +18,14 @@
     </div>
   </div>
 
-
   <div *ngIf="isLoadingSearch" class="loading-text">
     Caricamento risultati...
   </div>
 
-  <div class="results-container" 
-      [ngClass]="{'expanded': searchResults.length > 0, 'collapsed': searchResults.length === 0}">
-    <div *ngFor="let evento of searchResults; let i = index; trackBy: trackById" class="result-card" [style.--delay]="(i * 0.1) + 's'">
+  <div class="results-container"
+    [ngClass]="{'expanded': searchResults.length > 0, 'collapsed': searchResults.length === 0}">
+    <div *ngFor="let evento of searchResults; let i = index; trackBy: trackById" class="result-card"
+      [style.--delay]="(i * 0.1) + 's'">
       <h4>{{ evento.titolo }}</h4>
       <p *ngIf="evento.descrizione">Descrizione: {{ evento.descrizione }}</p>
       <p>Data di inizio: {{ evento.dataInizio | date:'short' }}</p>
@@ -35,13 +34,8 @@
     </div>
   </div>
 
-
-
   <p *ngIf="!isLoadingSearch && searchResults.length === 0 && hasSearched">
     Nessun evento trovato con i criteri specificati.
   </p>
 
-  <p *ngIf="!isLoadingSearch && searchResults.length === 0 && !hasSearched">
-    Digita nel campo di ricerca per trovare i tuoi eventi.
-  </p>
 </div>

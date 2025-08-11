@@ -12,6 +12,9 @@
   --text-placeholder: #666;
   --border-dark: #333;
 
+  /* Variabile per lo sfondo della navbar */
+  --navbar-bg: #121212; /* Variabile per lo sfondo della navbar */
+
   /* Variabili per ombre e transizioni, standardizzate */
   --shadow-base: 0 2px 8px rgba(0, 0, 0, 0.2);
   --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.3);
@@ -54,44 +57,55 @@
 }
 
 body.light-theme {
-  /* Variabili Tema CHIARO - Palette raffinata */
-  --primary-bg-dark: #fdfdfd; 
+  /* Tema chiaro - Blu Metallizzato + Beige Champagne */
+  --primary-bg-dark: #faf9f7;  
   --secondary-bg-dark: #ffffff;
-  --accent-orange: #ff7a00;
-  --light-orange: #ffa94d;
-  --text-light: #2c2c2c;
-  --text-lighter: #555;
-  --text-placeholder: #999;
-  --border-dark: #ddd;
-  
-  --shadow-base: 0 2px 8px rgba(0, 0, 0, 0.05); /* Ombra più leggera per il tema chiaro */
-  --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.1);
-  --shadow-orange-light: rgba(255, 122, 0, 0.1);
-  --shadow-orange-medium: rgba(255, 122, 0, 0.25);
-  --shadow-orange-strong: rgba(255, 122, 0, 0.4);
+  --accent-blue: #2f5c8a;        /* blu metallizzato profondo */
+  --light-blue: #5f85a2;         /* blu chiaro di supporto */
+  --accent-secondary: #d8c3a5;   /* beige champagne */
+  --light-secondary: #f0e6d9;    /* beige chiaro */
+  --text-light: #1f1f1f;
+  --text-lighter: #4f4f4f;
+  --text-placeholder: #8d8d8d;
+  --border-dark: #ddd4c9;
 
-  --page-bg: #f4f6f8;
+  /* Navbar */
+  --navbar-bg: #faf9f7;
+
+  /* Ombre */
+  --shadow-base: 0 2px 8px rgba(47, 92, 138, 0.06);
+  --shadow-hover: 0 4px 12px rgba(47, 92, 138, 0.15);
+  --shadow-blue-light: rgba(47, 92, 138, 0.1);
+  --shadow-blue-medium: rgba(47, 92, 138, 0.25);
+  --shadow-blue-strong: rgba(47, 92, 138, 0.4);
+
+  --page-bg: #f5f2ed;
   --card-bg: var(--secondary-bg-dark);
   --input-bg: #ffffff;
-  --input-border: #dcdcdc;
+  --input-border: #e1d9ce;
   --text-color: var(--text-light);
   --text-secondary-color: var(--text-lighter);
-  --title-color: var(--accent-orange);
-  
-  --button-primary-bg: var(--accent-orange);
+  --title-color: var(--accent-blue);
+
+  /* Bottoni */
+  --button-primary-bg: var(--accent-blue);
   --button-primary-text: white;
-  --button-primary-hover-bg: #e66a00;
-  --button-secondary-bg: #f1f1f1;
-  --button-secondary-text: var(--accent-orange);
-  --button-secondary-hover-bg: #e2e2e2;
-  
+  --button-primary-hover-bg: #254b70;
+
+  --button-secondary-bg: var(--accent-secondary);
+  --button-secondary-text: #1f1f1f;
+  --button-secondary-hover-bg: #cbb296;
+
+  /* Danger */
   --button-danger-bg: #d9534f;
   --button-danger-text: #fff;
   --button-danger-hover-bg: #c1423f;
-  
-  --link-color: var(--accent-orange);
-  --link-hover-color: #ff8c1a;
-  
+
+  /* Link */
+  --link-color: var(--accent-blue);
+  --link-hover-color: #3d6fa1;
+
+  /* Messaggi */
   --success-color: #2b8a3e;
   --error-color: #e03131;
   --message-bg-success: rgba(43, 138, 62, 0.1);
@@ -99,6 +113,9 @@ body.light-theme {
   --message-bg-error: rgba(224, 49, 49, 0.1);
   --message-border-error: #e03131;
 }
+
+
+
 
 /* Stili Base per il body e elementi principali */
 *, *::before, *::after {
@@ -140,7 +157,33 @@ app-root {
               0 0 0 1px var(--shadow-orange-light);
   box-sizing: border-box;
   color: var(--text-color);
-  transition: box-shadow var(--transition-speed) ease; /* Aggiunto per un'interazione più fluida */
+  transition: box-shadow var(--transition-speed) ease;
+  position: relative; /* Aggiunto per un'interazione più fluida */
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Spazia gli elementi agli estremi */
+  margin-bottom: 20px;
+}
+
+
+.card-header .button-base {
+  /* Non più posizionato in modo assoluto, ma parte del flusso */
+  position: static; 
+  margin: 0 20px 0 0; /* Aggiunge spazio a destra del bottone */
+}
+
+.card-header .form-title {
+  flex-grow: 1; 
+  text-align: center;
+}
+
+.card-header .header-spacer {
+  /* Div vuoto che bilancia il bottone per centrare il titolo */
+  width: 140px; /* Larghezza approssimativa del bottone */
+  visibility: hidden;
 }
 
 /* Titoli dei form - Resi responsive con clamp() */
@@ -366,7 +409,6 @@ a:hover {
   font-weight: 600;
 }
 
-
 @media (max-width: 600px) {
   .reverse-flex {
     flex-direction: column-reverse; 
@@ -388,11 +430,20 @@ a:hover {
 }
 
 @media (max-width: 768px) {
-  .card-base {
-    padding: 30px;
+  .card-header {
+    /* L'header si comporta come un blocco normale, il titolo va a capo */
+    display: block; 
+    text-align: center;
   }
-  .page-container {
-    padding: 0 15px;
+  
+  .card-header .button-base {
+    position: static; /* Il bottone torna a occupare spazio */
+    margin-bottom: 10px;
+  }
+
+  .card-header .form-title {
+    /* Il titolo non ha più margini per adattarsi allo spazio */
+    margin: 0;
   }
 }
 
@@ -402,5 +453,12 @@ a:hover {
   }
   .page-container {
     padding: 0 10px;
+  }
+}
+
+/* Regola per schermi grandi (PC, monitor) */
+@media (min-width: 1025px) {
+  .card-base.form-card-large {
+    max-width: 1000px; 
   }
 }
